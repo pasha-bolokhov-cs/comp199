@@ -1,0 +1,1 @@
+/* This is the script which creates initial database tables */
