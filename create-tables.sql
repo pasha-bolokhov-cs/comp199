@@ -1,12 +1,6 @@
 /* 
  * This is the script which creates initial database tables 
  *
- * Changes to do on the diagram:
- * 	* "segments" references itself
- *	* change data types of some of the primary keys to string
- *	  this includes: "transportId", "locationId", "activityId", "hotelId", "imageId"
- *	* remove "tinyint"
- *
  */
 
 /*
@@ -33,25 +27,11 @@ CREATE TABLE customers (
 
 
 /*
- * Cart
- */
-DROP TABLE IF EXISTS cart;
-CREATE TABLE cart (
-	tripNo		int NOT NULL AUTO_INCREMENT,
-	customerId	int,
-	startDate	date,
-	PRIMARY KEY	(tripNo),
-	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-
-/*
  * Images
  */
 DROP TABLE IF EXISTS images;
 CREATE TABLE images (
-	imageId		int NOT NULL AUTO_INCREMENT,
+	imageId		varchar(255) NOT NULL,
 	fileName	varchar(255),
 	PRIMARY KEY	(imageId)
 );
@@ -62,7 +42,7 @@ CREATE TABLE images (
  */
 DROP TABLE IF EXISTS transport;
 CREATE TABLE transport (
-	transportId	tinyint NOT NULL AUTO_INCREMENT,
+	transportId	varchar(80) NOT NULL,
 	type		varchar(80),
 	rate		int,
 	PRIMARY KEY	(transportId)
@@ -87,7 +67,7 @@ CREATE TABLE flights (
  */
 DROP TABLE IF EXISTS activities;
 CREATE TABLE activities (
-	activityId	tinyint NOT NULL AUTO_INCREMENT,
+	activityId	varchar(80) NOT NULL,
 	name		varchar(80),
 	rate		int,
 	PRIMARY KEY	(activityId)
@@ -99,7 +79,7 @@ CREATE TABLE activities (
  */
 DROP TABLE IF EXISTS locations;
 CREATE TABLE locations (
-	locationId	int NOT NULL AUTO_INCREMENT,
+	locationId	varchar(80) NOT NULL,
 	region		varchar(80),
 	country		varchar(80),
 	city		varchar(80),
@@ -112,10 +92,10 @@ CREATE TABLE locations (
  */
 DROP TABLE IF EXISTS hotels;
 CREATE TABLE hotels (
-	hotelId		int NOT NULL AUTO_INCREMENT,
+	hotelId		varchar(80) NOT NULL,
 	name		varchar(80),
-	rank		tinyint,
-	imageId		int,
+	rank		int,
+	imageId		varchar(255),
 	description	text,
 	PRIMARY KEY	(hotelId),
 	FOREIGN KEY	(imageId) REFERENCES images(imageId)
@@ -130,11 +110,11 @@ DROP TABLE IF EXISTS segments;
 CREATE TABLE segments (
 	segId		int NOT NULL AUTO_INCREMENT,
 	tripNo		int NOT NULL,
-	transportId	tinyint,
+	transportId	varchar(80),
 	flightId	int,
-	locationId	int,
-	hotelId		int,
-	activityId	tinyint,
+	locationId	varchar(80),
+	hotelId		varchar(80),
+	activityId	varchar(80),
 	duration	int,
 	dealPrice	int,
 	nextSeg		int,
@@ -150,6 +130,20 @@ CREATE TABLE segments (
 	FOREIGN KEY	(activityId) REFERENCES activities(activityId)
 			ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY	(nextSeg) REFERENCES segments(segId)
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+/*
+ * Cart
+ */
+DROP TABLE IF EXISTS cart;
+CREATE TABLE cart (
+	tripNo		int NOT NULL AUTO_INCREMENT,
+	customerId	int,
+	startDate	date,
+	PRIMARY KEY	(tripNo),
+	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
