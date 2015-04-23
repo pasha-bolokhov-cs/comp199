@@ -38,6 +38,53 @@ CREATE TABLE images (
 
 
 /*
+ * Cart
+ */
+DROP TABLE IF EXISTS cart;
+CREATE TABLE cart (
+	tripNo		int NOT NULL,
+	customerId	int,
+	startDate	date,
+	PRIMARY KEY	(tripNo),
+	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+/*
+ * Orders
+ */
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders (
+	tripNo		int NOT NULL,
+	purchaseDate	datetime,
+	receiptId	varchar(80),
+	PRIMARY KEY	(tripNo)
+);
+
+
+/*
+ * Packages
+ */
+DROP TABLE IF EXISTS packages;
+CREATE TABLE packages (
+	packageId	int NOT NULL AUTO_INCREMENT,
+	tripNo		int,
+	origin		varchar(80),
+	price		int,
+	imageId		varchar(255),
+	description	text,
+	capacity	int,
+	available	int,
+	PRIMARY KEY	(packageId),
+	FOREIGN KEY	(origin) REFERENCES locations(locationId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(imageId) REFERENCES images(imageId)
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+/*
  * Transport
  */
 DROP TABLE IF EXISTS transport;
@@ -130,20 +177,6 @@ CREATE TABLE segments (
 	FOREIGN KEY	(activityId) REFERENCES activities(activityId)
 			ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY	(nextSeg) REFERENCES segments(segId)
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-
-/*
- * Cart
- */
-DROP TABLE IF EXISTS cart;
-CREATE TABLE cart (
-	tripNo		int NOT NULL AUTO_INCREMENT,
-	customerId	int,
-	startDate	date,
-	PRIMARY KEY	(tripNo),
-	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
