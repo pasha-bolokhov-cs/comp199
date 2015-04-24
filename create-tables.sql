@@ -1,6 +1,7 @@
 /* 
  * This is the script which creates initial database tables 
  *
+ * Authors: Pasha, Toshi, Candise
  */
 
 /*
