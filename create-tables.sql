@@ -41,12 +41,16 @@ CREATE TABLE images (
 
 /*
  * Cart
+ * Add Status
+ * TripNo & customerId : composit key?
+ * TripNo is different per customer per trip
  */
 DROP TABLE IF EXISTS cart;
 CREATE TABLE cart (
-	tripNo		int NOT NULL,
+	tripNo		int NOT NULL AUTO_INCREMENT,
 	customerId	int,
 	startDate	date,
+	status		varchar(80),
 	PRIMARY KEY	(tripNo),
 	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
 			ON UPDATE CASCADE ON DELETE CASCADE
@@ -55,6 +59,7 @@ CREATE TABLE cart (
 
 /*
  * Orders
+ * 
  */
 DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
@@ -67,14 +72,14 @@ CREATE TABLE orders (
 
 /*
  * Packages
+ * delete : tripNo    int,
  */
 DROP TABLE IF EXISTS packages;
 CREATE TABLE packages (
 	packageId	int NOT NULL AUTO_INCREMENT,
-	tripNo		int,
 	origin		varchar(80),
 	price		int,
-	imageId		varchar(255),
+	imageId		int,
 	description	text,
 	capacity	int,
 	available	int,
@@ -85,6 +90,38 @@ CREATE TABLE packages (
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+/*
+ * Segments
+ * REMOVED:  tripNo     int NOT NULL, 
+ * Add: packageId	int,
+ * Flight??? 
+ */
+DROP TABLE IF EXISTS segments;
+CREATE TABLE segments (
+	segId		int NOT NULL AUTO_INCREMENT,
+	transportId	varchar(80),
+	flightId	varchar(80),
+	locationId	varchar(80),
+	hotelId		varchar(80),
+	activityId	varchar(80),
+	duration	int,
+	dealPrice	int,
+	nextSeg		int,
+	packageId	int,
+	PRIMARY KEY	(segId),
+	FOREIGN KEY	(transportId) REFERENCES transport(transportId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(flightId) REFERENCES flights(flightId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(locationId) REFERENCES locations(locationId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(hotelId) REFERENCES hotels(hotelId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(activityId) REFERENCES activities(activityId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(nextSeg) REFERENCES segments(segId)
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
 
 /*
  * Transport
@@ -99,12 +136,11 @@ CREATE TABLE transport (
 
 
 /*
- * Flights
+ * Flights == alliance
  */
 DROP TABLE IF EXISTS flights;
 CREATE TABLE flights (
-	flightId	int NOT NULL AUTO_INCREMENT,
-	alliance	varchar(80),
+	flightId	varchar(80) NOT NULL,
 	departDate	datetime,
 	arriveDate	datetime,
 	PRIMARY KEY	(flightId)
@@ -152,35 +188,7 @@ CREATE TABLE hotels (
 );
 
 
-/*
- * Segments
- * REMOVED:  tripNo          int NOT NULL, 
- */
-DROP TABLE IF EXISTS segments;
-CREATE TABLE segments (
-	segId		int NOT NULL AUTO_INCREMENT,
-	transportId	varchar(80),
-	flightId	int,
-	locationId	varchar(80),
-	hotelId		varchar(80),
-	activityId	varchar(80),
-	duration	int,
-	dealPrice	int,
-	nextSeg		int,
-	PRIMARY KEY	(segId),
-	FOREIGN KEY	(transportId) REFERENCES transport(transportId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(flightId) REFERENCES flights(flightId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(locationId) REFERENCES locations(locationId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(hotelId) REFERENCES hotels(hotelId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(activityId) REFERENCES activities(activityId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(nextSeg) REFERENCES segments(segId)
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
+
 
 
 /*
