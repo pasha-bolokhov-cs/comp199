@@ -130,7 +130,6 @@ DROP TABLE IF EXISTS transport;
 CREATE TABLE transport (
 	transportId	varchar(80) NOT NULL,
 	type		varchar(80),
-	rate		int,
 	PRIMARY KEY	(transportId)
 );
 
@@ -154,7 +153,6 @@ DROP TABLE IF EXISTS activities;
 CREATE TABLE activities (  
 	activityId	varchar(80) NOT NULL,
 	name		varchar(80),
-	rate		int,
 	PRIMARY KEY	(activityId)
 );
 
