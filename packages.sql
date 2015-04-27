@@ -1,8 +1,6 @@
 /*
-* insert data into packages tables
-*/
+ * Data for 'packages' table
+ */
 
-
-insert into packages (packageId, tripNo, origin, price, imageId, description, capacity, available)
-values (1, 1,'Shanghai', 6000, 'p1', 'tobeupdated', 40, 40)
-        ;
+INSERT INTO packages (packageId, tripNo, origin, price, imageId, description, capacity, available)
+       VALUES (1, 1, 'Shanghai', 6000, 'p1', 'tobeupdated', 40, 40);

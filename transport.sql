@@ -1,6 +1,7 @@
 /*
-* insert data into transport table
-*/
+ * Data for 'transport' table
+ */
+
 INSERT INTO transport (transportId, type)
        VALUE ('bus', 'Bus'),
              ('vehicle_e', 'Economy'),

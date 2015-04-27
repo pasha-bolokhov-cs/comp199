@@ -1,6 +1,6 @@
 /*
-* Customer Account Information
-*/
+ * Customer Account Information
+ */
 
 INSERT INTO customers (name, birth, nationality, passportNo, passportExp, email, phone)
        VALUES ('Paul Walker', to_date('1973-09-12'), 'America', 'C01234567', to_date('2017-06-30'), 'PWalker@gmail.com', '1250349876'),
