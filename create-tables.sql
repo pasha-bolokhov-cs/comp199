@@ -1,7 +1,9 @@
 /* 
  * This is the script which creates initial database tables 
  *
- * Authors: Pasha, Toshi, Candise
+ * Authors: Pasha Bolokhov,
+ *	    Toshiyasu Azakawa, 
+ *	    Candise Wang
  */
 
 /*
