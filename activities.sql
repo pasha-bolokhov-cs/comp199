@@ -2,9 +2,9 @@
  * Activities
  */
 
-INSERT INTO activities (activityId, name, rate)
-       VALUES ('fireworks', 'Fireworks', NULL),
-	      ('climbing', 'Climbing', NULL),
-	      ('surfing', 'Surfing', NULL),
-              ('hunt_sharks','Hunting Sharks','NULL');
+INSERT INTO activities (activityId, name)
+       VALUES ('fireworks', 'Fireworks'),
+	      ('climbing', 'Climbing'),
+	      ('surfing', 'Surfing'),
+              ('hunt-sharks','Hunting Sharks');
 
