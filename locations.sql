@@ -1,5 +1,5 @@
 /*
-*
+* insert data into location tables
 */
 
 
@@ -10,8 +10,8 @@ values ('shanghai', 'Asia', 'China', 'Shanghai'),
        ('hakata','Asia','Japan','Hakata'),
 	('sochi', 'Europe', 'Russia', 'Sochi'),
 	('paris', 'Europe', 'France','Paris'),
-        ('victoria','North America','Canada','Victoria')
-        ('vancouver','North America','Canada','Vancouver')
+        ('victoria','North America','Canada','Victoria'),
+        ('vancouver','North America','Canada','Vancouver'),
         ('seattle','North America','US','Seattle');
 
 
