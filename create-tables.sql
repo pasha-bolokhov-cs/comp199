@@ -32,8 +32,9 @@ CREATE TABLE customers (
  */
 DROP TABLE IF EXISTS images;
 CREATE TABLE images (
-	imageId		varchar(255) NOT NULL,
-	fileName	varchar(255),
+	imageId		int NOT NULL AUTO_INCREMENT,
+	ImageName	varchar(255) NOT NULL,
+	imageType	varchar(255),
 	PRIMARY KEY	(imageId)
 );
 
@@ -114,7 +115,7 @@ CREATE TABLE flights (
  * Activities
  */
 DROP TABLE IF EXISTS activities;
-CREATE TABLE activities (
+CREATE TABLE activities (  
 	activityId	varchar(80) NOT NULL,
 	name		varchar(80),
 	rate		int,
@@ -140,10 +141,10 @@ CREATE TABLE locations (
  */
 DROP TABLE IF EXISTS hotels;
 CREATE TABLE hotels (
-	hotelId		varchar(80) NOT NULL,
+	hotelId		int NOT NULL, AUTO_INCREMENT,
 	name		varchar(80),
 	rank		int,
-	imageId		varchar(255),
+	imageId		int,
 	description	text,
 	PRIMARY KEY	(hotelId),
 	FOREIGN KEY	(imageId) REFERENCES images(imageId)
@@ -153,11 +154,11 @@ CREATE TABLE hotels (
 
 /*
  * Segments
+ * REMOVED:  tripNo          int NOT NULL, 
  */
 DROP TABLE IF EXISTS segments;
 CREATE TABLE segments (
 	segId		int NOT NULL AUTO_INCREMENT,
-	tripNo		int NOT NULL,
 	transportId	varchar(80),
 	flightId	int,
 	locationId	varchar(80),
