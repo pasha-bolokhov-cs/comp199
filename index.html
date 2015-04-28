@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html ng-app="albatrossApp">
+
+
+
+<!-- **** -->
+<!--      -->
+<!-- Head -->
+<!--      -->
+<!-- **** -->
+<head>
+    <title>Albatross Travel</title>
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <link rel="icon" href="images/favicon.ico" type="image/x-icon">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="vendor/bootstrap/css/bootstrap-theme.min.css">
+</head>
+
+
+
+<!-- **** -->
+<!--      -->
+<!-- Body -->
+<!--      -->
+<!-- **** -->
+<body class="container-fluid">
+
+
+
+  <!---------------->
+  <!-- Navigation -->
+  <!---------------->
+  <nav class="row navbar navbar-default">
+    <div class="col-xs-12">
+      <div class="navbar-header">
+        <a class="navbar-brand" href="#/home">Albatross</a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li class="active"><a href="#/home">Home</a></li>
+        <li><a href="#/packages">Packages</a></li>
+        <li><a href="#/trips">My Trips</a></li>
+        <li><a href="#/profile">Profile</a></li>
+      </ul>
+
+      <div class="pull-right">
+	<ul class="nav navbar-nav">
+	  <li><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
+	  <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
+	</ul>
+      </div>
+    <div> <!-- /col-xs-12 -->
+  </nav>
+
+
+  <!---------------------->
+  <!-- The partial view -->
+  <!---------------------->
+  <div class="row">
+	<div class="col-xs-12" ng-view></div>
+  </div>         
+  
+
+  <!---------------------->
+  <!-- Vendor Libraries -->
+  <!---------------------->
+  <!-- Angular -->
+  <script src="vendor/angular/angular.min.js"></script>
+  <script src="vendor/angular/angular-sanitize.min.js"></script>
+  <script src="vendor/angular/angular-route.min.js"></script>
+  <!-- Bootstrap UI -->
+  <script src="vendor/ui-bootstrap-tpls.min.js"></script>
+ 
+
+  <!-------------> 
+  <!-- Our App -->
+  <!-------------> 
+  <script src="js/main.js"></script>
+</body>
+
+
+
+</html>
