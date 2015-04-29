@@ -5,6 +5,7 @@
 INSERT INTO locations (locationId, region, country, city)
 VALUES ('shanghai', 'Asia', 'China', 'Shanghai'),
        ('tokyo', 'Asia', 'Japan', 'Tokyo'),
+       ('kyoto', 'Asia', 'Japan', 'Kyoto'),   
        ('osaka', 'Asia', 'Japan', 'Osaka'),
        ('hakata', 'Asia', 'Japan', 'Hakata'),
        ('sochi', 'Europe', 'Russia', 'Sochi'),
