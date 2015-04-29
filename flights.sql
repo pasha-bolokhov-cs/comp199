@@ -1,5 +1,5 @@
 /*
- *  insert data into flights INSERT INTO flights table
+ *  Data for 'flights' table
  */
        
 INSERT INTO flights(alliance, departDate, arriveDate)
