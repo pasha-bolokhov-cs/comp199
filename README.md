@@ -4,7 +4,7 @@ Albatross Travel Inc.(TM) is a web-site application that comprises the practice 
 at Computer Systems Technology program at Camosun College in academic year 2014/2015. The website represents a simplified travel
 company interface for selecting vacation trips around the world
 
-The application features technologies and libraries such as Bootstrap, AngularJS, Bootstrap UI and others
+The application features technologies and libraries such as Bootstrap, [AngularJS](https://angularjs.org), Bootstrap UI and others
 
 ### Authors
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Candise Wang<br>
