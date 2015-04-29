@@ -4,6 +4,9 @@ company interface for selecting vacation trips around the world
 
 The application features technologies and libraries such as Bootstrap, AngularJS, Bootstrap UI and others
 
-Authors: Candise Wang<br>
-	 Toshiyasu Azakawa<br>
-	 Pasha Bolokhov
+Authors:
+<ul>
+  <li>Candise Wang</li>
+  <li>Toshiyasu Azakawa</li>
+  <li>Pasha Bolokhov</li>
+</ul>
