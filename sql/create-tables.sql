@@ -18,13 +18,14 @@ SET foreign_key_checks = 0;
 DROP TABLE IF EXISTS customers;
 CREATE TABLE customers (
 	customerId	int NOT NULL AUTO_INCREMENT,
-	name		varchar(80),
-	birth		date,
+	name		varchar(80) NOT NULL,
+	birth		date NOT NULL,
 	nationality	varchar(20),
-	passportNo	varchar(20),
-	passportExp	date,
-	email		varchar(255),
+	passportNo	varchar(20) NOT NULL,
+	passportExp	date NOT NULL,
+	email		varchar(255) NOT NULL,
 	phone		varchar(80),
+	password	varchar(41) NOT NULL,
 	PRIMARY KEY	(customerId)
 );
 
@@ -34,61 +35,46 @@ CREATE TABLE customers (
  */
 DROP TABLE IF EXISTS images;
 CREATE TABLE images (
-	imageId		int NOT NULL AUTO_INCREMENT,
-	ImageName	varchar(255) NOT NULL,
-	imageType	varchar(255),
-	PRIMARY KEY	(imageId)
-);
-
-
-/*
- * Cart
- * Add Status
- * TripNo & customerId : composit key?
- * TripNo is different per customer per trip
- */
-DROP TABLE IF EXISTS cart;
-CREATE TABLE cart (
-	tripNo		int NOT NULL AUTO_INCREMENT,
-	customerId	int,
-	startDate	date,
-	status		varchar(80),
-	PRIMARY KEY	(tripNo),
-	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
-			ON UPDATE CASCADE ON DELETE CASCADE
+	imageName	varchar(255) NOT NULL,
+	fileName	varchar(255),	
+	type		varchar(20),
+	PRIMARY KEY	(imageName)
 );
 
 
 /*
  * Orders
- * 
  */
-DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS cart;
 CREATE TABLE orders (
-	tripNo		int NOT NULL,
+	customerId	int,
+	packageId	int,
+	status		varchar(80),
 	purchaseDate	datetime,
 	receiptId	varchar(80),
-	PRIMARY KEY	(tripNo)
+	PRIMARY KEY	(tripNo, customerId),
+	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(packageId) REFERENCES packages(packageId)
+			ON UPDATE CASCADE ON DELETE CASCADE
 );
-
 
 /*
  * Packages
- * delete : tripNo    int,
  */
 DROP TABLE IF EXISTS packages;
 CREATE TABLE packages (
 	packageId	int NOT NULL AUTO_INCREMENT,
+	segId		int,
+	name		varchar(80),
 	origin		varchar(80),
-	price		int,
-	imageId		int,
+	imageName	varchar(255),
 	description	text,
+	price		int,
 	capacity	int,
 	available	int,
 	PRIMARY KEY	(packageId),
-	FOREIGN KEY	(origin) REFERENCES locations(locationId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(imageId) REFERENCES images(imageId)
+	FOREIGN KEY	(origin) REFERENCES locations(city)
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
@@ -103,19 +89,17 @@ CREATE TABLE segments (
 	segId		int NOT NULL AUTO_INCREMENT,
 	transportId	varchar(80),
 	flightId	varchar(80),
-	locationId	varchar(80),
+	location	varchar(80),
 	hotelId		varchar(80),
 	activityId	varchar(80),
 	duration	int,
-	dealPrice	int,
 	nextSeg		int,
-	packageId	int,
 	PRIMARY KEY	(segId),
 	FOREIGN KEY	(transportId) REFERENCES transport(transportId)
 			ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY	(flightId) REFERENCES flights(flightId)
 			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(locationId) REFERENCES locations(locationId)
+	FOREIGN KEY	(locationId) REFERENCES locations(city)
 			ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY	(hotelId) REFERENCES hotels(hotelId)
 			ON UPDATE CASCADE ON DELETE CASCADE,
@@ -137,11 +121,12 @@ CREATE TABLE transport (
 
 
 /*
- * Flights == alliance
+ * Flights
  */
 DROP TABLE IF EXISTS flights;
 CREATE TABLE flights (
 	flightId	varchar(80) NOT NULL,
+	flightNo	varchar(80),
 	departDate	datetime,
 	arriveDate	datetime,
 	PRIMARY KEY	(flightId)
@@ -164,11 +149,10 @@ CREATE TABLE activities (
  */
 DROP TABLE IF EXISTS locations;
 CREATE TABLE locations (
-	locationId	varchar(80) NOT NULL,
+	city		varchar(80) NOT NULL,
 	region		varchar(80),
 	country		varchar(80),
-	city		varchar(80),
-	PRIMARY KEY	(locationId)
+	PRIMARY KEY	(city)
 );
 
 
@@ -177,13 +161,12 @@ CREATE TABLE locations (
  */
 DROP TABLE IF EXISTS hotels;
 CREATE TABLE hotels (
-	hotelId		int NOT NULL, AUTO_INCREMENT,
-	name		varchar(80),
+	hotelId		varchar(80) NOT NULL, 
 	rank		int,
-	imageId		int,
+	imageName	varchar(255),
 	description	text,
 	PRIMARY KEY	(hotelId),
-	FOREIGN KEY	(imageId) REFERENCES images(imageId)
+	FOREIGN KEY	(imageName) REFERENCES images(imageName)
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
