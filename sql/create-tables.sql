@@ -45,7 +45,7 @@ CREATE TABLE images (
 /*
  * Orders
  */
-DROP TABLE IF EXISTS cart;
+DROP TABLE IF EXISTS orders;
 CREATE TABLE orders (
 	customerId	int,
 	packageId	int,
@@ -99,7 +99,7 @@ CREATE TABLE segments (
 			ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY	(flightId) REFERENCES flights(flightId)
 			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(locationId) REFERENCES locations(city)
+	FOREIGN KEY	(location) REFERENCES locations(city)
 			ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY	(hotelId) REFERENCES hotels(hotelId)
 			ON UPDATE CASCADE ON DELETE CASCADE,
