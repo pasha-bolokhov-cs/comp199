@@ -52,7 +52,7 @@ CREATE TABLE orders (
 	status		varchar(80),
 	purchaseDate	datetime,
 	receiptId	varchar(80),
-	PRIMARY KEY	(tripNo, customerId),
+	PRIMARY KEY	(packageId, customerId),
 	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
 			ON UPDATE CASCADE ON DELETE CASCADE,
 	FOREIGN KEY	(packageId) REFERENCES packages(packageId)
