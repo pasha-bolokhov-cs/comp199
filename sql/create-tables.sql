@@ -1,6 +1,9 @@
 /* 
  * This is the script which creates initial database tables 
  *
+ * Notice: this script should not normally be run by hand
+ *
+ *
  * Authors: Pasha Bolokhov,
  *	    Toshiyasu Azakawa, 
  *	    Candise Wang
