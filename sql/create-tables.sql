@@ -127,9 +127,15 @@ DROP TABLE IF EXISTS flights;
 CREATE TABLE flights (
 	flightId	varchar(80) NOT NULL,
 	flightNo	varchar(80),
+	origin		varchar(80),
 	departDate	datetime,
+	destination	varchar(80),
 	arriveDate	datetime,
-	PRIMARY KEY	(flightId)
+	PRIMARY KEY	(flightId),
+	FOREIGN KEY	(origin) REFERENCES locations(city)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(destination) REFERENCES locations(city)
+			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
