@@ -3,6 +3,16 @@
  *        segId ----> start segment Id
  */
 
-INSERT INTO packages ( packageId, segId, name, origin, imageName, description, price, capacity, available)
-       VALUES ( 1, NULL, 'Shanghai travel pack', 'Shanghai', 'p1', 'tobeupdated', 6000, 40, 40),
-              ( 2, 5, 'Japan travel pack', 'vancouver', null, 'Japan sight seeing', 7000, 40, 40);
+
+/*
+ * Hawaii
+ */
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Honolulu', NULL, NULL, 'Hilton', 'surfing', 2, NULL);
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Honolulu', 'flight', 'Hawaiian Airlines - Summer 2015', 'Hilton', 'sightseeing', 4, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Los Angeles', 'flight', 'American Airlines - Summer 2015', NULL, NULL, 0, LAST_INSERT_ID());
+INSERT INTO packages (segId, name, origin, price, description, capacity, available, imageName)
+       VALUES (LAST_INSERT_ID(), 'Hawaii - Summer 2015', 'San Francisco', 700, 'Breath-taking vacation on Hawaii', 40, 40, NULL);
+

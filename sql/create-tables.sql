@@ -87,9 +87,9 @@ CREATE TABLE packages (
 DROP TABLE IF EXISTS segments;
 CREATE TABLE segments (
 	segId		int NOT NULL AUTO_INCREMENT,
+	location	varchar(80),
 	transportId	varchar(80),
 	flightId	varchar(80),
-	location	varchar(80),
 	hotelId		varchar(80),
 	activityId	varchar(80),
 	duration	int,

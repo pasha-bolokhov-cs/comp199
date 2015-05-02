@@ -3,20 +3,17 @@
  */
 
 INSERT INTO locations (city, region, country)
-VALUES ('Shanghai', 'Asia', 'China'),
-       ('Tokyo', 'Asia', 'Japan'),
-       ('Kyoto', 'Asia', 'Japan'),   
-       ('Osaka', 'Asia', 'Japan'),
-       ('Hakata', 'Asia', 'Japan'),
-       ('Sochi', 'Europe', 'Russia'),
-       ('Paris', 'Europe', 'France'),
-       ('Victoria', 'North America', 'Canada'),
-       ('Vancouver', 'North America', 'Canada'),
-       ('Seattle', 'North America', 'US');
-
-
-
-
-
-
-
+       VALUES ('Shanghai', 'Asia', 'China'),
+	      ('Tokyo', 'Asia', 'Japan'),
+	      ('Kyoto', 'Asia', 'Japan'),   
+	      ('Osaka', 'Asia', 'Japan'),
+	      ('Hakata', 'Asia', 'Japan'),
+	      ('Sochi', 'Europe', 'Russia'),
+	      ('Paris', 'Europe', 'France'),
+	      ('Victoria', 'North America', 'Canada'),
+	      ('Vancouver', 'North America', 'Canada'),
+	      ('Seattle', 'North America', 'US'),
+	      ('Honolulu', 'North America', 'US'),
+	      ('Los Angeles', 'North America', 'US'),
+	      ('San Francisco', 'North America', 'US');
+       
