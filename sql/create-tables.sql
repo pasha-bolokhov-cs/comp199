@@ -68,11 +68,11 @@ CREATE TABLE packages (
 	segId		int,
 	name		varchar(80),
 	origin		varchar(80),
-	imageName	varchar(255),
-	description	text,
 	price		int,
+	description	text,
 	capacity	int,
 	available	int,
+	imageName	varchar(255),
 	PRIMARY KEY	(packageId),
 	FOREIGN KEY	(origin) REFERENCES locations(city)
 			ON UPDATE CASCADE ON DELETE CASCADE
@@ -80,9 +80,6 @@ CREATE TABLE packages (
 
 /*
  * Segments
- * REMOVED:  tripNo     int NOT NULL, 
- * Add: packageId	int,
- * Flight??? 
  */
 DROP TABLE IF EXISTS segments;
 CREATE TABLE segments (
