@@ -1,6 +1,6 @@
 /*
- *  Data for 'flights' table
- *  ----->  flightId = 'Company Name'_'OriginMMDD'('MM:Month','DD:Day' for depature)
+ *  Data for 'flights' tables
+ *    How deal with the flightId for return trip fligh on same company? 
  */
 
 /*       
@@ -17,4 +17,10 @@ INSERT INTO flights(flightId, flightNo, origin, departDate, destination, arriveD
        VALUES ('American Airlines - Summer 2015', 'AA141', 'San Francisco', STR_TO_DATE('10/07/2015 7:00', '%d/%m/%Y %H:%i'), 
 							   'Los Angeles', STR_TO_DATE('10/07/2015 8:00', '%d/%m/%Y %H:%i')),
 	      ('Hawaiian Airlines - Summer 2015', 'HA2562', 'Los Angeles', STR_TO_DATE('10/07/2015 10:00', '%d/%m/%Y %H:%i'), 
-							    'Honolulu', STR_TO_DATE('10/07/2015 14:00', '%d/%m/%Y %H:%i'));
+							    'Honolulu', STR_TO_DATE('10/07/2015 14:00', '%d/%m/%Y %H:%i')),
+              ('Air Canada - Summer 2015', 'AC003', 'Vancouver', STR_TO_DATA('01/05/2015 13:40', '%d/%m/%Y %H:%i'),
+                                                    'Tokyo', STR_TO_DATE('02/05/2015 15:20', '%d/%m/%Y %H:%i')),
+              ('Japan Airlines - Summer 2015', 'JL017', 'Vancouver', STR_TO_DATE('01/05/2015 14:15', '%d/%m/%Y %H:%i'),
+                                                        'Tokyo', STR_TO_DATE('02/05/2015 16:30', '%d/%m/%Y %H:%i')),
+              ('All Nippon Airlines - Summer 2015', 'NH116', 'Vancouver', STR_TO_DATE('08/05/2015 21:50', '%d/%m/%Y %H:%i')),
+                                                             'Tokyo', STR_TO_DATE('08/05/2015 11:25', '%d/%m/%Y %H:%i'));
