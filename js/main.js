@@ -13,7 +13,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 		.when("/",		{templateUrl: "partials/home.html", controller: "PageController"})
 		.when("/home",		{templateUrl: "partials/home.html", controller: "PageController"})
 		// Pages
-		.when("/packages",	{templateUrl: "partials/packages.html", controller: "PageController"})
+		.when("/packages",	{templateUrl: "partials/packages.html", controller: "PackagesController"})
 		.when("/trips",		{templateUrl: "partials/trips.html", controller: "PageController"})
 		.when("/profile",	{templateUrl: "partials/profile.html", controller: "PageController"})
 		.when("/signup",	{templateUrl: "partials/signup.html", controller: "PageController"})
@@ -23,7 +23,54 @@ app.config(['$routeProvider', function ($routeProvider) {
 
 
 /**
- * Controls all other Pages
+ * Controls most other pages
  */
 app.controller('PageController', function ($scope, $modal /* also: $location, $http */) {
+});
+
+
+/**
+ * Controls the 'packages' page
+ */
+app.controller('PackagesController', function($scope, $http, $sce) {
+
+	// Permanent initialization
+
+	// Resettable data initialization
+	$scope.setup = function() {
+		// Initialization
+		$scope.showResult = false;
+		$scope.error = false;
+		$scope.waiting = false;
+
+		// Data Initialization
+		$scope.request = {};
+		$scope.result = undefined;
+	}
+	$scope.setup();		
+
+	$scope.waiting = true;
+
+	/* Request object is ready to send */
+
+	// Send the request to the PHP script
+	$http.post("php/packages.php", $scope.request)
+	.success(function(data) {
+		// process the response
+		if (data["error"]) {
+			$scope.error = "Error: " + data["error"];
+		} else {
+//			$scope.result = $sce.trustAsHtml(data["data"]);
+			$scope.result = data["data"];
+		}
+	})
+	.error(function(data, status) {
+		console.log(data);
+		$scope.error = "Error accessing the server: " + status + ".";
+	})
+	.finally(function() { 
+		// Indicate that we have an answer
+		$scope.waiting = false;
+		$scope.showResult = true;
+	});
 });
