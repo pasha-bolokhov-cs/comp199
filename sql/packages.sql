@@ -7,6 +7,8 @@
 /*
  * Hawaii
  */
+INSERT INTO images (imageName, fileName, type)
+       VALUES ('Hawaii', 'hawaii.jpg', NULL);
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Honolulu', NULL, NULL, 'Hilton', 'surfing', 2, NULL);
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
@@ -14,7 +16,7 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Los Angeles', 'flight', 'American Airlines - Summer 2015', NULL, NULL, 0, LAST_INSERT_ID());
 INSERT INTO packages (segId, name, region, origin, price, description, capacity, available, imageName)
-       VALUES (LAST_INSERT_ID(), 'Hawaii - Summer 2015', 'North America', 'San Francisco', 700, 'Breath-taking vacation on Hawaii', 40, 40, NULL);
+       VALUES (LAST_INSERT_ID(), 'Hawaii - Summer 2015', 'North America', 'San Francisco', 700, 'Breath-taking vacation on Hawaii', 40, 40, 'Hawaii');
 
 /*
  * Japan

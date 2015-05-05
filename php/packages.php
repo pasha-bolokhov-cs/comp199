@@ -23,8 +23,9 @@ if ($mysqli->connect_error) {
 
 /* form the query */
 $query = <<<"EOF"
-SELECT name, origin, price, description, capacity, available, imageName
-       FROM packages;
+SELECT p.name, p.region, p.origin, p.price, p.description, p.capacity, p.available, i.fileName
+       FROM packages p LEFT OUTER JOIN images i
+       USING (imageName);
 EOF;
         
 /* do the query */
