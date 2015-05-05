@@ -74,7 +74,11 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 		if (data["error"]) {
 			$scope.error = "Error: " + data["error"];
 		} else {
-			$rootScope.regions = data["regions"];
+			// form a new list of regions with "All" prepended
+			$rootScope.regions = [ "All" ];
+			for (var r in data["regions"]) {
+				$rootScope.regions.push(data["regions"][r].region);
+			}
 		}
 	})
 	.error(function(data, status) {
