@@ -48,10 +48,25 @@
           <li><a href="#/trips">My Trips</a></li>
           <li><a href="#/profile">Profile</a></li>
         </ul>
+
+
+        <div class="col-xs-3 col-xs-offset-1">
+          <form class="form-inline" ng-show="onPackagesPage && showRegions" role="form" ng-cloak>
+            <div class="form-group">
+              <p class="navbar-text" for="region">Select a region:</p>
+                <select name="region" id="region" class="form-control"
+                        ng-model="$root.region" ng-change="regionSelect()">
+                  <option value="All" selected=selected>All</option>
+                  <option ng-repeat="r in $root.regions" value='{{ r["region"] }}'>{{ r["region"] }}</option>
+                </select>
+            </div>
+          </form>
+        </div>
+
   
         <ul class="nav navbar-nav navbar-right">
           <li><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
-          <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
+          <li><a href="#/signin"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
         </ul>
       <div> <!-- /col-xs-12 -->
     </nav>

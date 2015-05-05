@@ -17,6 +17,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 		.when("/trips",		{templateUrl: "partials/trips.html", controller: "MainController"})
 		.when("/profile",	{templateUrl: "partials/profile.html", controller: "MainController"})
 		.when("/signup",	{templateUrl: "partials/signup.html", controller: "MainController"})
+		.when("/signin",	{templateUrl: "partials/signin.html", controller: "MainController"})
 		// else 404
 		.otherwise("/404",	{templateUrl: "partials/404.html", controller: "MainController"});
 }]);
@@ -25,16 +26,21 @@ app.config(['$routeProvider', function ($routeProvider) {
 /**
  * Controls most other pages
  */
-app.controller('MainController', function ($scope, $modal /* also: $location, $http */) {
+app.controller('MainController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
+	$rootScope.onPackagesPage = false;
 });
 
 
 /**
  * Controls the 'packages' page
  */
-app.controller('PackagesController', function($scope, $http, $sce) {
+app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 
 	// Permanent initialization
+	$rootScope.onPackagesPage = true;
+	$rootScope.regionSelect = function() {
+		console.log("Region changed to " + $rootScope.region); // GG
+	}
 
 	// Resettable data initialization
 	$scope.setup = function() {
@@ -59,8 +65,8 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 	/*
 	 * Get the list of regions
 	 */
-	$scope.region = "All";
-	$scope.showRegions = false;
+	$rootScope.region = "All";
+	$rootScope.showRegions = false;
 	$scope.waitingRegions = true;
 	$http.post("php/get_regions.php")
 	.success(function(data) {
@@ -68,7 +74,7 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 		if (data["error"]) {
 			$scope.error = "Error: " + data["error"];
 		} else {
-			$scope.regions = data["regions"];
+			$rootScope.regions = data["regions"];
 		}
 	})
 	.error(function(data, status) {
@@ -77,9 +83,8 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 	})
 	.finally(function() { 
 		$scope.waitingRegions = false;
-		$scope.showRegions = true;
+		$rootScope.showRegions = true;
 	});
-	console.log("Got regions = ", $scope.regions);
 
 
 	/*
