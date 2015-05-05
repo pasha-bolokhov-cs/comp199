@@ -19,9 +19,24 @@
 
 
 <!------------->
-<!-- Results -->
+<!-- Regions -->
 <!------------->
-<div class="jumbotron" ng-repeat="r in result" style='background: url(images/{{ r["fileName"] }}); margin-bottom: 0;'>
+<div class="container-fluid" ng-show="showRegions">
+  <div class="row" ng-repeat="r in regions">
+    <div class="well col-xs-6">
+      {{ r["region"] }}
+    </div>
+  </div>
+</div>
+
+
+<!-------------->
+<!-- Packages -->
+<!-------------->
+<div class="jumbotron" ng-repeat="p in result"
+     style='background: url(images/{{ p["fileName"] }}) no-repeat center center;
+            background-size: cover;
+            margin-bottom: 0;'>
 
   <div class="container">
     <div class="row">
@@ -32,10 +47,10 @@
   
     <div class="row">
       <div class="col-xs-6">
-        <h2>{{ r["description"] }}</h2>
+        <h2>{{ p["description"] }}</h2>
       </div>
       <div class="col-xs-6">
-        <h2 class="pull-right">${{ r["price"]-1 }}.92</h2>
+        <h2 class="pull-right">${{ p["price"]-1 }}.92</h2>
       </div>
     </div>
   
