@@ -3,7 +3,7 @@
  * Background for the main page
  */
 .background {
-	background: url(../image/xl_GreeceSunset.jpg) no-repeat center center;
+	background: url(../images/xl_GreeceSunset.jpg) no-repeat center center;
 	background-size: cover;
 }
 
