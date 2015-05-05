@@ -10,7 +10,7 @@
   </div> <!-- /div with any errors -->
 
   <!-- ... loading ... -->
-  <div class="row" ng-show="waiting">
+  <div class="row" ng-show="waiting || waitingRegions">
     <div class="col-xs-12 col-md-8 col-md-offset-2">
       <alert class="text-center" type="warning"><em>...&nbsp;loading&nbsp;...</em></alert>
     </div>
@@ -24,18 +24,14 @@
 <div class="container-fluid" ng-show="showRegions">
 
   <div class="row">
-    <div class="col-xs-12">
-      <select name="region" id="region" class="form-control" ng-model="region">
-<!-- should try this: <select ng-options="i.name for i in items"></select> -->
-        <option value="all" selected=selected>all</option>
-        <option ng-repeat="r in regions" value='{{ r["region"] }}'>{{ r["region"] }}</option>
-      </select>
+    <div class="col-xs-12 col-md-2">
+	<p class="pull-right">Select a region:</p>
     </div>
-  </div>
-
-  <div class="row">
-    <div class="well col-xs-6">
-      {{ region }}
+    <div class="col-xs-12 col-md-3">
+	<select name="region" id="region" class="form-control" ng-model="region">
+	  <option value="All" selected=selected>All</option>
+	  <option ng-repeat="r in regions" value='{{ r["region"] }}'>{{ r["region"] }}</option>
+	</select>
     </div>
   </div>
 

@@ -8,7 +8,7 @@
  * Hawaii
  */
 INSERT INTO images (imageName, fileName, type)
-       VALUES ('Hawaii', 'xl_hawaii-2.jpg', NULL);
+       VALUES ('Hawaii', 'xl_hawaii-1.jpg', NULL);
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Honolulu', NULL, NULL, 'Hilton', 'surfing', 2, NULL);
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)

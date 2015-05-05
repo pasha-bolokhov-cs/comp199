@@ -59,9 +59,9 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 	/*
 	 * Get the list of regions
 	 */
-	$scope.region = "all";
+	$scope.region = "All";
 	$scope.showRegions = false;
-	$scope.waiting = true;
+	$scope.waitingRegions = true;
 	$http.post("php/get_regions.php")
 	.success(function(data) {
 		// process the response
@@ -76,7 +76,7 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 		$scope.error = "Error accessing the server: " + status + ".";
 	})
 	.finally(function() { 
-		$scope.waiting = false;
+		$scope.waitingRegions = false;
 		$scope.showRegions = true;
 	});
 	console.log("Got regions = ", $scope.regions);
