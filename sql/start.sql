@@ -19,6 +19,7 @@ source create-tables.sql;
 source activities.sql;
 source flights.sql;
 source hotels.sql;
+source regions.sql;
 source locations.sql;
 source transport.sql;
 source packages.sql;

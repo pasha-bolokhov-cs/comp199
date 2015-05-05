@@ -14,6 +14,7 @@
  */
 SET foreign_key_checks = 0;
 
+
 /*
  * Customers
  */
@@ -46,68 +47,28 @@ CREATE TABLE images (
 
 
 /*
- * Orders
+ * Regions
  */
-DROP TABLE IF EXISTS orders;
-CREATE TABLE orders (
-	customerId	int,
-	packageId	int,
-	status		varchar(80),
-	purchaseDate	datetime,
-	receiptId	varchar(80),
-	PRIMARY KEY	(packageId, customerId),
-	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(packageId) REFERENCES packages(packageId)
+DROP TABLE IF EXISTS regions;
+CREATE TABLE regions (
+	region	varchar(80) NOT NULL,
+	PRIMARY KEY	(region)
+);
+
+
+/*
+ * Locations
+ */
+DROP TABLE IF EXISTS locations;
+CREATE TABLE locations (
+	city		varchar(80) NOT NULL,
+	region		varchar(80),
+	country		varchar(80),
+	PRIMARY KEY	(city),
+	FOREIGN KEY	(region) REFERENCES regions(region)
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-/*
- * Packages
- */
-DROP TABLE IF EXISTS packages;
-CREATE TABLE packages (
-	packageId	int NOT NULL AUTO_INCREMENT,
-	segId		int,
-	name		varchar(80),
-	origin		varchar(80),
-	price		int,
-	description	text,
-	capacity	int,
-	available	int,
-	imageName	varchar(255),
-	PRIMARY KEY	(packageId),
-	FOREIGN KEY	(origin) REFERENCES locations(city)
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
-
-/*
- * Segments
- */
-DROP TABLE IF EXISTS segments;
-CREATE TABLE segments (
-	segId		int NOT NULL AUTO_INCREMENT,
-	location	varchar(80),
-	transportId	varchar(80),
-	flightId	varchar(80),
-	hotelId		varchar(80),
-	activityId	varchar(80),
-	duration	int,
-	nextSeg		int,
-	PRIMARY KEY	(segId),
-	FOREIGN KEY	(transportId) REFERENCES transport(transportId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(flightId) REFERENCES flights(flightId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(location) REFERENCES locations(city)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(hotelId) REFERENCES hotels(hotelId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(activityId) REFERENCES activities(activityId)
-			ON UPDATE CASCADE ON DELETE CASCADE,
-	FOREIGN KEY	(nextSeg) REFERENCES segments(segId)
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
 
 /*
  * Transport
@@ -151,18 +112,6 @@ CREATE TABLE activities (
 
 
 /*
- * Locations
- */
-DROP TABLE IF EXISTS locations;
-CREATE TABLE locations (
-	city		varchar(80) NOT NULL,
-	region		varchar(80),
-	country		varchar(80),
-	PRIMARY KEY	(city)
-);
-
-
-/*
  * Hotels
  */
 DROP TABLE IF EXISTS hotels;
@@ -177,7 +126,74 @@ CREATE TABLE hotels (
 );
 
 
+/*
+ * Segments
+ */
+DROP TABLE IF EXISTS segments;
+CREATE TABLE segments (
+	segId		int NOT NULL AUTO_INCREMENT,
+	location	varchar(80),
+	transportId	varchar(80),
+	flightId	varchar(80),
+	hotelId		varchar(80),
+	activityId	varchar(80),
+	duration	int,
+	nextSeg		int,
+	PRIMARY KEY	(segId),
+	FOREIGN KEY	(transportId) REFERENCES transport(transportId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(flightId) REFERENCES flights(flightId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(location) REFERENCES locations(city)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(hotelId) REFERENCES hotels(hotelId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(activityId) REFERENCES activities(activityId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(nextSeg) REFERENCES segments(segId)
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
 
+
+/*
+ * Packages
+ */
+DROP TABLE IF EXISTS packages;
+CREATE TABLE packages (
+	packageId	int NOT NULL AUTO_INCREMENT,
+	segId		int,
+	name		varchar(80),
+	region		varchar(80),
+	origin		varchar(80),
+	price		int,
+	description	text,
+	capacity	int,
+	available	int,
+	imageName	varchar(255),
+	PRIMARY KEY	(packageId),
+	FOREIGN KEY	(region) REFERENCES regions(region)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(origin) REFERENCES locations(city)
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
+
+
+/*
+ * Orders
+ */
+DROP TABLE IF EXISTS orders;
+CREATE TABLE orders (
+	customerId	int,
+	packageId	int,
+	status		varchar(80),
+	purchaseDate	datetime,
+	receiptId	varchar(80),
+	PRIMARY KEY	(packageId, customerId),
+	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
+			ON UPDATE CASCADE ON DELETE CASCADE,
+	FOREIGN KEY	(packageId) REFERENCES packages(packageId)
+			ON UPDATE CASCADE ON DELETE CASCADE
+);
 
 
 /*
