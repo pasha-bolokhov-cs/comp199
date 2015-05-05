@@ -16,8 +16,8 @@ $data = json_decode($jsonData);
 require_once '../../../comp199-www/mysqli_auth.php';
 $mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
 if ($mysqli->connect_error) {
-	$error = 'Connect Error (' . $mysqli->connect_errno . ') '
-		 . $mysqli->connect_error;
+	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
+			     . $mysqli->connect_error;
 	goto quit;
 }
 
@@ -30,7 +30,7 @@ EOF;
         
 /* do the query */
 if (($result = $mysqli->query($query)) === FALSE) {
-	$error = 'Query Error (' . $mysqli->error . ') ';
+	$response["error"] = 'Query Error (' . $mysqli->error . ') ';
 	$mysqli->close();
 	goto quit;
 }

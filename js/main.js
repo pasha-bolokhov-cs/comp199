@@ -47,11 +47,17 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 		$scope.request = {};
 		$scope.result = undefined;
 	}
-	$scope.setup();		
+	$scope.setup();
 
-	$scope.waiting = true;
+	// Function assigned to a button
+	$scope.reset = function() {
+	    /* reset the data */
+	    $scope.setup();
+	}
+
 
 	/* Request object is ready to send */
+	$scope.waiting = true;
 
 	// Send the request to the PHP script
 	$http.post("php/packages.php", $scope.request)
@@ -60,7 +66,6 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 		if (data["error"]) {
 			$scope.error = "Error: " + data["error"];
 		} else {
-//			$scope.result = $sce.trustAsHtml(data["data"]);
 			$scope.result = data["data"];
 		}
 	})

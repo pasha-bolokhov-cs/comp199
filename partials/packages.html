@@ -1,3 +1,26 @@
+<!---------------------------->
+<!-- Errors and Diagnostics -->
+<!---------------------------->
+<div class="container-fluid">
+  <!-- error message -->
+  <div class="row" ng-show="showResult && error" ng-cloak>
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <alert class="text-center" type="danger" close="reset()">{{ error }}</alert>
+    </div>
+  </div> <!-- /div with any errors -->
+
+  <!-- ... loading ... -->
+  <div class="row" ng-show="waiting">
+    <div class="col-xs-12 col-md-8 col-md-offset-2">
+      <alert class="text-center" type="warning"><em>...&nbsp;loading&nbsp;...</em></alert>
+    </div>
+  </div> <!-- /div with ...loading... -->
+</div>
+
+
+<!------------->
+<!-- Results -->
+<!------------->
 <div class="jumbotron" ng-repeat="r in result" style='background: url(images/{{ r["fileName"] }}); margin: 0; padding: 0;'>
 
   <div class="container">
@@ -15,7 +38,6 @@
         <h2 class="pull-right">${{ r["price"]-1 }}.92</h2>
       </div>
     </div>
-  
   
     <div class="row">
       <div class="col-xs-6">
