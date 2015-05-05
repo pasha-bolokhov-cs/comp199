@@ -24,7 +24,7 @@ if ($mysqli->connect_error) {
 /* form the query */
 $query = <<<"EOF"
 SELECT name, origin, price, description, capacity, available, imageName
-	FROM packages;
+       FROM packages;
 EOF;
         
 /* do the query */
