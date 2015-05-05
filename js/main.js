@@ -10,22 +10,22 @@ var app = angular.module('albatrossApp', ['ngRoute', 'ui.bootstrap', 'ngSanitize
 app.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider
 		// Home
-		.when("/",		{templateUrl: "partials/home.html", controller: "PageController"})
-		.when("/home",		{templateUrl: "partials/home.html", controller: "PageController"})
+		.when("/",		{templateUrl: "partials/home.html", controller: "MainController"})
+		.when("/home",		{templateUrl: "partials/home.html", controller: "MainController"})
 		// Pages
 		.when("/packages",	{templateUrl: "partials/packages.html", controller: "PackagesController"})
-		.when("/trips",		{templateUrl: "partials/trips.html", controller: "PageController"})
-		.when("/profile",	{templateUrl: "partials/profile.html", controller: "PageController"})
-		.when("/signup",	{templateUrl: "partials/signup.html", controller: "PageController"})
+		.when("/trips",		{templateUrl: "partials/trips.html", controller: "MainController"})
+		.when("/profile",	{templateUrl: "partials/profile.html", controller: "MainController"})
+		.when("/signup",	{templateUrl: "partials/signup.html", controller: "MainController"})
 		// else 404
-		.otherwise("/404",	{templateUrl: "partials/404.html", controller: "PageController"});
+		.otherwise("/404",	{templateUrl: "partials/404.html", controller: "MainController"});
 }]);
 
 
 /**
  * Controls most other pages
  */
-app.controller('PageController', function ($scope, $modal /* also: $location, $http */) {
+app.controller('MainController', function ($scope, $modal /* also: $location, $http */) {
 });
 
 
