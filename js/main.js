@@ -59,6 +59,7 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 	/*
 	 * Get the list of regions
 	 */
+	$scope.region = "all";
 	$scope.showRegions = false;
 	$scope.waiting = true;
 	$http.post("php/get_regions.php")
