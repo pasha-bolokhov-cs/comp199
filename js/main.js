@@ -56,6 +56,35 @@ app.controller('PackagesController', function($scope, $http, $sce) {
 	}
 
 
+	/*
+	 * Get the list of regions
+	 */
+	$scope.showRegions = false;
+	$scope.waiting = true;
+	$http.post("php/get_regions.php")
+	.success(function(data) {
+		// process the response
+		if (data["error"]) {
+			$scope.error = "Error: " + data["error"];
+		} else {
+			$scope.regions = data["regions"];
+		}
+	})
+	.error(function(data, status) {
+		console.log(data);
+		$scope.error = "Error accessing the server: " + status + ".";
+	})
+	.finally(function() { 
+		$scope.waiting = false;
+		$scope.showRegions = true;
+	});
+	console.log("Got regions = ", $scope.regions);
+
+
+	/*
+	 * Get the packages
+	 */
+
 	/* Request object is ready to send */
 	$scope.waiting = true;
 
