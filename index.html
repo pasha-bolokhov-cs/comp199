@@ -30,40 +30,39 @@
 <!-- Body -->
 <!--      -->
 <!-- **** -->
-<body class="container-fluid">
-
-
+<body>
 
   <!---------------->
   <!-- Navigation -->
   <!---------------->
-  <nav class="row navbar navbar-default">
-    <div class="col-xs-12">
-      <div class="navbar-header">
-        <a class="navbar-brand" href="#/home">Albatross</a>
-      </div>
-
-      <ul class="nav navbar-nav">
-        <li><a href="#/home">Home</a></li>
-        <li><a href="#/packages">Packages</a></li>
-        <li><a href="#/trips">My Trips</a></li>
-        <li><a href="#/profile">Profile</a></li>
-      </ul>
-
-      <ul class="nav navbar-nav navbar-right">
-        <li><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
-        <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
-      </ul>
-    <div> <!-- /col-xs-12 -->
-  </nav>
+  <div class="container-fluid">
+    <nav class="row navbar navbar-default" style="margin-bottom: 0;">
+      <div class="col-xs-12">
+        <div class="navbar-header">
+          <a class="navbar-brand" href="#/home">Albatross</a>
+        </div>
+  
+        <ul class="nav navbar-nav">
+          <li><a href="#/home">Home</a></li>
+          <li><a href="#/packages">Packages</a></li>
+          <li><a href="#/trips">My Trips</a></li>
+          <li><a href="#/profile">Profile</a></li>
+        </ul>
+  
+        <ul class="nav navbar-nav navbar-right">
+          <li><a href="#/signup"><span class="glyphicon glyphicon-user"></span> Sign up</a></li>
+          <li><a href="#/login"><span class="glyphicon glyphicon-log-in"></span> Sign in</a></li>
+        </ul>
+      <div> <!-- /col-xs-12 -->
+    </nav>
+  </div> <!-- /container-fluid -->
 
 
   <!---------------------->
   <!-- The partial view -->
   <!---------------------->
-  <div class="row">
-	<div class="col-xs-12" style="padding: 0; margin: 0" ng-view></div>
-  </div>         
+  <ng-view>
+  </ng-view>
   
 
   <!---------------------->
