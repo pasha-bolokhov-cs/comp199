@@ -1,10 +1,15 @@
+
+/*
+ * Background for the main page
+ */
 .background {
-	background: url(../image/xl_GreeceSunset.jpg) no-repeat 0px 0px;
-	height: 100%;
-	width: 100%;
+	background: url(../image/xl_GreeceSunset.jpg) no-repeat center center;
+	background-size: cover;
 }
 
+/*
+ * Sign-in form
+ */
 .signin {
 	background-color: rgba(222, 223, 234, 0.4);
 }
-
