@@ -36,7 +36,7 @@ INSERT INTO packages (segId, name, region, origin, price, description, capacity,
  * North Pole
  */
 INSERT INTO images (imageName, filename, type)
-       VALUES ('North Pole', 'xl_rosatom-1.jpg', NULL);
+       VALUES ('North Pole', 'xl_rosatom-4.jpg', NULL);
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('North Pole', 'cruise', NULL, NULL, 'cruise', 4, NULL);
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
