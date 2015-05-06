@@ -10,9 +10,9 @@
   </div> <!-- /div with any errors -->
 
   <!-- ... loading ... -->
-  <div class="row" ng-show="waiting || waitingRegions">
+  <div class="row" ng-show="waitingPackages || waitingRegions">
     <div class="col-xs-12 col-md-8 col-md-offset-2">
-      <alert class="text-center" type="warning"><em>...&nbsp;loading&nbsp;...</em></alert>
+      <alert class="text-center" type="warning" close="reset()"><em>...&nbsp;loading&nbsp;...</em></alert>
     </div>
   </div> <!-- /div with ...loading... -->
 </div>

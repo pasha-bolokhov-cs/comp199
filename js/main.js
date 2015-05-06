@@ -44,7 +44,8 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 		// Initialization
 		$scope.showResult = false;
 		$scope.error = false;
-		$scope.waiting = false;
+		$scope.waitingRegions = false;
+		$scope.waitingPackages = false;
 
 		// Data Initialization
 		$scope.request = {};
@@ -59,7 +60,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 	}
 	$rootScope.regionSelect = function() {
 		// Indicate we are waiting for data
-		$scope.waiting = true;
+		$scope.waitingPackages = true;
 		$scope.request = { region: $rootScope.region };
 	
 		// Send the request to the PHP script
@@ -78,7 +79,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
-			$scope.waiting = false;
+			$scope.waitingPackages = false;
 			$scope.showResult = true;
 		});
 	}

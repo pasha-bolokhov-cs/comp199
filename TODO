@@ -9,5 +9,9 @@
 
 		* fix the vertical position of the region select box
 
+		* make the position of the error and warning boxes fixed:
+
+		  style="position: absolute; top: 70px; left: 10%; right: 10%; opacity: 0.6;"
+
 	*  modal for sign in and sign up
 
