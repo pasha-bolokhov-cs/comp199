@@ -22,11 +22,25 @@ if ($mysqli->connect_error) {
 }
 
 /* form the query */
-$query = <<<"EOF"
+//GGGG validate !!!
+switch ($data->region) {
+case "All":
+	$query = <<<"EOF"
 SELECT p.name, p.region, p.origin, p.price, p.description, p.capacity, p.available, i.fileName
        FROM packages p LEFT OUTER JOIN images i
        USING (imageName);
 EOF;
+	break;
+
+default:
+	$query = <<<"EOF"
+SELECT p.name, p.region, p.origin, p.price, p.description, p.capacity, p.available, i.fileName
+       FROM packages p LEFT OUTER JOIN images i
+       USING (imageName)
+       WHERE p.region = "{$data->region}";
+EOF;
+	break;
+}
         
 /* do the query */
 if (($result = $mysqli->query($query)) === FALSE) {

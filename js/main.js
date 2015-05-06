@@ -38,9 +38,6 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 
 	// Permanent initialization
 	$rootScope.onPackagesPage = true;
-	$rootScope.regionSelect = function() {
-		console.log("Region changed to " + $rootScope.region); // GG
-	}
 
 	// Resettable data initialization
 	$scope.setup = function() {
@@ -55,10 +52,35 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 	}
 	$scope.setup();
 
-	// Function assigned to a button
+	// Functions assigned to buttons
 	$scope.reset = function() {
 	    /* reset the data */
 	    $scope.setup();
+	}
+	$rootScope.regionSelect = function() {
+		// Indicate we are waiting for data
+		$scope.waiting = true;
+		$scope.request = { region: $rootScope.region };
+	
+		// Send the request to the PHP script
+		$http.post("php/packages.php", $scope.request)
+		.success(function(data) {
+			// process the response
+			if (data["error"]) {
+				$scope.error = "Error: " + data["error"];
+			} else {
+				$scope.result = data["data"];
+			}
+		})
+		.error(function(data, status) {
+			console.log(data);
+			$scope.error = "Error accessing the server: " + status + ".";
+		})
+		.finally(function() { 
+			// Indicate that we have an answer
+			$scope.waiting = false;
+			$scope.showResult = true;
+		});
 	}
 
 
@@ -75,7 +97,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 			$scope.error = "Error: " + data["error"];
 		} else {
 			// form a new list of regions with "All" prepended
-			$rootScope.regions = [ "All" ];
+			$rootScope.regions = [ $rootScope.region ];
 			for (var r in data["regions"]) {
 				$rootScope.regions.push(data["regions"][r].region);
 			}
@@ -94,27 +116,5 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 	/*
 	 * Get the packages
 	 */
-
-	/* Request object is ready to send */
-	$scope.waiting = true;
-
-	// Send the request to the PHP script
-	$http.post("php/packages.php", $scope.request)
-	.success(function(data) {
-		// process the response
-		if (data["error"]) {
-			$scope.error = "Error: " + data["error"];
-		} else {
-			$scope.result = data["data"];
-		}
-	})
-	.error(function(data, status) {
-		console.log(data);
-		$scope.error = "Error accessing the server: " + status + ".";
-	})
-	.finally(function() { 
-		// Indicate that we have an answer
-		$scope.waiting = false;
-		$scope.showResult = true;
-	});
+	$rootScope.regionSelect($rootScope.region);
 });
