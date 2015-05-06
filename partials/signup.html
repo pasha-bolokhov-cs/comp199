@@ -1,23 +1,117 @@
-<div class="col-sm-4" style="background-color: red;">
-  <form method="post" action="../php/form_check.php"><br/>
-    <p>Name</p>
-    <input type="text" name="name" style="width:200px"><br/>
-    <p>Date of Birth</p>
-    <input type="date" name="birth"><br/>
-    <p>Nationality</p>
-    <input type="text" name="nation" style="width:200px"><br/>
-    <p>Passport No</p>
-    <input type="text" name="passportNo" style="width:200px"><br/>
-    <p>Expire Date</p>
-    <input type="date" name="passportExpire" style="width:100px"><br/>
-    <p>Mail Address</p>
-    <input type="text" name="email" style="width:200px"><br/>
-    <p>Phone</p>
-    <input type="phone" name="phone" style="widte:100px"><br/>
-    <p>Password</p>
-    <input type="password" name="passwd" style="width:100px"><br/>
-    <p>Enter password again to confirm</p>
-    <input type="password" name="passwd2" style="width:100px"><br/>
-    <input type="submit" value="Submit"><br/>
-  </form>
-</div>
+<form name="signUpForm" id="signUpForm" ng-submit="" novalidate>
+
+
+  <!------------------>
+  <!-- Modal Header -->
+  <!------------------>
+  <div class="modal-header text-center">
+    <p class="lead">Create Account</p>
+  </div>
+
+  
+  <!---------------->
+  <!-- Modal Body -->
+  <!---------------->
+  <div class="modal-body">
+    <div class="container-fluid">
+      <div class="row">
+
+        <!-- ** Personal details ** -->
+        <fieldset>
+          <p class="lead">Personal details</p>
+          <!-- Name -->
+          <label for="regName" class="col-xs-12 col-md-6 control-label">
+            Name
+            <input type="text" id="regName" class="form-control">
+          </label>
+
+          <!-- Birth -->
+          <label for="regBirth" class="col-xs-12 col-md-6 control-label">
+            Birth date
+            <input type="date" id="regBirth" class="form-control">
+          </label>
+        </fieldset>
+        <br>
+
+        <!-- ** Passport information ** -->
+        <fieldset>
+          <p class="lead">Passport</p>
+          <!-- Nationality -->
+          <label for="regNation" class="col-xs-12 col-md-4 control-label">
+            Nationality
+            <input type="text" id="regNation" class="form-control">
+          </label>
+
+          <!-- Passport No -->
+          <label for="regPassportNo" class="col-xs-12 col-md-3 control-label">
+            Passport No
+            <input type="text" id="regPassportNo" class="form-control">
+          </label>
+
+          <!-- Passport Expiry -->
+          <label for="regPassportExp" class="col-xs-12 col-md-5 control-label">
+            Expiration Date
+            <input type="date" id="regPassportExp" class="form-control">
+          </label>
+        </fieldset>
+        <br>
+
+        <!-- ** Contact information ** -->
+        <fieldset>
+          <p class="lead">Contact information</p>
+          <!-- Phone -->
+          <label for="regPhone" class="col-xs-12 col-md-6 control-label">
+            Phone
+            <input type="phone" id="regPhone" class="form-control">
+          </label>
+
+          <!-- Email -->
+          <label for="regEmail" class="col-xs-12 col-md-6 control-label">
+            Email Address
+            <input type="text" id="regEmail" class="form-control">
+          </label>
+        </fieldset>
+        <br>
+
+        <!-- ** Choose a password ** -->
+        <fieldset>
+          <p class="lead">Choose a password</p>
+          <!-- Password -->
+          <label for="regPasswd" class="col-xs-12 col-md-6 control-label">
+            Password
+            <input type="password" id="regPasswd" class="form-control">
+          </label>
+
+          <!-- Re-enter password -->
+          <label for="regPasswd2" class="col-xs-12 col-md-6 control-label">
+            Re-enter password
+            <input type="password" id="regPasswd2" class="form-control">
+          </label>
+        </fieldset>
+
+      </div> <!-- row -->
+    </div> <!-- /container-fluid -->
+  </div> <!-- /modal-body -->
+
+  
+  <!---------------------------->
+  <!-- Modal Footer - Buttons -->
+  <!---------------------------->
+  <div class="modal-footer">
+    <!-- Register -->
+    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="signUp()">
+      <span class="glyphicon glyphicon-pencil"></span>&nbsp;Sign up
+    </button>
+  
+    <!-- Clear -->
+    <button class="btn btn-warning pull-left" ng-click="clear()">
+      <span class="glyphicon glyphicon-erase"></span>&nbsp;Clear
+    </button>
+  
+    <!-- Cancel -->
+    <button class="btn btn-danger" ng-click="cancel()">
+      <span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel
+    </button>
+  </div>
+
+</form>

@@ -28,6 +28,39 @@ app.config(['$routeProvider', function ($routeProvider) {
  */
 app.controller('MainController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
 	$rootScope.onPackagesPage = false;
+
+	$rootScope.signUp = function() {
+		var modal = $modal.open({
+			animation: true,			// whether to use animation
+			templateUrl: 'partials/signup.html',	// what to show in the modal
+			size: 'md',				// size
+			backdrop: 'static',			// clicking outside does not close the window
+			controller: 'signUpController'		// the controller of the opened page
+		});
+	};
+});
+
+
+/**
+ * Controls the 'Sign Up' modal
+ */
+app.controller('signUpController', function($scope, $rootScope, $modalInstance, $http) {
+
+	/* 'Sign-up' button in the modal */
+	$scope.signUp = function() {
+		// GG
+		$modalInstance.close();
+	}
+
+	/* 'Clear' button in the modal */
+	$scope.clear = function() {
+		// GG
+	}
+
+	/* 'Cancel' button in the modal */
+	$scope.cancel = function() {
+		$modalInstance.dismiss();
+	}
 });
 
 
