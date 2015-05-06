@@ -15,5 +15,7 @@ INSERT INTO locations (city, region, country)
 	      ('Seattle', 'North America', 'US'),
 	      ('Honolulu', 'North America', 'US'),
 	      ('Los Angeles', 'North America', 'US'),
-	      ('San Francisco', 'North America', 'US');
-       
+	      ('San Francisco', 'North America', 'US'),
+	      ('Murmansk', 'Europe', 'Russia'),
+	      ('North Pole', 'North Pole', NULL),
+	      ('Helsinki', 'Europe', 'Finland');

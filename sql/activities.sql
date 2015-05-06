@@ -7,5 +7,6 @@ INSERT INTO activities (activityId, name)
 	      ('climbing', 'Climbing'),
 	      ('surfing', 'Surfing'),
               ('hunt-sharks','Hunting Sharks'),
-              ('sightseeing','Sightseeing');
-
+              ('sightseeing','Sightseeing'),
+	      ('swimming', 'Swimming'),
+	      ('cruise', 'Cruise');

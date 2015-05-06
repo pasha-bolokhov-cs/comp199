@@ -15,4 +15,5 @@ INSERT INTO transport (transportId, type)
 	     ('bike', 'Bike'),
   	     ('train', 'Train'),
 	     ('ferry', 'Ferry'),
+	     ('cruise', 'Cruise Ship'),
              ('flight', 'Flight');
