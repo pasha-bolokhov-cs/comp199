@@ -14,86 +14,133 @@
   <!---------------->
   <div class="modal-body">
     <div class="container-fluid">
-      <div class="row">
 
-        <!-- ** Personal details ** -->
+      <!-- ** Personal details ** -->
+      <div class="row">
         <fieldset>
           <p class="lead"><small>Personal details</small></p>
           <!-- Name -->
           <label for="regName" class="col-xs-12 col-md-6 control-label">
             Name
-            <input type="text" id="regName" class="form-control">
+            <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" required>
           </label>
 
           <!-- Birth -->
-          <label for="regBirth" class="col-xs-12 col-md-6 control-label">
+          <label for="regBirth" class="col-xs-12 col-md-6 control-label" required>
             Birth date
-            <input type="date" id="regBirth" class="form-control">
+            <input type="date" id="regBirth" name="birth" ng-model="customer.birth" class="form-control">
           </label>
         </fieldset>
         <br>
+      </div> <!-- /row -->
 
-        <!-- ** Passport information ** -->
+      <!-- ** Passport information ** -->
+      <div class="row">
         <fieldset>
           <p class="lead"><small>Passport</small></p>
           <!-- Nationality -->
-          <label for="regNation" class="col-xs-12 col-md-4 control-label">
+          <label for="regNationality" class="col-xs-12 col-md-4 control-label" required>
             Nationality
-            <input type="text" id="regNation" class="form-control">
+            <input type="text" id="regNationality" name="nationality" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control">
           </label>
 
           <!-- Passport No -->
-          <label for="regPassportNo" class="col-xs-12 col-md-3 control-label">
+          <label for="regPassportNo" class="col-xs-12 col-md-3 control-label" required>
             Passport No
-            <input type="text" id="regPassportNo" class="form-control">
+            <input type="text" id="regPassportNo" name="passportNo" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control">
           </label>
 
           <!-- Passport Expiry -->
-          <label for="regPassportExp" class="col-xs-12 col-md-5 control-label">
+          <label for="regPassportExp" class="col-xs-12 col-md-5 control-label" required>
             Expiration Date
-            <input type="date" id="regPassportExp" class="form-control">
+            <input type="date" id="regPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control">
           </label>
         </fieldset>
         <br>
+      </div> <!-- /row -->
 
-        <!-- ** Contact information ** -->
+      <!-- ** Contact information ** -->
+      <div class="row">
         <fieldset>
           <p class="lead"><small>Contact information</small></p>
           <!-- Phone -->
           <label for="regPhone" class="col-xs-12 col-md-6 control-label">
             Phone
-            <input type="phone" id="regPhone" class="form-control">
+            <input type="phone" id="regPhone" name="phone" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control">
           </label>
 
           <!-- Email -->
           <label for="regEmail" class="col-xs-12 col-md-6 control-label">
             Email Address
-            <input type="text" id="regEmail" class="form-control">
+            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control">
           </label>
         </fieldset>
         <br>
+      </div> <!-- /row -->
 
-        <!-- ** Choose a password ** -->
+      <!-- ** Choose a password ** -->
+      <div class="row">
         <fieldset>
           <p class="lead"><small>Choose a password</small></p>
           <!-- Password -->
-          <label for="regPasswd" class="col-xs-12 col-md-6 control-label">
+          <label for="regPassword" class="col-xs-12 col-md-6 control-label">
             Password
-            <input type="password" id="regPasswd" class="form-control">
+            <input type="password" id="regPassword" name="password" ng-model="customer.password" class="form-control" required>
           </label>
 
           <!-- Re-enter password -->
-          <label for="regPasswd2" class="col-xs-12 col-md-6 control-label">
+          <label for="regPassword2" class="col-xs-12 col-md-6 control-label">
             Re-enter password
-            <input type="password" id="regPasswd2" class="form-control">
+            <input type="password" id="regPassword2" name="password2" ng-model="customer.password2" class="form-control" required>
           </label>
         </fieldset>
-
       </div> <!-- row -->
+
+      <!-- ** Error messages and diagnostics ** -->
+      <div class="row">
+        <div class="col-xs-12">
+          <br>
+          <alert type="danger" ng-messages="signUpForm.name.$error"
+                 ng-show="signUpForm.name.$dirty && signUpForm.name.$invalid">
+            <div class="error" ng-message="pattern">Wrong character in the name</div>
+            <div class="error" ng-message="required">Name is required</div>
+          </alert>
+          <alert type="danger" ng-messages="signUpForm.birth.$error"
+                 ng-show="signUpForm.birth.$dirty && signUpForm.birth.$invalid">
+            <div class="error" ng-message="date">Incorrect date</div>
+            <div class="error" ng-message="required">Birth date is required</div>
+          </alert>
+          <alert type="danger" ng-messages="signUpForm.nationality.$error"
+                 ng-show="signUpForm.nationality.$dirty && signUpForm.nationality.$invalid">
+            <div class="error" ng-message="pattern">Wrong character in the nationality</div>
+            <div class="error" ng-message="required">Nationality is required</div>
+          </alert>
+          <alert type="danger" ng-messages="signUpForm.passportNo.$error"
+                 ng-show="signUpForm.passportNo.$dirty && signUpForm.passportNo.$invalid">
+            <div class="error" ng-message="pattern">Wrong character in the passport number</div>
+            <div class="error" ng-message="required">Passport number is required</div>
+          </alert>
+          <alert type="danger" ng-messages="signUpForm.passportExp.$error"
+                 ng-show="signUpForm.passportExp.$dirty && signUpForm.passportExp.$invalid">
+            <div class="error" ng-message="date">Incorrect date</div>
+            <div class="error" ng-message="required">Passport expiration date is required</div>
+          </alert>
+          <alert type="danger" ng-messages="signUpForm.phone.$error"
+                 ng-show="signUpForm.phone.$dirty && signUpForm.phone.$invalid">
+            <div class="error" ng-message="pattern">Wrong character in the phone number</div>
+          </alert>
+          <alert type="danger" ng-messages="signUpForm.email.$error"
+                 ng-show="signUpForm.email.$dirty && signUpForm.email.$invalid">
+            <div class="error" ng-message="pattern">Incorrect email address</div>
+            <div class="error" ng-message="required">Email address is required</div>
+          </alert>
+        </div>
+      </div>
+
     </div> <!-- /container-fluid -->
   </div> <!-- /modal-body -->
 
-  
+
   <!---------------------------->
   <!-- Modal Footer - Buttons -->
   <!---------------------------->
@@ -104,7 +151,7 @@
     </button>
   
     <!-- Clear -->
-    <button class="btn btn-warning pull-left" ng-click="clear()">
+    <button class="btn btn-warning pull-left" ng-click="reset()">
       <span class="glyphicon glyphicon-erase"></span>&nbsp;Clear
     </button>
   
