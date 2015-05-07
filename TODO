@@ -5,6 +5,7 @@
 
 	*  favicon
 
+
 	*  packages page
 
 		* fix the vertical position of the region select box
@@ -12,6 +13,15 @@
 		* make the position of the error and warning boxes fixed:
 
 		  style="position: absolute; top: 70px; left: 10%; right: 10%; opacity: 0.6;"
+
+
+        *  modal for sign up
+
+		* if the server rejects a certain field, e.g. "phone", set the error on:
+
+		  $scope.signUpForm.phone.$setValidity("pattern", false);
+		  $scope.signUpForm.phone.$setDirty();
+
 
 	*  modal for sign in
 
