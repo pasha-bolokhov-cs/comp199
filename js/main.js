@@ -1,7 +1,7 @@
 /**
  * Main AngularJS Application
  */
-var app = angular.module('albatrossApp', ['ngRoute', 'ui.bootstrap', 'ngSanitize']);
+var app = angular.module('albatrossApp', ['ngRoute', 'ui.bootstrap', 'ngMessages', 'ngSanitize']);
 
 
 /**
@@ -46,6 +46,18 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
  */
 app.controller('signUpController', function($scope, $rootScope, $modalInstance, $http) {
 
+	// Permanent initialization
+	$rootScope.onPackagesPage = true;
+	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.])*$/i;
+
+	// Resettable data initialization
+	$scope.setup = function() {
+		// Initialization
+		$scope.customer = {};
+	}
+	$scope.setup();
+
+	// Functions assigned to buttons
 	/* 'Sign-up' button in the modal */
 	$scope.signUp = function() {
 		// GG
@@ -53,14 +65,18 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 	}
 
 	/* 'Clear' button in the modal */
-	$scope.clear = function() {
-		// GG
+	$scope.reset = function() {
+		/* reset the data */
+		$scope.setup();
+
+		$scope.signUpForm.$setPristine();
 	}
 
 	/* 'Cancel' button in the modal */
 	$scope.cancel = function() {
 		$modalInstance.dismiss();
 	}
+
 });
 
 
@@ -88,8 +104,8 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 
 	// Functions assigned to buttons
 	$scope.reset = function() {
-	    /* reset the data */
-	    $scope.setup();
+		/* reset the data */
+		$scope.setup();
 	}
 	$rootScope.regionSelect = function() {
 		// Indicate we are waiting for data
