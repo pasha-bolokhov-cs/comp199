@@ -124,7 +124,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 	$rootScope.region = "All";
 	$rootScope.showRegions = false;
 	$scope.waitingRegions = true;
-	$http.post("php/get_regions.php")
+	$http.post("php/get-regions.php")
 	.success(function(data) {
 		// process the response
 		if (data["error"]) {
