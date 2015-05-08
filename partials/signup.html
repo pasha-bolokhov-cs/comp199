@@ -85,13 +85,15 @@
           <!-- Password -->
           <label for="regPassword" class="col-xs-12 col-md-6 control-label">
             Password
-            <input type="password" id="regPassword" name="password" ng-model="customer.password" class="form-control" required>
+            <input type="password" id="regPassword" name="password" ng-model="customer.password"
+                   ng-focus="blurPassword=false" ng-blur="blurPassword=true" class="form-control" required>
           </label>
 
           <!-- Re-enter password -->
           <label for="regPassword2" class="col-xs-12 col-md-6 control-label">
             Re-enter password
-            <input type="password" id="regPassword2" name="password2" ng-model="customer.password2" class="form-control" required>
+            <input type="password" id="regPassword2" name="password2" ng-model="customer.password2"
+                   ng-focus="blurPassword2=false" ng-blur="blurPassword2=true" class="form-control" required>
           </label>
         </fieldset>
       </div> <!-- row -->
@@ -133,6 +135,9 @@
                  ng-show="signUpForm.email.$dirty && signUpForm.email.$invalid">
             <div class="error" ng-message="pattern">Incorrect email address</div>
             <div class="error" ng-message="required">Email address is required</div>
+          </alert>
+          <alert type="danger" ng-show="blurPassword && customer.password !== customer.password2">
+            <div class="error">Passwords do not match</div>
           </alert>
         </div>
       </div>
