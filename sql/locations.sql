@@ -30,4 +30,13 @@ INSERT INTO locations (city, region, country)
 INSERT INTO locations (city, region, country)
 	   VALUES ('Brasilia', 'South America', 'Brazil'),
 	      ('Santarem', 'South America', 'Brazil'); 
-		
+
+/*
+ *
+ */ 
+INSERT INTO locations (city, region, country)
+       VALUES ('Istanbul', 'Europe', 'Turkey');
+INSERT INTO locations (city, region, country)
+       VALUES ('London', 'Europe', 'UK');   		  
+	   
+	         		  
