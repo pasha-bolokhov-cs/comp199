@@ -196,6 +196,18 @@ CREATE TABLE orders (
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
+/*
+ * cookies
+ */
+
+DROP TABLE IF EXISTS cookies;
+CREATE TABLE cookies (
+	sessionID	int NOT NULL,
+	customerId	int NOT NULL,
+	email		varchar(255),
+	PRIMARY KEY	(customerId,customerId)
+);
+
 
 /*
  * Re-enable foreign key constraints
