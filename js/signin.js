@@ -26,7 +26,7 @@ app.controller('signInController', function($scope, $rootScope, $modalInstance, 
 	/* 'Sign-In' button in the modal */
 	$scope.signIn = function() {
 		// Send the request to the PHP script
-		$http.post("php/add-customer.php", $scope.customer)
+		$http.post("php/signin_saveStatus.php", $scope.customer)
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
@@ -47,6 +47,7 @@ app.controller('signInController', function($scope, $rootScope, $modalInstance, 
 
 				// GG process validation errors
 			} else {
+				
 				$modalInstance.close();
 			}
 		})
