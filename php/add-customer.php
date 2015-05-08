@@ -18,7 +18,30 @@ if (!property_exists($data, "name")) {
 	$response["error"] = "name-required";
 	goto quit;
 }
-
+if (!property_exists($data, "birth")) {
+	$response["error"] = "birth-required";
+	goto quit;
+}
+if (!property_exists($data, "nationality")) {
+	$response["error"] = "nationality-required";
+	goto quit;
+}
+if (!property_exists($data, "passportNo")) {
+	$response["error"] = "passportNo-required";
+	goto quit;
+}
+if (!property_exists($data, "passportExp")) {
+	$response["error"] = "passportExp-required";
+	goto quit;
+}
+if (!property_exists($data, "email")) {
+	$response["error"] = "email-required";
+	goto quit;
+}
+if (!property_exists($data, "password")) {
+	$response["error"] = "password-required";
+	goto quit;
+}
 
 /* hash the password */
 $salt = file_get_contents("/dev/urandom", false, null, 0, 16);
