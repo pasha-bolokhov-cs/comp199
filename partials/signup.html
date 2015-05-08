@@ -139,6 +139,10 @@
           <alert type="danger" ng-show="(blurPassword || blurPassword2) && customer.password !== customer.password2">
             <div class="error">Passwords do not match</div>
           </alert>
+
+          <alert type="danger" ng-show="error && showResult" close="error=false">
+            {{ error }}
+          </alert>
         </div>
       </div>
 

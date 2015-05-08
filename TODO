@@ -17,12 +17,9 @@
 
         *  modal for sign up
 
-		* if the server rejects a certain field, e.g. "phone", set the error on:
-
-		  $scope.signUpForm.phone.$setValidity("pattern", false);
-		  $scope.signUpForm.phone.$setDirty();
-
 		* disable "Sign up" if the form is invalid
+
+		* sign the user in once registered
 
 
 	*  modal for sign in

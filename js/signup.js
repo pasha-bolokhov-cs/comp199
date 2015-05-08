@@ -15,6 +15,8 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
+		$scope.showResult = false;
+		$scope.error = false;
 
 		// Indicate password input fields are pristine
 		$scope.blurPassword = false;
@@ -88,6 +90,7 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 					$scope.error = "Error: " + data["error"];
 				}
 			} else {
+				// GG Do the sign in now
 				$modalInstance.close();
 			}
 		})

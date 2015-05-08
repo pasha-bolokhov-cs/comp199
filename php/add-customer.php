@@ -13,7 +13,7 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validate data */
-error_log(" data = " . print_r($data, true));  //GG
+error_log("Albatross(TM) data = " . print_r($data, true));  //GG
 //GGGG validate and test existence !!!
 if (!property_exists($data, "name")) {
 	$response["error"] = "name-required";
@@ -83,20 +83,19 @@ if ($mysqli->connect_error) {
 /* form the query */
 $query = <<<"EOF"
 	INSERT INTO customers (name, birth, nationality, passportNo, passportExp, email, phone, password, salt)
-               VALUES ("{$data->name}", $data->birth, "{$data->nationality}",
-                       "{$data->passportNo}", $data->passportExp,
+               VALUES ("{$data->name}", STR_TO_DATE("$birth", "%Y-%m-%d"), "{$data->nationality}",
+                       "{$data->passportNo}", STR_TO_DATE("$passportExp", "%Y-%m-%d"),
                        "{$data->email}", "{$data->phone}",
 		       "$password", "$salt");
 EOF;
-error_log(" query = $query ");  //GG
+error_log("Albatross(TM) query = $query ");  //GG
 
 /* do the query */
 $response = array();
-////if (($result = $mysqli->query($query)) === FALSE) {
-////	$response["error"] = 'Query Error (' . $mysqli->error . ')';
-////	$mysqli->close();
-////	goto quit;
-////}
+if (($result = $mysqli->query($query)) === FALSE) {
+	$response["error"] = 'Query Error (' . $mysqli->error . ')';
+	goto database_quit;
+}
 
 /* close the database */
 database_quit:
