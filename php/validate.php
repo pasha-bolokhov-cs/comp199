@@ -1,24 +1,16 @@
-#! /usr/bin/php
 <?php
 /*
- * This program validate string data for only alphabets and numbers or e-mail address
- * , and string which include some special characters. Spechial characters are "()[]{}#@%+-."
- * when match the condition return true, if not, will return false
- * Parameter: 1: alphabets, numbers and '_' only 2: e-mail address: default: alphabets and numbers including
- * some special characters
- * last modified 5/7/2015 Toshi
+ * This function validates a string for having only alphabetic characters, numbers or 
+ * some characters which are allowed in e-mail address
+ *
+ * This function should be used for validation of most of the strings - names, emails
+ *
+ * Passwords should not be validated
+ *
  */
- 
- function validate($data, $para)
- {
-	switch($para)
-	{
-		case 1:
-			return preg_match('/^\w+$/', $data);	
-		case 2:
-			return preg_match('/^[\w\-\.]+\@[\w\-\.]+\.([a-z]+)$/' , $data);
-		default:
-			return preg_match('/^[\w\Q()[]{}#@%+-.\E]+$/', $data);
-	}		
- }
- ?>
+
+function validate($string)
+{
+	return preg_match('/^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i', $string);
+}
+?>
