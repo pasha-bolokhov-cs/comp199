@@ -9,3 +9,8 @@ INSERT INTO hotels (hotelId, rank, imageName, description)
               ('Kempinski', 5, 'Kempinski', 'Along with a full-service spa, this hotel has an indoor pool and a health club. WiFi in public areas is free. Additionally, a bar/lounge, a poolside bar, and a coffee shop/café are onsite.'),
               ('Shangri-La', 5, 'Shangri-La', '2 indoor pools, a health club, and a bar/lounge are available at this hotel. WiFi in public areas is free. Additionally, a coffee shop/café, an outdoor tennis court, and a spa tub are onsite.');
 
+/*
+ * Add lodge for Amazon tour
+ */
+INSERT INTO hotels (hotelId, rank, imageName, description)
+       VALUES ('Local Lodge', 3, 'amazon_lodge', 'Located near Amazon Rever, clean room and smoke-free, WiFi in public areas is free, no restaurant but possible to serve meals'); 

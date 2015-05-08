@@ -18,4 +18,16 @@ INSERT INTO locations (city, region, country)
 	      ('San Francisco', 'North America', 'US'),
 	      ('Murmansk', 'Europe', 'Russia'),
 	      ('North Pole', 'North Pole', NULL),
-	      ('Helsinki', 'Europe', 'Finland');
+	      ('Helsinki', 'Europe', 'Finland');		  
+
+/*
+ * ADD cities for Amazon
+ */ 
+INSERT INTO locations (city, region, country)
+       VALUES ('Miami', 'North America', 'US'),
+	      ('Dallas', 'North America', 'US'),
+		  ('Toronto', 'North America', 'Canada');   		  
+INSERT INTO locations (city, region, country)
+	   VALUES ('Brasilia', 'South America', 'Brazil'),
+	      ('Santarem', 'South America', 'Brazil'); 
+		

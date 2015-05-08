@@ -31,3 +31,29 @@ INSERT INTO flights (flightId, flightNo, origin, departDate, destination, arrive
                                                         'Tokyo', STR_TO_DATE('02/05/2015 16:30', '%d/%m/%Y %H:%i')),
               ('All Nippon Airlines - Summer 2015', 'NH116', 'Tokyo', STR_TO_DATE('08/05/2015 21:50', '%d/%m/%Y %H:%i'),
                                                              'Vancouver', STR_TO_DATE('08/05/2015 11:25', '%d/%m/%Y %H:%i'));
+/*
+ * ADD flights for Amazon fishing tour
+ */
+INSERT INTO flights (flightId, flightNo, origin, departDate, destination, arriveDate)
+       VALUES ('Air Canada - Fall 2015-1', 'AC034', 'Vancouver', STR_TO_DATE('09/09/2015 09:00', '%d/%m/%Y %H:%i'),
+                                                    'Toronto', STR_TO_DATE('09/09/2015 16:24', '%d/%m/%Y %H:%i')),
+              ('Air Canada - Fall 2015-2', 'AC918', 'Toronto', STR_TO_DATE('09/09/2015 18:00', '%d/%m/%Y %H:%i'),
+                                                        'Miami', STR_TO_DATE('09/09/2015 21:15', '%d/%m/%Y %H:%i')),
+              ('American Airlines - Fall 2015-3', 'AA213', 'Miami', STR_TO_DATE('09/09/2015 23:54', '%d/%m/%Y %H:%i'),
+                                                             'Brasilia', STR_TO_DATE('10/09/2015 08:27', '%d/%m/%Y %H:%i')),
+INSERT INTO flights (flightId, flightNo, origin, departDate, destination, arriveDate)
+  		VALUES('TAM Airlines - Fall 2015-4', 'TAM3098', 'Brasilia', STR_TO_DATE('10/09/2015 12:08', '%d/%m/%Y %H:%i'),
+                                                             'Santarem', STR_TO_DATE('10/09/2015 14:57', '%d/%m/%Y %H:%i'));
+															 
+/* Return */
+INSERT INTO flights (flightId, flightNo, origin, departDate, destination, arriveDate)
+       VALUES ('TAM Airlines - Fall 2015-5', 'TAM3449', 'Santarem', STR_TO_DATE('20/09/2015 03:00', '%d/%m/%Y %H:%i'),
+                                                    'Brasilia', STR_TO_DATE('20/09/2015 04:23', '%d/%m/%Y %H:%i')),
+              ('TAM Airlines - Fall 2015-6', 'TAM8092', 'Brasilia', STR_TO_DATE('20/09/2015 16:13', '%d/%m/%Y %H:%i'),
+                                                        'Miami', STR_TO_DATE('20/09/2015 21:30', '%d/%m/%Y %H:%i')),
+              ('American Airlines - Fall 2015-7', 'AA061', 'Miami', STR_TO_DATE('21/09/2015 06:00', '%d/%m/%Y %H:%i'),
+                                                           'Dallas', STR_TO_DATE('21/09/2015 08:07', '%d/%m/%Y %H:%i'));
+INSERT INTO flights (flightId, flightNo, origin, departDate, destination, arriveDate)
+	   VALUES ('American Airlines - Fall 2015-8', 'AA1189', 'Dallas', STR_TO_DATE('21/09/2015 09:25', '%d/%m/%Y %H:%i'),
+                                                            'Vancouver', STR_TO_DATE('21/09/2015 11:47', '%d/%m/%Y %H:%i'));
+															 															 

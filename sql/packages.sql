@@ -43,3 +43,34 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
        VALUES ('Murmansk', 'flight', 'Finnair - Winter 2016', NULL, NULL, 1, LAST_INSERT_ID());
 INSERT INTO packages (segId, name, region, origin, price, description, capacity, available, imageName)
        VALUES (LAST_INSERT_ID(), 'Cruise to North Pole', 'North Pole', 'Helsinki', 4000, 'Discover the breath of Arctic', 20, 20, 'North Pole');
+
+/*
+ * Amazon
+ */ 
+INSERT INTO images (imageName, filename, type)
+       VALUES ('Amazon', 'amazon-fishing.jpg', NULL);
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Dallas', 'flight', 'American Airlines - Fall 2015-8', NULL, NULL, 0, NULL);	   
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Miami', 'flight', 'American Airlines - Fall 2015-7', NULL, NULL, 0, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Brasilia', 'flight', 'TAM Airlines - Fall 2015-6', NULL, NULL, 1, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Santarem', 'flight', 'TAM Airlines - Fall 2015-5', NULL, NULL, 0, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Santarem', 'vehicle_v', NULL, 'Local Lodge', 'Fishing', 10, LAST_INSERT_ID());	   
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Brasilia', 'flight', 'TAM Airlines - Fall 2015-4', NULL, NULL, 0, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Miami', 'flight', 'American Airlines - Fall 2015-3', NULL, NULL, 1, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Toronto', 'flight', 'Air Canada - Fall 2015-2', NULL, NULL, 0, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Vancouver', 'flight', 'Air Canada - Fall 2015-1', NULL, NULL, 0, LAST_INSERT_ID());
+INSERT INTO packages (segId, name, region, origin, price, description, capacity, available, imageName)
+       VALUES (LAST_INSERT_ID(), 'Big fishing on Amazon River', 'South America', 'Vancouver', 5500, 'Challenge to the world record', 5, 5, 'Amazon');
+ 
+             
+                      
+              
+	

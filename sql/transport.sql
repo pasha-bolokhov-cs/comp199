@@ -8,7 +8,7 @@ INSERT INTO transport (transportId, type)
 	     ('vehicle_c', 'Compact'),
 	     ('vehicle_m', 'Minivan'),
 	     ('vehicle_v', 'Van'),
-       	     ('vechicle_s', 'Standard'),
+         ('vechicle_s', 'Standard'),
    	     ('vechicle_f', 'Full size'),
 	     ('vechicle_l', 'Luxury'),
 	     ('vechicle_su', 'SUV'),
@@ -16,4 +16,9 @@ INSERT INTO transport (transportId, type)
   	     ('train', 'Train'),
 	     ('ferry', 'Ferry'),
 	     ('cruise', 'Cruise Ship'),
-             ('flight', 'Flight');
+         ('flight', 'Flight');
+/*
+ * Add boat for amazon tour
+ */
+INSERT INTO transport (transportId, type)
+       VALUE ('boat', 'Boat');
