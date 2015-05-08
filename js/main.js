@@ -123,6 +123,10 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 					$scope.signUpForm.name.$setValidity("required", false);
 					$scope.signUpForm.name.$setDirty();
 					break;
+				case "name-wrong":
+					$scope.signUpForm.name.$setValidity("pattern", false);
+					$scope.signUpForm.name.$setDirty();
+					break;
 
 				case "birth-required":
 					$scope.signUpForm.birth.$setValidity("required", false);

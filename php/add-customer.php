@@ -3,6 +3,7 @@
  * This script adds a new customer to the database
  *
  */
+require_once 'validate.php';
 
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
@@ -16,6 +17,11 @@ error_log(" data = " . print_r($data, true));  //GG
 //GGGG validate and test existence !!!
 if (!property_exists($data, "name")) {
 	$response["error"] = "name-required";
+	goto quit;
+}
+if (!validate($data, "name")) {
+	$response["error"] = "name-wrong";
+error_log("name validation error");
 	goto quit;
 }
 if (!property_exists($data, "birth")) {
