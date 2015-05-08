@@ -113,7 +113,45 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
-				$scope.error = "Error: " + data["error"];
+				switch(data["error"]) {
+				case "name-required":
+					$scope.signUpForm.name.$setValidity("required", false);
+					$scope.signUpForm.name.$setDirty();
+					break;
+
+				case "birth-required":
+					$scope.signUpForm.birth.$setValidity("required", false);
+					$scope.signUpForm.birth.$setDirty();
+					break;
+
+				case "nationality-required":
+					$scope.signUpForm.nationality.$setValidity("required", false);
+					$scope.signUpForm.nationality.$setDirty();
+					break;
+
+				case "passportNo-required":
+					$scope.signUpForm.passportNo.$setValidity("required", false);
+					$scope.signUpForm.passportNo.$setDirty();
+					break;
+
+				case "passportExp-required":
+					$scope.signUpForm.passportExp.$setValidity("required", false);
+					$scope.signUpForm.passportExp.$setDirty();
+					break;
+
+				case "email-required":
+					$scope.signUpForm.email.$setValidity("required", false);
+					$scope.signUpForm.email.$setDirty();
+					break;
+
+				case "password-required":
+					$scope.signUpForm.password.$setValidity("required", false);
+					$scope.signUpForm.password.$setDirty();
+					break;
+
+				default:
+					$scope.error = "Error: " + data["error"];
+				}
 
 				// GG process validation errors
 			} else {

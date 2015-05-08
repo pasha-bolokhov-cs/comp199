@@ -11,6 +11,21 @@ define("MAX_RESPONSE_LINES", 1000);
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
+/* validate data */
+error_log(" data = " . print_r($data, true));  //GG
+//GGGG validate and test existence !!!
+if (!property_exists($data, "name")) {
+	$response["error"] = "name-required";
+	goto quit;
+}
+
+
+/* hash the password */
+$salt = file_get_contents("/dev/urandom", false, null, 0, 16);
+$password = crypt($data->password, $salt);
+$salt = base64_encode($salt);
+$password = base64_encode($password);
+
 /* connect to the database */
 require_once '../../../comp199-www/mysqli_auth.php';
 $mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
@@ -20,16 +35,6 @@ if ($mysqli->connect_error) {
 	goto quit;
 }
 
-
-/* validate data */
-error_log(" data = " . print_r($data, true));  //GG
-//GGGG validate and test existence !!!
-
-/* hash the password */
-$salt = file_get_contents("/dev/urandom", false, null, 0, 16);
-$password = crypt($data->password, $salt);
-$salt = base64_encode($salt);
-$password = base64_encode($password);
 
 /* form the query */
 $query = <<<"EOF"
@@ -44,7 +49,7 @@ error_log(" query = $query ");  //GG
 /* do the query */
 $response = array();
 ////if (($result = $mysqli->query($query)) === FALSE) {
-////	$response["error"] = 'Query Error (' . $mysqli->error . ') ';
+////	$response["error"] = 'Query Error (' . $mysqli->error . ')';
 ////	$mysqli->close();
 ////	goto quit;
 ////}
