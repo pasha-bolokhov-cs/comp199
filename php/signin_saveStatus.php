@@ -50,9 +50,9 @@ if (($result = $mysqli->query($query)) === FALSE) {
   	goto quit;
   } else {
   	$resultArray = mysqli_fetch_assoc($result);
-    $name = $resultArray['email']
-    $password = $resultArray['$password']
-    $salt = $resultArray['salt']
+    	$name = $resultArray['email'];
+    	$password = $resultArray['$password'];
+    	$salt = $resultArray['salt'];
     
     /* hash the password */
     $passwordInput = crypt($data->password, $salt);
