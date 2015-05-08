@@ -55,6 +55,7 @@ if (($result = $mysqli->query($query)) === FALSE) {
     	$salt = $resultArray['salt'];
     
     /* hash the password */
+    $salt = base64_decode($salt);
     $passwordInput = crypt($data->password, $salt);
     $passwordInput = base64_encode($passwordInput);
      
