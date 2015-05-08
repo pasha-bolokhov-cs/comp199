@@ -1,0 +1,77 @@
+<form name="signInForm" id="signInForm" ng-submit="" novalidate>
+
+
+  <!------------------>
+  <!-- Modal Header -->
+  <!------------------>
+  <div class="modal-header text-center">
+    <span class="lead">Sign In With Your Account</span>
+  </div>
+
+  
+  <!---------------->
+  <!-- Modal Body -->
+  <!---------------->
+  <div class="modal-body">
+    <div class="container-fluid">
+
+      <!-- ** ID ** -->
+      <div class="row">
+        <!-- Name -->
+        <label for="regName" class="col-xs-12 col-md-6 control-label">
+          Name
+          <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" required>
+        </label>
+        <br>
+      </div> <!-- /row -->
+
+      <!-- ** Password ** -->
+      <div class="row">
+          <!-- Password -->
+          <label for="regPassword" class="col-xs-12 col-md-6 control-label">
+            Password
+            <input type="password" id="regPassword" name="password" ng-model="customer.password"
+                   ng-focus="blurPassword=false" ng-blur="blurPassword=true" class="form-control" required>
+          </label>
+      </div> <!-- row -->
+
+      <!-- ** Error messages and diagnostics ** -->
+      <div class="row">
+        <div class="col-xs-12">
+          <br ng-show="signInForm.$invalid && signInForm.$dirty">
+          <alert type="danger" ng-messages="signInForm.name.$error"
+                 ng-show="signInForm.name.$dirty && signInForm.name.$invalid">
+            <div class="error" ng-message="pattern">Wrong character in the name</div>
+            <div class="error" ng-message="required">Name is required</div>
+          </alert>
+          <alert type="danger" ng-messages="signInForm.email.$error"
+                 ng-show="signInForm.email.$dirty && signInForm.email.$invalid">
+            <div class="error" ng-message="pattern">Incorrect email address</div>
+            <div class="error" ng-message="required">Email address is required</div>
+          </alert>
+          <alert type="danger" ng-show="(blurPassword || blurPassword2) && customer.password !== customer.password2">
+            <div class="error">Passwords do not match</div>
+          </alert>
+        </div>
+      </div>
+
+    </div> <!-- /container-fluid -->
+  </div> <!-- /modal-body -->
+
+
+  <!---------------------------->
+  <!-- Modal Footer - Buttons -->
+  <!---------------------------->
+  <div class="modal-footer">
+    <!-- Register -->
+    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="signIn()">
+      <span class="glyphicon glyphicon-pencil"></span>&nbsp;Sign up
+    </button>
+  
+    <!-- Cancel -->
+    <button class="btn btn-danger" ng-click="cancel()">
+      <span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel
+    </button>
+  </div>
+
+</form>
