@@ -20,30 +20,31 @@ if ($mysqli->connect_error) {
 	goto quit;
 }
 
+
+/* validate data */
+error_log(" data = " . print_r($data, true));  //GG
+//GGGG validate and test existence !!!
+
+/* hash the password */
+//
+
 /* form the query */
-//GGGG validate !!!
-$query = "";
-        
+$query = <<<"EOF"
+	INSERT INTO customers (name, birth, nationality, passportNo, passportExp, email, phone, password)
+               VALUES ("$data->name", $data->birth, "$data->nationality",
+                       "$data->passportNo", $data->passportExp,
+                       "$data->email", "$data->phone",
+		       "$data->password");
+EOF;
+error_log(" query = $query ");  //GG
+
 /* do the query */
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error (' . $mysqli->error . ') ';
-	$mysqli->close();
-	goto quit;
-}
-
-/* fetch the results and put into response */
-$response["data"] = array();
-while ($row = $result->fetch_assoc()) {
-	// append the row
-	$response["data"][] = $row;
-
-	// check how many lines we have
-	if (count($response["data"]) > MAX_RESPONSE_LINES) {
-		$response["data"] = NULL;
-		$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
-		goto database_quit;
-	}
-}
+$response = array();
+////if (($result = $mysqli->query($query)) === FALSE) {
+////	$response["error"] = 'Query Error (' . $mysqli->error . ') ';
+////	$mysqli->close();
+////	goto quit;
+////}
 
 /* close the database */
 database_quit:

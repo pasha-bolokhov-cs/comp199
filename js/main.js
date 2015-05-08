@@ -46,11 +46,15 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
  */
 app.controller('signUpController', function($scope, $rootScope, $modalInstance, $http) {
 
-	// Permanent initialization
+	/*
+	 * Permanent initialization
+	 */
 	$rootScope.onPackagesPage = true;
-	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.])*$/i;
+	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i;
 
-	// Resettable data initialization
+	/*
+	 * Resettable data initialization
+	 */
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
@@ -61,11 +65,32 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 	}
 	$scope.setup();
 
-	// Functions assigned to buttons
+	/*
+	 * Functions assigned to buttons
+	 */
 	/* 'Sign-up' button in the modal */
 	$scope.signUp = function() {
-		// GG
-		$modalInstance.close();
+		// Send the request to the PHP script
+		$http.post("php/add-customer.php", $scope.customer)
+		.success(function(data) {
+			// process the response
+			if (data["error"]) {
+				$scope.error = "Error: " + data["error"];
+
+				// GG process validation errors
+			} else {
+				$modalInstance.close();
+			}
+		})
+		.error(function(data, status) {
+			console.log(data);
+			$scope.error = "Error accessing the server: " + status + ".";
+		})
+		.finally(function() { 
+			// Indicate that we have an answer
+			$scope.waitingPackages = false;
+			$scope.showResult = true;
+		});
 	}
 
 	/* 'Clear' button in the modal */
@@ -89,10 +114,14 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
  */
 app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 
-	// Permanent initialization
+	/*
+	 * Permanent initialization
+	 */
 	$rootScope.onPackagesPage = true;
 
-	// Resettable data initialization
+	/*
+	 * Resettable data initialization
+	 */
 	$scope.setup = function() {
 		// Initialization
 		$scope.showResult = false;
@@ -106,7 +135,9 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 	}
 	$scope.setup();
 
-	// Functions assigned to buttons
+	/*
+	 * Functions assigned to buttons
+	 */
 	$scope.reset = function() {
 		/* reset the data */
 		$scope.setup();
