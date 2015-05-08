@@ -30,6 +30,7 @@ CREATE TABLE customers (
 	email		varchar(255) NOT NULL,
 	phone		varchar(80),
 	password	varchar(41) NOT NULL,
+	salt		varchar(41) NOT NULL,
 	PRIMARY KEY	(customerId)
 );
 

@@ -10,25 +10,39 @@ var app = angular.module('albatrossApp', ['ngRoute', 'ui.bootstrap', 'ngMessages
 app.config(['$routeProvider', function ($routeProvider) {
 	$routeProvider
 		// Home
-		.when("/",		{templateUrl: "partials/home.html", controller: "MainController"})
-		.when("/home",		{templateUrl: "partials/home.html", controller: "MainController"})
+		.when("/",		{templateUrl: "partials/home.html", controller: "PageController"})
+		.when("/home",		{templateUrl: "partials/home.html", controller: "PageController"})
 		// Pages
 		.when("/packages",	{templateUrl: "partials/packages.html", controller: "PackagesController"})
-		.when("/trips",		{templateUrl: "partials/trips.html", controller: "MainController"})
-		.when("/profile",	{templateUrl: "partials/profile.html", controller: "MainController"})
-		.when("/signup",	{templateUrl: "partials/signup.html", controller: "MainController"})
-		.when("/signin",	{templateUrl: "partials/signin.html", controller: "MainController"})
+		.when("/trips",		{templateUrl: "partials/trips.html", controller: "PageController"})
+		.when("/profile",	{templateUrl: "partials/profile.html", controller: "PageController"})
 		// else 404
-		.otherwise("/404",	{templateUrl: "partials/404.html", controller: "MainController"});
+		.otherwise("/404",	{templateUrl: "partials/404.html", controller: "PageController"});
 }]);
 
 
 /**
- * Controls most other pages
+ * Controls the app
  */
 app.controller('MainController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
-	$rootScope.onPackagesPage = false;
 
+	/*
+	 * Permanent initialization
+	 */
+	/* Arrange the page for the sign-out */
+	$rootScope.doSignOut = function() {
+		$rootScope.signedIn = false;
+	}
+
+	/*
+	 * Resettable data initialization
+	 */
+	$rootScope.signedIn = false;
+
+	/*
+	 * Functions assigned to buttons
+	 */
+	/* 'Sign Up' in the navigation bar */
 	$rootScope.signUp = function() {
 		var modal = $modal.open({
 			animation: true,			// whether to use animation
@@ -38,6 +52,30 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
 			controller: 'signUpController'		// the controller of the opened page
 		});
 	};
+
+	/* 'Sign In' in the navigation bar */
+	$rootScope.signIn = function() {
+		// GG do actual authorization here
+
+		$rootScope.signedIn = true;
+	}
+
+	/* 'Sign Out' in the navigation bar */
+	$rootScope.signOut = function() {
+		// GG send a "log-out" notification to the server
+
+		$rootScope.doSignOut();
+	}
+});
+
+
+/**
+ * Controls other pages
+ */
+app.controller('PageController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
+
+	$rootScope.onPackagesPage = false;
+
 });
 
 
@@ -75,7 +113,45 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
-				$scope.error = "Error: " + data["error"];
+				switch(data["error"]) {
+				case "name-required":
+					$scope.signUpForm.name.$setValidity("required", false);
+					$scope.signUpForm.name.$setDirty();
+					break;
+
+				case "birth-required":
+					$scope.signUpForm.birth.$setValidity("required", false);
+					$scope.signUpForm.birth.$setDirty();
+					break;
+
+				case "nationality-required":
+					$scope.signUpForm.nationality.$setValidity("required", false);
+					$scope.signUpForm.nationality.$setDirty();
+					break;
+
+				case "passportNo-required":
+					$scope.signUpForm.passportNo.$setValidity("required", false);
+					$scope.signUpForm.passportNo.$setDirty();
+					break;
+
+				case "passportExp-required":
+					$scope.signUpForm.passportExp.$setValidity("required", false);
+					$scope.signUpForm.passportExp.$setDirty();
+					break;
+
+				case "email-required":
+					$scope.signUpForm.email.$setValidity("required", false);
+					$scope.signUpForm.email.$setDirty();
+					break;
+
+				case "password-required":
+					$scope.signUpForm.password.$setValidity("required", false);
+					$scope.signUpForm.password.$setDirty();
+					break;
+
+				default:
+					$scope.error = "Error: " + data["error"];
+				}
 
 				// GG process validation errors
 			} else {
