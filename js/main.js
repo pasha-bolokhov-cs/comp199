@@ -54,6 +54,10 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
+
+		// Indicate password input fields are pristine
+		$scope.blurPassword = false;
+		$scope.blurPassword2 = false;
 	}
 	$scope.setup();
 
