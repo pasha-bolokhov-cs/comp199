@@ -48,7 +48,7 @@ INSERT INTO packages (segId, name, region, origin, price, description, capacity,
  * Amazon
  */ 
 INSERT INTO images (imageName, filename, type)
-       VALUES ('Amazon', 'amazon-fishing.jpg', NULL);
+       VALUES ('Amazon', 'amazon_fishing.jpg', NULL);
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Dallas', 'flight', 'American Airlines - Fall 2015-8', NULL, NULL, 0, NULL);	   
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
