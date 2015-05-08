@@ -38,14 +38,14 @@
       <!-- ** Error messages and diagnostics ** -->
       <div class="row">
         <div class="col-xs-12">
-          <br ng-show="signUpForm.$invalid && signUpForm.$dirty">
-          <alert type="danger" ng-messages="signUpForm.name.$error"
-                 ng-show="signUpForm.name.$dirty && signUpForm.name.$invalid">
+          <br ng-show="signInForm.$invalid && signInForm.$dirty">
+          <alert type="danger" ng-messages="signInForm.name.$error"
+                 ng-show="signInForm.name.$dirty && signInForm.name.$invalid">
             <div class="error" ng-message="pattern">Wrong character in the name</div>
             <div class="error" ng-message="required">Name is required</div>
           </alert>
-          <alert type="danger" ng-messages="signUpForm.email.$error"
-                 ng-show="signUpForm.email.$dirty && signUpForm.email.$invalid">
+          <alert type="danger" ng-messages="signInForm.email.$error"
+                 ng-show="signInForm.email.$dirty && signInForm.email.$invalid">
             <div class="error" ng-message="pattern">Incorrect email address</div>
             <div class="error" ng-message="required">Email address is required</div>
           </alert>
@@ -64,7 +64,7 @@
   <!---------------------------->
   <div class="modal-footer">
     <!-- Register -->
-    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="signUp()">
+    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="signIn()">
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;Sign up
     </button>
   
