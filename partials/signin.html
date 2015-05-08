@@ -17,21 +17,21 @@
 
       <!-- ** ID ** -->
       <div class="row">
-        <!-- Name -->
-        <label for="regName" class="col-xs-12 col-md-6 control-label">
-          Name
-          <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" required>
-        </label>
-        <br>
+        <!-- Email -->
+          <label for="regEmail" class="col-xs-12 col-md-6 control-label">
+            Email
+            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control" required>
+          </label>
       </div> <!-- /row -->
-
+      
+      <br>
+      
       <!-- ** Password ** -->
       <div class="row">
           <!-- Password -->
           <label for="regPassword" class="col-xs-12 col-md-6 control-label">
             Password
-            <input type="password" id="regPassword" name="password" ng-model="customer.password"
-                   ng-focus="blurPassword=false" ng-blur="blurPassword=true" class="form-control" required>
+            <input type="password" id="regPassword" name="password" ng-model="customer.password" class="form-control" required>
           </label>
       </div> <!-- row -->
 
