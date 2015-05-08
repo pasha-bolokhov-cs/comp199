@@ -26,15 +26,18 @@ error_log(" data = " . print_r($data, true));  //GG
 //GGGG validate and test existence !!!
 
 /* hash the password */
-//
+$salt = file_get_contents("/dev/urandom", false, null, 0, 16);
+$password = crypt($data->password, $salt);
+$salt = base64_encode($salt);
+$password = base64_encode($password);
 
 /* form the query */
 $query = <<<"EOF"
-	INSERT INTO customers (name, birth, nationality, passportNo, passportExp, email, phone, password)
-               VALUES ("$data->name", $data->birth, "$data->nationality",
-                       "$data->passportNo", $data->passportExp,
-                       "$data->email", "$data->phone",
-		       "$data->password");
+	INSERT INTO customers (name, birth, nationality, passportNo, passportExp, email, phone, password, salt)
+               VALUES ("{$data->name}", $data->birth, "{$data->nationality}",
+                       "{$data->passportNo}", $data->passportExp,
+                       "{$data->email}", "{$data->phone}",
+		       "$password", "$salt");
 EOF;
 error_log(" query = $query ");  //GG
 
