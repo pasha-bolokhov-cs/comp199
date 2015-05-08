@@ -58,7 +58,7 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Santarem', 'flight', 'TAM Airlines - Fall 2015-5', NULL, NULL, 0, LAST_INSERT_ID());
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
-       VALUES ('Santarem', 'vehicle_v', NULL, 'Local Lodge', 'fishing', 10, LAST_INSERT_ID());	   
+       VALUES ('Santarem', 'vehicle_v', NULL, 'Local Lodge', 'Fishing', 10, LAST_INSERT_ID());	   
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Brasilia', 'flight', 'TAM Airlines - Fall 2015-4', NULL, NULL, 0, LAST_INSERT_ID());
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
@@ -69,8 +69,24 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
        VALUES ('Vancouver', 'flight', 'Air Canada - Fall 2015-1', NULL, NULL, 0, LAST_INSERT_ID());
 INSERT INTO packages (segId, name, region, origin, price, description, capacity, available, imageName)
        VALUES (LAST_INSERT_ID(), 'Big fishing on Amazon River', 'South America', 'Vancouver', 5500, 'Challenge to the world record', 5, 5, 'Amazon');
- 
-             
+
+/*
+ * Istanbul
+ */ 
+INSERT INTO images (imageName, filename, type)
+       VALUES ('Istanbul', 'istanbul.jpg', NULL);
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('London', 'flight', 'American Airlines - Summer 2015-I2', NULL, NULL, 0, NULL);	   
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Istanbul', 'flight', 'American Airlines - Summer 2015-I1', NULL, NULL, 0, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Istanbul', NULL, 'vechicle_l', 'Shangri-La', 'sightseeing', 12, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Tronto', 'flight', 'Air Canada - Summer 2015-I2', NULL, NULL, 0, LAST_INSERT_ID());
+INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
+       VALUES ('Vancouver', 'flight', 'Air Canada - Summer 2015-I1', NULL, NULL, 0, LAST_INSERT_ID());	   
+INSERT INTO packages (segId, name, region, origin, price, description, capacity, available, imageName)
+       VALUES (LAST_INSERT_ID(), 'Istanbul - Exotic City', 'Europe', 'Vancouver', 9800, 'Fell exotic atomspher in Istanbul', 20, 20, 'Istanbul');
                       
               
 	
