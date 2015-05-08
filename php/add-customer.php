@@ -19,29 +19,44 @@ if (!property_exists($data, "name")) {
 	$response["error"] = "name-required";
 	goto quit;
 }
-if (!validate($data, "name")) {
+if (!validate($data->name)) {
 	$response["error"] = "name-wrong";
-error_log("name validation error");
 	goto quit;
 }
 if (!property_exists($data, "birth")) {
 	$response["error"] = "birth-required";
 	goto quit;
 }
+$birth_arr = date_parse($data->birth);
+$birth = $birth_arr["year"] . '-' . $birth_arr["month"] . '-' . $birth_arr["day"];
 if (!property_exists($data, "nationality")) {
 	$response["error"] = "nationality-required";
+	goto quit;
+}
+if (!validate($data->nationality)) {
+	$response["error"] = "nationality-wrong";
 	goto quit;
 }
 if (!property_exists($data, "passportNo")) {
 	$response["error"] = "passportNo-required";
 	goto quit;
 }
+if (!preg_match("/^([0-9]|[a-z])*$/i", $data->passportNo)) {
+	$response["error"] = "passportNo-wrong";
+	goto quit;
+}
 if (!property_exists($data, "passportExp")) {
 	$response["error"] = "passportExp-required";
 	goto quit;
 }
+$passportExp_arr = date_parse($data->passportExp);
+$passportExp = $passportExp_arr["year"] . '-' . $passportExp_arr["month"] . '-' . $passportExp_arr["day"];
 if (!property_exists($data, "email")) {
 	$response["error"] = "email-required";
+	goto quit;
+}
+if (!validate($data->email)) {
+	$response["error"] = "email-wrong";
 	goto quit;
 }
 if (!property_exists($data, "password")) {

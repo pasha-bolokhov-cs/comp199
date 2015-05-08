@@ -51,9 +51,17 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 					$scope.signUpForm.nationality.$setValidity("required", false);
 					$scope.signUpForm.nationality.$setDirty();
 					break;
+				case "nationality-wrong":
+					$scope.signUpForm.nationality.$setValidity("pattern", false);
+					$scope.signUpForm.nationality.$setDirty();
+					break;
 
 				case "passportNo-required":
 					$scope.signUpForm.passportNo.$setValidity("required", false);
+					$scope.signUpForm.passportNo.$setDirty();
+					break;
+				case "passportNo-wrong":
+					$scope.signUpForm.passportNo.$setValidity("pattern", false);
 					$scope.signUpForm.passportNo.$setDirty();
 					break;
 
@@ -66,6 +74,10 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 					$scope.signUpForm.email.$setValidity("required", false);
 					$scope.signUpForm.email.$setDirty();
 					break;
+				case "email-wrong":
+					$scope.signUpForm.email.$setValidity("pattern", false);
+					$scope.signUpForm.email.$setDirty();
+					break;
 
 				case "password-required":
 					$scope.signUpForm.password.$setValidity("required", false);
@@ -75,8 +87,6 @@ app.controller('signUpController', function($scope, $rootScope, $modalInstance, 
 				default:
 					$scope.error = "Error: " + data["error"];
 				}
-
-				// GG process validation errors
 			} else {
 				$modalInstance.close();
 			}
