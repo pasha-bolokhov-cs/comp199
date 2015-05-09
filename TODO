@@ -24,3 +24,6 @@
 
 	*  modal for sign in
 
+
+	*  cookie for remembering the user name over a page refresh
+

@@ -202,10 +202,11 @@ CREATE TABLE orders (
 
 DROP TABLE IF EXISTS cookies;
 CREATE TABLE cookies (
-	sessionID	int NOT NULL,
+	sessionId	VARCHAR(255) NOT NULL,
 	customerId	int NOT NULL,
-	email		varchar(255),
-	PRIMARY KEY	(customerId,customerId)
+	PRIMARY KEY	(sessionId),
+	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
+			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
 
