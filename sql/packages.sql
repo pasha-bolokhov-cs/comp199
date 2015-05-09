@@ -68,7 +68,7 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Vancouver', 'flight', 'Air Canada - Fall 2015-1', NULL, NULL, 0, LAST_INSERT_ID());
 INSERT INTO packages (segId, name, region, origin, price, description, capacity, available, imageName)
-       VALUES (LAST_INSERT_ID(), 'Big fishing on Amazon River', 'South America', 'Vancouver', 5500, 'Challenge to the world record', 5, 5, 'Amazon');
+       VALUES (LAST_INSERT_ID(), 'Fishing on the Amazon River', 'South America', 'Vancouver', 5500, 'Challenge the world fishing record', 5, 5, 'Amazon');
 
 /*
  * Istanbul
@@ -86,5 +86,5 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Vancouver', 'flight', 'Air Canada - Summer 2015-I1', NULL, NULL, 0, LAST_INSERT_ID());	   
 INSERT INTO packages (segId, name, region, origin, price, description, capacity, available, imageName)
-       VALUES (LAST_INSERT_ID(), 'Istanbul - Exotic City', 'Europe', 'Vancouver', 9800, 'Feel the exotic atomsphere of Istanbul', 20, 20, 'Istanbul');
+       VALUES (LAST_INSERT_ID(), 'Istanbul - Exotic City', 'Europe', 'Vancouver', 9800, 'Feel the exotic atmosphere of Istanbul', 20, 20, 'Istanbul');
                       
