@@ -21,7 +21,7 @@
 <!-------------->
 <!-- Packages -->
 <!-------------->
-<div class="jumbotron" ng-repeat="p in result"
+<div class="jumbotron" ng-repeat="p in result" ng-show='p["available"] > 0'
      style='background: url(images/{{ p["fileName"] }}) no-repeat center center;
             background-size: cover;
             margin-bottom: 0;'>

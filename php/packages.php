@@ -25,20 +25,21 @@ if ($mysqli->connect_error) {
 //GGGG validate !!!
 switch ($data->region) {
 case "All":
-	$query = <<<"EOF"
-SELECT p.name, p.region, p.origin, p.price, p.description, p.capacity, p.available, i.fileName
-       FROM packages p LEFT OUTER JOIN images i
-       USING (imageName);
-EOF;
+	$query = <<<"EOF_QUERY_ALL"
+		SELECT p.name, p.region, p.origin, p.price, p.description, p.available, i.fileName
+		       FROM packages p LEFT OUTER JOIN images i
+		       USING (imageName)
+		       WHERE p.available > 0;
+EOF_QUERY_ALL;
 	break;
 
 default:
-	$query = <<<"EOF"
-SELECT p.name, p.region, p.origin, p.price, p.description, p.capacity, p.available, i.fileName
-       FROM packages p LEFT OUTER JOIN images i
-       USING (imageName)
-       WHERE p.region = "{$data->region}";
-EOF;
+	$query = <<<"EOF_QUERY_SPECIFIC"
+		SELECT p.name, p.region, p.origin, p.price, p.description, p.available, i.fileName
+		       FROM packages p LEFT OUTER JOIN images i
+		       USING (imageName)
+		       WHERE (p.region = "{$data->region}") AND (p.available > 0);
+EOF_QUERY_SPECIFIC;
 	break;
 }
         
