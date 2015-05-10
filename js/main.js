@@ -1,7 +1,8 @@
 /**
  * Main AngularJS Application
  */
-var app = angular.module('albatrossApp', ['ngRoute', 'ui.bootstrap', 'ngMessages', 'ngSanitize']);
+var app = angular.module('albatrossApp', ['ngRoute', 'ui.bootstrap', 'ngMessages', 
+					  'ngCookies', 'ngSanitize']);
 
 
 /**
