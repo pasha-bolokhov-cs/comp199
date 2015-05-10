@@ -168,7 +168,6 @@ CREATE TABLE packages (
 	origin		varchar(80),
 	price		int,
 	description	text,
-	capacity	int,
 	available	int,
 	imageName	varchar(255),
 	PRIMARY KEY	(packageId),
