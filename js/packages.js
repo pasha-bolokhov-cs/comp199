@@ -2,7 +2,7 @@
  * Controls the 'packages' page
  */
 // GG remove '$sce' if not needed
-app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
+app.controller('PackagesController', function($scope, $rootScope, $http, $cookies, $sce) {
 
 	/*
 	 * Permanent initialization
