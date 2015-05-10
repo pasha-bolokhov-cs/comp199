@@ -55,7 +55,8 @@
             <div class="form-group">
               <p class="navbar-text" for="region">Select a region:
                 <select name="region" id="region" class="form-control"
-                        ng-model="$root.region" ng-options="r for r in $root.regions" ng-change="regionSelect()">
+                        ng-model="$root.region" ng-options='r.region disable when !r.available for r in $root.regions'
+			ng-change="regionSelect()">
                 </select>
               </p>
             </div>

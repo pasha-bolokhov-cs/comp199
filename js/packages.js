@@ -14,7 +14,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 	 */
 	$scope.setup = function() {
 		// Initialization
-		$scope.showResult = false;
+		$scope.showError = false;
 		$scope.error = false;
 		$scope.waitingRegions = false;
 		$scope.waitingPackages = false;
@@ -35,7 +35,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 	$rootScope.regionSelect = function() {
 		// Indicate we are waiting for data
 		$scope.waitingPackages = true;
-		$scope.request = { region: $rootScope.region };
+		$scope.request = { region: $rootScope.region.region };
 	
 		// Send the request to the PHP script
 		$http.post("php/packages.php", $scope.request)
@@ -54,7 +54,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 		.finally(function() { 
 			// Indicate that we have an answer
 			$scope.waitingPackages = false;
-			$scope.showResult = true;
+			$scope.showError = true;
 		});
 	}
 
@@ -62,9 +62,9 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 	/*
 	 * Get the list of regions
 	 */
-	$rootScope.region = "All";
 	$rootScope.showRegions = false;
 	$scope.waitingRegions = true;
+	$rootScope.region = {"region": "All", "available": true};
 	$http.post("php/get-regions.php")
 	.success(function(data) {
 		// process the response
@@ -74,7 +74,10 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 			// form a new list of regions with "All" prepended
 			$rootScope.regions = [ $rootScope.region ];
 			for (var r in data["regions"]) {
-				$rootScope.regions.push(data["regions"][r].region);
+				$rootScope.regions.push({
+					"region": data["regions"][r].region,
+					"available": data["regions"][r].available
+				});
 			}
 		}
 	})
@@ -91,5 +94,5 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 	/*
 	 * Get the packages
 	 */
-	$rootScope.regionSelect($rootScope.region);
+	$rootScope.regionSelect();
 });

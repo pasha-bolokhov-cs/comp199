@@ -44,7 +44,7 @@ error_log(" query = $query ");  //GG
 /* do the query */
 $response = array();
 if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error (' . $mysqli->error . ')';
+	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto database_quit;
 } else {
 	$resultArray = mysqli_fetch_assoc($result);  // GG check that there is a result

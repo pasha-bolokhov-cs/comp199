@@ -17,16 +17,15 @@ if ($mysqli->connect_error) {
 	goto quit;
 }
 
-/* form the query */
+/* form the query for all existing regions */
 $query = <<<"EOF"
 SELECT * FROM regions;
 EOF;
         
 /* do the query */
 if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error (' . $mysqli->error . ') ';
-	$mysqli->close();
-	goto quit;
+	$response["error"] = 'Query Error - ' . $mysqli->error;
+	goto database_quit;
 }
 
 /* fetch the results and put into response */
@@ -42,6 +41,35 @@ while ($row = $result->fetch_assoc()) {
 		goto database_quit;
 	}
 }
+
+/* find out which regions have available packages associated with them */
+$query = <<<"EOF"
+	SELECT region FROM packages
+	       WHERE available > 0;
+EOF;
+
+/* do the query */
+if (($result = $mysqli->query($query)) === FALSE) {
+	$response["error"] = 'Query Error - ' . $mysqli->error;
+	goto database_quit;
+}
+
+/* fetch the results */
+$avail_regions = array();
+while ($row = $result->fetch_assoc()) {
+	// append the region
+	if (!array_key_exists("region", $row)) {
+		$response["error"] = 'Internal Error - row does not exist';
+		goto database_quit;
+	}
+	$avail_regions[] = $row["region"];
+}
+
+/* now mark the available regions in the response */
+foreach ($response["regions"] as $r => $v) {
+	$response["regions"][$r]["available"] = in_array($response["regions"][$r]["region"], $avail_regions);
+}
+
 
 /* close the database */
 database_quit:

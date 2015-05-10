@@ -3,9 +3,9 @@
 <!---------------------------->
 <div class="container-fluid">
   <!-- error message -->
-  <div class="row" ng-show="showResult && error" ng-cloak>
+  <div class="row" ng-show="showError && error" ng-cloak>
     <div class="col-xs-12 col-md-8 col-md-offset-2">
-      <alert class="text-center" type="danger" close="reset()">{{ error }}</alert>
+      <alert class="text-center" type="danger" close="showError=false">{{ error }}</alert>
     </div>
   </div> <!-- /div with any errors -->
 

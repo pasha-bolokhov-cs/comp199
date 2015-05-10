@@ -14,9 +14,7 @@
 
 		  style="position: absolute; top: 70px; left: 10%; right: 10%; opacity: 0.6;"
 
-		* check the availability of the packages
-
-		* show some regions as disabled if no available packages for them
+		* check the availability of the packages (do not show unavailable packages)
 
 		* packages should load all packages at once, and then select menu
 

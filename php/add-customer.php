@@ -93,7 +93,7 @@ error_log("Albatross(TM) query = $query ");  //GG
 /* do the query */
 $response = array();
 if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error (' . $mysqli->error . ')';
+	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto database_quit;
 }
 
