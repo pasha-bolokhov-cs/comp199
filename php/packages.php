@@ -45,8 +45,7 @@ EOF;
 /* do the query */
 if (($result = $mysqli->query($query)) === FALSE) {
 	$response["error"] = 'Query Error (' . $mysqli->error . ') ';
-	$mysqli->close();
-	goto quit;
+	goto database_quit;
 }
 
 /* fetch the results and put into response */
