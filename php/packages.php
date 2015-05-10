@@ -4,6 +4,7 @@
  * sends their information to the website
  *
  */
+require_once 'validate.php';
 
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
@@ -12,17 +13,22 @@ define("MAX_RESPONSE_LINES", 1000);
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
+/* validation */
+if (!validate($data->region)) {
+	$response["error"] = "Validation error";
+	goto quit;
+}
+
 /* connect to the database */
 require_once '../../../comp199-www/mysqli_auth.php';
 $mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
 if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') ' .
+			     $mysqli->connect_error;
 	goto quit;
 }
 
 /* form the query */
-//GGGG validate !!!
 switch ($data->region) {
 case "All":
 	$query = <<<"EOF_QUERY_ALL"
