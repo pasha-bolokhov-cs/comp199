@@ -18,6 +18,10 @@
 
 		* show some regions as disabled if no available packages for them
 
+		* packages should load all packages at once, and then select menu
+
+		  should only show the appropriate ones
+
 
         *  modal for sign up
 
