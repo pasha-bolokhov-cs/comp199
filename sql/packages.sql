@@ -42,7 +42,7 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Murmansk', 'flight', 'Finnair - Winter 2016', NULL, NULL, 1, LAST_INSERT_ID());
 INSERT INTO packages (segId, name, region, origin, price, description, capacity, available, imageName)
-       VALUES (LAST_INSERT_ID(), 'Cruise to North Pole', 'North Pole', 'Helsinki', 4000, 'Discover the breath of Arctic', 20, 20, 'North Pole');
+       VALUES (LAST_INSERT_ID(), 'Cruise to the North Pole', 'North Pole', 'Helsinki', 4000, 'Discover the breath of Arctic', 20, 20, 'North Pole');
 
 /*
  * Amazon
