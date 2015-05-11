@@ -36,7 +36,7 @@
   <!-- Navigation -->
   <!---------------->
   <div class="container-fluid">
-    <nav class="row navbar navbar-default" style="margin-bottom: 0;">
+    <nav class="row navbar navbar-default" style="margin-bottom: 0;" ng-cloak>
       <div class="col-xs-12">
         <div class="navbar-header">
           <a class="navbar-brand" href="#/home">Albatross</a>
@@ -47,8 +47,10 @@
             <span class="glyphicon glyphicon-home"></span> Home</a></li>
           <li><a href="#/packages">
             <span class="glyphicon glyphicon-globe"></span> Packages</a></li>
-          <li ng-show="signedIn"><a href="#/trips">My Trips</a></li>
-          <li ng-show="signedIn"><a href="#/profile">Profile</a></li>
+          <li ng-show="signedIn"><a href="#/trips">
+            <span class="glyphicon glyphicon-plane"></span> My Trips</a></li>
+          <li ng-show="signedIn"><a href="#/profile">
+            <span class="glyphicon glyphicon-user"></span> Profile</a></li>
         </ul>
 
 
@@ -69,7 +71,7 @@
         <ul class="nav navbar-nav navbar-right">
           <li><p class="navbar-text" ng-show="signedIn">Signed in as {{ $root.loginName }}</p></li>
           <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signUp()">
-            <span class="glyphicon glyphicon-user"></span> Sign up</a>
+            <span class="glyphicon glyphicon-pencil"></span> Sign up</a>
           </li>
           <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signIn()">
             <span class="glyphicon glyphicon-log-in"></span> Sign in</a>
