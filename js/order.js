@@ -1,15 +1,21 @@
-app.controller('orderController', function($scope) {
+app.controller('orderController', function($scope, $http) {
 
-
-    $scope.customer = "";
-    $scope.customer = "";
-    $scope.customer = "";
-    $scope.customer = "";
-    $scope.customer = "";
+    $scope.name = "";
+    $scope.package = "";
+    $scope.status = "";
+    $scope.purchaseDate = "";
+    $scope.receipt = "";
     
     
-    $scope.orderSelect = {
+    $http.post("php/packages.php")
+		.success(function() {
+        	
+		})
+		.error(function() {
+		    
+		})
+        
       
-    }
+
 
 });
