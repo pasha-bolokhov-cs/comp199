@@ -47,8 +47,16 @@
         <div class="control-group">
           <label class="control-label" for="signin"></label>
           <div class="controls">
-            <button id="signin" name="signin" class="btn btn-primary">Sign In</button>
-            <button id="register" name="register" class="btn btn-info">Register</button>
+            <button class="btn btn-primary" ng-click="$root.signIn()">
+              <span class="glyphicon glyphicon-log-in"></span>
+              &nbsp;
+              Sign In
+            </button>
+            <button class="btn btn-info" ng-click="$root.signUp()">
+              <span class="glyphicon glyphicon-pencil"></span>
+              &nbsp;
+              Register
+            </button>
           </div>
         </div>
       </form>

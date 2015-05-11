@@ -41,7 +41,8 @@
         <div class="navbar-header">
           <a class="navbar-brand" href="#/home">Albatross</a>
         </div>
-  
+
+        <!-- Home   Packages   My Trips   Profile -->  
         <ul class="nav navbar-nav col-xs-4">
           <li><a href="#/home">
             <span class="glyphicon glyphicon-home"></span> Home</a></li>
@@ -53,7 +54,7 @@
             <span class="glyphicon glyphicon-user"></span> Profile</a></li>
         </ul>
 
-
+        <!-- Select a region: <All> -->
         <div class="col-xs-3">
           <form class="form-inline" ng-show="onPackagesPage && showRegions" role="form" ng-cloak>
             <div class="form-group">
@@ -67,7 +68,7 @@
           </form>
         </div>
 
-  
+        <!-- Sign up   Sign in   Sign out -->
         <ul class="nav navbar-nav navbar-right">
           <li><p class="navbar-text" ng-show="signedIn">Signed in as {{ $root.loginName }}</p></li>
           <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signUp()">
