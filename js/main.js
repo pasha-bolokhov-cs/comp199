@@ -30,7 +30,7 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
 	/*
 	 * Permanent initialization
 	 */
-	/* Arrange the page for the sign-out */
+	/* GG Arrange the page for the sign-out */
 	$rootScope.doSignOut = function() {
 		$rootScope.signedIn = false;
 	}

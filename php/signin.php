@@ -4,6 +4,7 @@
  *
  */
 require_once 'validate.php';
+require_once 'JWT.php';
 
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
@@ -35,8 +36,8 @@ if ($mysqli->connect_error) {
 
 /* form the query */
 $query = <<<"EOF"
-	SELECT email, password, salt
-	       FROM customer
+	SELECT name, email, password, salt
+	       FROM customers
 	       WHERE email = "{$data->email}";
 EOF;
 error_log(" query = $query ");  //GG
@@ -46,39 +47,43 @@ $response = array();
 if (($result = $mysqli->query($query)) === FALSE) {
 	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto database_quit;
-} else {
-	$resultArray = mysqli_fetch_assoc($result);  // GG check that there is a result
-	$name = $resultArray['email'];
-	$password = $resultArray['$password'];
-	$salt = $resultArray['salt'];
-    
-	/* hash the password */
-	$salt = base64_decode($salt);
-	$passwordInput = crypt($data->password, $salt);
-	$passwordInput = base64_encode($passwordInput);
-
-	/* check the password */
-	if ($passwordInput != $password){
-		// send warning to user
-		$mysqli->close();
-		goto database_quit;
-	} else {
-		/* create a session to save this user's login status   */
-		$cookieLife=1200;
-		session_start();
-		setcookie(session_name(),session_id(),time()+$cookieLife); 
-
-		/* .... */
-		$status = $email;
-	}
 }
-      
+if (($resultArray = $result->fetch_assoc()) == NULL) {
+	$response["error"] = "login";
+	goto database_quit;
+}
+$name = $resultArray['name'];
+$email = $resultArray['email'];
+$password = $resultArray['password'];
+$salt = $resultArray['salt'];
+    
+/* hash the password */
+$salt = base64_decode($salt);
+$passwordInput = crypt($data->password, $salt);
+$passwordInput = base64_encode($passwordInput);
 
-/* close the database */
+/* check the password */
+if ($passwordInput != $password){
+	$response["error"] = "login";
+	goto database_quit;
+}
+
+/* generate a token */
+$key = "super secret";		//GG change it and move it away
+$token = array(
+	"iss"	=>	"Albatross Travel",
+	"iat"	=>	time(),
+	"name"	=>	$name,
+	"email"	=>	$email
+);
+$jwt = JWT::encode($token, $key, 'HS256');
+$response["jwt"] = $jwt;
+
 database_quit:
+/* close the database */
 $mysqli->close();
-quit:
 
+quit:
 /* return the response */
 echo json_encode($response);
 ?>

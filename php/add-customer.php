@@ -14,7 +14,6 @@ $data = json_decode($jsonData);
 
 /* validate data */
 error_log("Albatross(TM) data = " . print_r($data, true));  //GG
-//GGGG validate and test existence !!!
 if (!property_exists($data, "name")) {
 	$response["error"] = "name-required";
 	goto quit;

@@ -52,6 +52,10 @@
           <alert type="danger" ng-show="(blurPassword || blurPassword2) && customer.password !== customer.password2">
             <div class="error">Passwords do not match</div>
           </alert>
+
+          <alert type="danger" ng-show="error && showError" close="showError=false">
+            {{ error }}
+          </alert>
         </div>
       </div>
 
@@ -65,7 +69,7 @@
   <div class="modal-footer">
     <!-- Register -->
     <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="signIn()">
-      <span class="glyphicon glyphicon-pencil"></span>&nbsp;Sign up
+      <span class="glyphicon glyphicon-log-in"></span>&nbsp;Sign in
     </button>
   
     <!-- Cancel -->

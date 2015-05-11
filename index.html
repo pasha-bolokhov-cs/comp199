@@ -43,8 +43,10 @@
         </div>
   
         <ul class="nav navbar-nav col-xs-4">
-          <li><a href="#/home">Home</a></li>
-          <li><a href="#/packages">Packages</a></li>
+          <li><a href="#/home">
+            <span class="glyphicon glyphicon-home"></span> Home</a></li>
+          <li><a href="#/packages">
+            <span class="glyphicon glyphicon-globe"></span> Packages</a></li>
           <li ng-show="signedIn"><a href="#/trips">My Trips</a></li>
           <li ng-show="signedIn"><a href="#/profile">Profile</a></li>
         </ul>
@@ -65,6 +67,7 @@
 
   
         <ul class="nav navbar-nav navbar-right">
+          <li><p class="navbar-text" ng-show="signedIn">Signed in as {{ $root.loginName }}</p></li>
           <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signUp()">
             <span class="glyphicon glyphicon-user"></span> Sign up</a>
           </li>
