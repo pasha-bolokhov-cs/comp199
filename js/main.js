@@ -2,7 +2,7 @@
  * Main AngularJS Application
  */
 var app = angular.module('albatrossApp', ['ngRoute', 'ui.bootstrap', 'ngMessages', 
-					  'ngCookies', 'ngSanitize']);
+					  'ngCookies', 'ngSanitize', 'angular-jwt']);
 
 
 /**
@@ -59,11 +59,10 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
 		var modal = $modal.open({
 			animation: true,			// whether to use animation
 			templateUrl: 'partials/signin.html',	// what to show in the modal
-			size: 'md',				// size
+			size: 'sm',				// size
 			backdrop: 'static',			// clicking outside does not close the window
 			controller: 'signInController'		// the controller of the opened page
 		});
-		//$rootScope.signedIn = true;
 	}
 
 	/* 'Sign Out' in the navigation bar */

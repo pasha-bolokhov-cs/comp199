@@ -16,7 +16,9 @@ app.controller('signInController', function($scope, $rootScope, $modalInstance, 
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
-
+		$scope.showError = false;
+		$scope.error = false;
+		$scope.waitingPackages = false;
 	}
 	$scope.setup();
 
@@ -25,6 +27,9 @@ app.controller('signInController', function($scope, $rootScope, $modalInstance, 
 	 */
 	/* 'Sign-In' button in the modal */
 	$scope.signIn = function() {
+		// Indicate we are waiting for data
+		$scope.waitingPackages = true;
+
 		// Send the request to the PHP script
 		$http.post("php/signin_saveStatus.php", $scope.customer)
 		.success(function(data) {
@@ -47,8 +52,10 @@ app.controller('signInController', function($scope, $rootScope, $modalInstance, 
 
 				// GG process validation errors
 			} else {
-				
+				//GG change status to signed in
 				$modalInstance.close();
+				$rootScope.signedIn = true;
+
 			}
 		})
 		.error(function(data, status) {
@@ -58,7 +65,6 @@ app.controller('signInController', function($scope, $rootScope, $modalInstance, 
 		.finally(function() { 
 			// Indicate that we have an answer
 			$scope.waitingPackages = false;
-			$scope.showResult = true;
 		});
 	}
 
