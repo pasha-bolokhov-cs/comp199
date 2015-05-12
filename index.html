@@ -43,7 +43,7 @@
         </div>
 
         <!-- Home   Packages   My Trips   Profile -->  
-        <ul class="nav navbar-nav col-xs-4">
+        <ul class="nav navbar-nav col-xs-4" ui-view="navigation-left-view">
           <li><a href="#/home">
             <span class="glyphicon glyphicon-home"></span> Home</a></li>
           <li><a href="#/packages">
@@ -69,7 +69,7 @@
         </div>
 
         <!-- Sign up   Sign in   Sign out -->
-        <ul class="nav navbar-nav navbar-right">
+        <ul class="nav navbar-nav navbar-right" ui-view="navigation-right-view">
           <li><p class="navbar-text" ng-show="signedIn">Signed in as {{ $root.loginName }}</p></li>
           <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signUp()">
             <span class="glyphicon glyphicon-pencil"></span> Sign up</a>
@@ -89,8 +89,8 @@
   <!---------------------->
   <!-- The partial view -->
   <!---------------------->
-  <ng-view>
-  </ng-view>
+  <ui-view>
+  </ui-view>
   
 
   <!---------------------->

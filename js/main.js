@@ -8,17 +8,27 @@ var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessag
 /**
  * Configure the Routes
  */
-app.config(['$routeProvider', function ($routeProvider) {
-	$routeProvider
+app.config(['$routeProvider', 'urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+	$stateProvider
+		.state("guest", {
+			url: "",
+			views: {
+				"navigation-left-view": { template: "guest-navigation-left-view.html" },
+				"navigation-right-view": { template: "guest-navigation-right-view.html" },
+			}
+		})
+		.state("user", {
+			url: "",
+			views: {
+				"navigation-left-view": { template: "user-navigation-left-view.html" },
+				"navigation-right-view": { template: "user-navigation-right-view.html" },
+			}
+		})
 		// Home
-		.when("/",		{templateUrl: "partials/home.html", controller: "PageController"})
-		.when("/home",		{templateUrl: "partials/home.html", controller: "PageController"})
+		.state("guest.home", {url: "/home", templateUrl: "partials/home.html", controller: "PageController"})
 		// Pages
-		.when("/packages",	{templateUrl: "partials/packages.html", controller: "PackagesController"})
-		.when("/trips",		{templateUrl: "partials/orders.html", controller: "OrdersController"})
-		.when("/profile",	{templateUrl: "partials/profile.html", controller: "PageController"})
-		// else 404
-		.otherwise("/404",	{templateUrl: "partials/404.html", controller: "PageController"});
+		.state("guest.packages", {url: "/packages", templateUrl: "partials/packages.html", controller: "PackagesController"});
+	$urlRouterProvider.otherwise("guest.home");
 }]);
 
 
