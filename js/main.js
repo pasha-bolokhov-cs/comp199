@@ -11,28 +11,34 @@ var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessag
 app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state("guest", {
-			url: "",
+			abstract: true,
+			url: "/guest",
 			views: {
 				"navigation-left-view": {
-					templateUrl: "partials/guest/navigation-left.html" },
+					templateUrl: "partials/guest/navigation-left.html"
+				},
 				"navigation-right-view": {
-					templateUrl: "partials/guest/navigation-right.html" },
+					templateUrl: "partials/guest/navigation-right.html"
+				}
 			}
 		})
 		.state("user", {
-			url: "",
+			abstract: true,
+			url: "/user",
 			views: {
 				"navigation-left-view": {
-					templateUrl: "partials/user/navigation-left.html" },
+					templateUrl: "partials/user/navigation-left.html"
+				},
 				"navigation-right-view": {
-					templateUrl: "partials/user/navigation-right.html" },
+					templateUrl: "partials/user/navigation-right.html"
+				}
 			}
 		})
 		// Home
 		.state("guest.home", {url: "/home", templateUrl: "partials/home.html", controller: "PageController"})
-		// Pages
+		// Packages
 		.state("guest.packages", {url: "/packages", templateUrl: "partials/packages.html", controller: "PackagesController"});
-	$urlRouterProvider.otherwise("guest.home");
+	$urlRouterProvider.otherwise("/guest/home");
 });
 
 
@@ -95,4 +101,5 @@ app.controller('PageController', function ($scope, $rootScope, $modal /* also: $
 
 	$rootScope.onPackagesPage = false;
 
+	console.log("in PageController");
 });
