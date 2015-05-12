@@ -39,19 +39,11 @@
     <nav class="row navbar navbar-default" style="margin-bottom: 0;" ng-cloak>
       <div class="col-xs-12">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#/home">Albatross</a>
+          <a class="navbar-brand" sref="guest.home">Albatross</a>
         </div>
 
         <!-- Home   Packages   My Trips   Profile -->  
         <ul class="nav navbar-nav col-xs-4" ui-view="navigation-left-view">
-          <li><a href="#/home">
-            <span class="glyphicon glyphicon-home"></span> Home</a></li>
-          <li><a href="#/packages">
-            <span class="glyphicon glyphicon-globe"></span> Packages</a></li>
-          <li ng-show="signedIn"><a href="#/trips">
-            <span class="glyphicon glyphicon-plane"></span> My Trips</a></li>
-          <li ng-show="signedIn"><a href="#/profile">
-            <span class="glyphicon glyphicon-user"></span> Profile</a></li>
         </ul>
 
         <!-- Select a region: <All> -->
@@ -70,16 +62,6 @@
 
         <!-- Sign up   Sign in   Sign out -->
         <ul class="nav navbar-nav navbar-right" ui-view="navigation-right-view">
-          <li><p class="navbar-text" ng-show="signedIn">Signed in as {{ $root.loginName }}</p></li>
-          <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signUp()">
-            <span class="glyphicon glyphicon-pencil"></span> Sign up</a>
-          </li>
-          <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signIn()">
-            <span class="glyphicon glyphicon-log-in"></span> Sign in</a>
-          </li>
-          <li><a href="" ng-show="$root.signedIn" ng-click="$root.signOut()">
-            <span class="glyphicon glyphicon-log-out"></span> Sign out</a>
-          </li>
         </ul>
       <div> <!-- /col-xs-12 -->
     </nav>

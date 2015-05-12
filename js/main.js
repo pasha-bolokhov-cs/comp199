@@ -8,20 +8,24 @@ var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessag
 /**
  * Configure the Routes
  */
-app.config(['$routeProvider', 'urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state("guest", {
 			url: "",
 			views: {
-				"navigation-left-view": { template: "guest-navigation-left-view.html" },
-				"navigation-right-view": { template: "guest-navigation-right-view.html" },
+				"navigation-left-view": {
+					templateUrl: "partials/guest/navigation-left.html" },
+				"navigation-right-view": {
+					templateUrl: "partials/guest/navigation-right.html" },
 			}
 		})
 		.state("user", {
 			url: "",
 			views: {
-				"navigation-left-view": { template: "user-navigation-left-view.html" },
-				"navigation-right-view": { template: "user-navigation-right-view.html" },
+				"navigation-left-view": {
+					templateUrl: "partials/user/navigation-left.html" },
+				"navigation-right-view": {
+					templateUrl: "partials/user/navigation-right.html" },
 			}
 		})
 		// Home
@@ -29,7 +33,7 @@ app.config(['$routeProvider', 'urlRouterProvider', function ($stateProvider, $ur
 		// Pages
 		.state("guest.packages", {url: "/packages", templateUrl: "partials/packages.html", controller: "PackagesController"});
 	$urlRouterProvider.otherwise("guest.home");
-}]);
+});
 
 
 /**
