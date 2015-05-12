@@ -1,11 +1,6 @@
 app.controller('OrdersController', function($scope, $http) {
 
-    $scope.name = "";
-    $scope.package = "";
-    $scope.status = "";
-    $scope.purchaseDate = "";
-    $scope.receipt = "";
-    
+    $scope.order = {};
     
     $http.post("php/orders.php")
 		.success(function() {
