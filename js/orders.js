@@ -1,4 +1,4 @@
-app.controller('orderController', function($scope, $http) {
+app.controller('ordersController', function($scope, $http) {
 
     $scope.name = "";
     $scope.package = "";
@@ -7,15 +7,12 @@ app.controller('orderController', function($scope, $http) {
     $scope.receipt = "";
     
     
-    $http.post("php/packages.php")
+    $http.post("php/orders.php")
 		.success(function() {
         	
 		})
 		.error(function() {
 		    
 		})
-        
-      
-
 
 });

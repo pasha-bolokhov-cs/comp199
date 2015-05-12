@@ -1,7 +1,7 @@
 <!------------------>
 <!-- Order Tables -->
 <!------------------>
-<div class="container" ng-controller="orderController">
+<div class="container">
     <div class="row">
       <div class="col-xs-12">
         <table class="table table-hover">
@@ -15,13 +15,13 @@
               <th>Receipt</th>
             </tr>
           </thead>
-          <tbody ng-repeat="order in order">
-            <tr>
-              <td>No.</td>    //
+          <tbody>
+            <tr ng-repeat="order in orders">
+              <td>No.</td>
               <td>{{ order.name }}</td>
               <td>{{ order.package }}</td>
               <td>{{ order.status }}</td>
-              <td>{{ order.purchase Date }}}</td>
+              <td>{{ order.purchaseDate }}}</td>
               <td>{{ order.receipt }}</td>
             </tr>
           </tbody>
