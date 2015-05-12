@@ -1,7 +1,7 @@
 /**
  * Controls the 'Sign Up' modal
  */
-app.controller('signUpController', function($scope, $rootScope, $modalInstance, $http) {
+app.controller('SignUpController', function($scope, $rootScope, $modalInstance, $http) {
 
 	/*
 	 * Permanent initialization

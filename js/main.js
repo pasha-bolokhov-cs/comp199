@@ -15,7 +15,7 @@ app.config(['$routeProvider', function ($routeProvider) {
 		.when("/home",		{templateUrl: "partials/home.html", controller: "PageController"})
 		// Pages
 		.when("/packages",	{templateUrl: "partials/packages.html", controller: "PackagesController"})
-		.when("/trips",		{templateUrl: "partials/orders.html", controller: "ordersController"})
+		.when("/trips",		{templateUrl: "partials/orders.html", controller: "OrdersController"})
 		.when("/profile",	{templateUrl: "partials/profile.html", controller: "PageController"})
 		// else 404
 		.otherwise("/404",	{templateUrl: "partials/404.html", controller: "PageController"});
@@ -50,7 +50,7 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
 			templateUrl: 'partials/signup.html',	// what to show in the modal
 			size: 'md',				// size
 			backdrop: 'static',			// clicking outside does not close the window
-			controller: 'signUpController'		// the controller of the opened page
+			controller: 'SignUpController'		// the controller of the opened page
 		});
 	};
 
@@ -61,7 +61,7 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
 			templateUrl: 'partials/signin.html',	// what to show in the modal
 			size: 'sm',				// size
 			backdrop: 'static',			// clicking outside does not close the window
-			controller: 'signInController'		// the controller of the opened page
+			controller: 'SignInController'		// the controller of the opened page
 		});
 	}
 

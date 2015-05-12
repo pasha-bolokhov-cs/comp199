@@ -2,7 +2,7 @@
 /**
  * Controls the 'Sign In' modal
  */
-app.controller('signInController', function($scope, $rootScope, $modalInstance, $http, jwtHelper) {
+app.controller('SignInController', function($scope, $rootScope, $modalInstance, $http, jwtHelper) {
 
 	/*
 	 * Permanent initialization

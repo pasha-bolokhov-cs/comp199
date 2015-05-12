@@ -1,4 +1,4 @@
-app.controller('ordersController', function($scope, $http) {
+app.controller('OrdersController', function($scope, $http) {
 
     $scope.name = "";
     $scope.package = "";
