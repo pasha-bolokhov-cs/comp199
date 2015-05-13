@@ -7,7 +7,6 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 	/*
 	 * Permanent initialization
 	 */
-	$rootScope.onPackagesPage = true;
 
 	/*
 	 * Resettable data initialization

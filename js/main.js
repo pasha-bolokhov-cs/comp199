@@ -45,14 +45,22 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		})
 		// Packages
+		.state("guest.packagesRoot", {	// This parent state just calls the controller
+			url: "/packages",
+			abstract: true,
+			controller: "PackagesController"
+		})
 		.state("guest.packages", {
-			url: "packages",
+			url: "",
 			views: {
+				"select-region-view@": {	// The view in the root state
+					templateUrl: "partials/regions.html"
+				},
 				"@": {		// Targets the unnamed view in the root state
 					templateUrl: "partials/packages.html",
 					controller: "PackagesController"
 				}
-			}
+			},
 		});
 	$urlRouterProvider.otherwise("/");
 });
@@ -114,8 +122,4 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
  * Controls other pages
  */
 app.controller('PageController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
-
-	$rootScope.onPackagesPage = false;
-
-	console.log("in PageController");
 });

@@ -47,18 +47,7 @@
         </ul>
 
         <!-- Select a region: <All> -->
-        <div class="col-xs-3">
-          <form class="form-inline" ng-show="onPackagesPage && showRegions" role="form" ng-cloak>
-            <div class="form-group">
-              <p class="navbar-text" for="region">Select a region:
-                <select name="region" id="region" class="form-control"
-                        ng-model="$root.region" ng-options='r.region disable when !r.available for r in $root.regions'
-			ng-change="regionSelect()">
-                </select>
-              </p>
-            </div>
-          </form>
-        </div>
+	<div ui-view="select-region-view"></div>
 
         <!-- Sign up   Sign in   Sign out -->
         <ul class="nav navbar-nav navbar-right" ui-view="navigation-right-view">
