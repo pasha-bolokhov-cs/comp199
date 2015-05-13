@@ -35,9 +35,25 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		})
 		// Home
-		.state("guest.home", {url: "", templateUrl: "partials/home.html", controller: "PageController"})
+		.state("guest.home", {
+			url: "",		// Does not add anything to the parent URL
+			views: {
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/home.html",
+					controller: "PageController"
+				}
+			}
+		})
 		// Packages
-		.state("guest.packages", {url: "packages", templateUrl: "partials/packages.html", controller: "PackagesController"});
+		.state("guest.packages", {
+			url: "packages",
+			views: {
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/packages.html",
+					controller: "PackagesController"
+				}
+			}
+		});
 	$urlRouterProvider.otherwise("/");
 });
 
