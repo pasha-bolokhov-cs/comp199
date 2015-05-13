@@ -10,6 +10,7 @@ var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessag
  */
 app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
+		// "Guest" state - not logged in as a user
 		.state("guest", {
 			abstract: true,
 			url: "/",
@@ -22,6 +23,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		})
+		// "User" state - logged in as a user
 		.state("user", {
 			abstract: true,
 			url: "/user",
@@ -34,6 +36,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		})
+		/*
+		 * Guest states
+		 */
 		// Home
 		.state("guest.home", {
 			url: "",		// Does not add anything to the parent URL
@@ -44,13 +49,13 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		})
-		// Packages
+		// Packages - shared (duplicated) between "guest" and "user"
 		.state("guest.packagesRoot", {	// This parent state just calls the controller
 			url: "/packages",
 			abstract: true,
 			controller: "PackagesController"
 		})
-		.state("guest.packages", {
+		.state("guest.packagesRoot.packages", {
 			url: "",
 			views: {
 				"select-region-view@": {	// The view in the root state
@@ -60,7 +65,27 @@ app.config(function($stateProvider, $urlRouterProvider) {
 					templateUrl: "partials/packages.html",
 					controller: "PackagesController"
 				}
-			},
+			}
+		})
+		/*
+		 * User states
+		 */
+		.state("user.packagesRoot", { // This parent state just calls the controller
+			url: "/packages",
+			abstract: true,
+			controller: "PackagesController"
+		})
+		.state("user.packagesRoot.packages", {
+			url: "",
+			views: {
+				"select-region-view@": {	// The view in the root state
+					templateUrl: "partials/regions.html"
+				},
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/packages.html",
+					controller: "PackagesController"
+				}
+			}
 		});
 	$urlRouterProvider.otherwise("/");
 });
@@ -76,13 +101,12 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
 	 */
 	/* GG Arrange the page for the sign-out */
 	$rootScope.doSignOut = function() {
-		$rootScope.signedIn = false;
 	}
 
 	/*
 	 * Resettable data initialization
 	 */
-	$rootScope.signedIn = false;
+
 
 	/*
 	 * Functions assigned to buttons

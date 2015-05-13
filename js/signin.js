@@ -2,7 +2,7 @@
 /**
  * Controls the 'Sign In' modal
  */
-app.controller('SignInController', function($scope, $rootScope, $modalInstance, $http, jwtHelper) {
+app.controller('SignInController', function($scope, $rootScope, $modalInstance, $http, jwtHelper, $state) {
 
 	/*
 	 * Permanent initialization
@@ -61,9 +61,10 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 				$modalInstance.close();
 				$token = jwtHelper.decodeToken(data["jwt"]);
 				$rootScope.loginName = $token.name;
-				$rootScope.signedIn = true;
 
 				console.log("Got token = ", $token);  //GG
+
+				$state.go("user.packagesRoot.packages");
 			}
 		})
 		.error(function(data, status) {
