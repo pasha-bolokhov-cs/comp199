@@ -12,7 +12,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 	$stateProvider
 		.state("guest", {
 			abstract: true,
-			url: "/guest",
+			url: "/",
 			views: {
 				"navigation-left-view": {
 					templateUrl: "partials/guest/navigation-left.html"
@@ -35,10 +35,10 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		})
 		// Home
-		.state("guest.home", {url: "/home", templateUrl: "partials/home.html", controller: "PageController"})
+		.state("guest.home", {url: "", templateUrl: "partials/home.html", controller: "PageController"})
 		// Packages
-		.state("guest.packages", {url: "/packages", templateUrl: "partials/packages.html", controller: "PackagesController"});
-	$urlRouterProvider.otherwise("/guest/home");
+		.state("guest.packages", {url: "packages", templateUrl: "partials/packages.html", controller: "PackagesController"});
+	$urlRouterProvider.otherwise("/");
 });
 
 
