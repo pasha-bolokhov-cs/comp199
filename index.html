@@ -39,47 +39,18 @@
     <nav class="row navbar navbar-default" style="margin-bottom: 0;" ng-cloak>
       <div class="col-xs-12">
         <div class="navbar-header">
-          <a class="navbar-brand" href="#/home">Albatross</a>
+          <a class="navbar-brand" sref="guest.home">Albatross</a>
         </div>
 
         <!-- Home   Packages   My Trips   Profile -->  
-        <ul class="nav navbar-nav col-xs-4">
-          <li><a href="#/home">
-            <span class="glyphicon glyphicon-home"></span> Home</a></li>
-          <li><a href="#/packages">
-            <span class="glyphicon glyphicon-globe"></span> Packages</a></li>
-          <li ng-show="signedIn"><a href="#/trips">
-            <span class="glyphicon glyphicon-plane"></span> My Trips</a></li>
-          <li ng-show="signedIn"><a href="#/profile">
-            <span class="glyphicon glyphicon-user"></span> Profile</a></li>
+        <ul class="nav navbar-nav col-xs-4" ui-view="navigation-left-view">
         </ul>
 
         <!-- Select a region: <All> -->
-        <div class="col-xs-3">
-          <form class="form-inline" ng-show="onPackagesPage && showRegions" role="form" ng-cloak>
-            <div class="form-group">
-              <p class="navbar-text" for="region">Select a region:
-                <select name="region" id="region" class="form-control"
-                        ng-model="$root.region" ng-options='r.region disable when !r.available for r in $root.regions'
-			ng-change="regionSelect()">
-                </select>
-              </p>
-            </div>
-          </form>
-        </div>
+	<div ui-view="select-region-view"></div>
 
         <!-- Sign up   Sign in   Sign out -->
-        <ul class="nav navbar-nav navbar-right">
-          <li><p class="navbar-text" ng-show="signedIn">Signed in as {{ $root.loginName }}</p></li>
-          <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signUp()">
-            <span class="glyphicon glyphicon-pencil"></span> Sign up</a>
-          </li>
-          <li><a href="" ng-show="!$root.signedIn" ng-click="$root.signIn()">
-            <span class="glyphicon glyphicon-log-in"></span> Sign in</a>
-          </li>
-          <li><a href="" ng-show="$root.signedIn" ng-click="$root.signOut()">
-            <span class="glyphicon glyphicon-log-out"></span> Sign out</a>
-          </li>
+        <ul class="nav navbar-nav navbar-right" ui-view="navigation-right-view">
         </ul>
       <div> <!-- /col-xs-12 -->
     </nav>
@@ -89,8 +60,8 @@
   <!---------------------->
   <!-- The partial view -->
   <!---------------------->
-  <ng-view>
-  </ng-view>
+  <ui-view>
+  </ui-view>
   
 
   <!---------------------->
@@ -98,13 +69,16 @@
   <!---------------------->
   <!-- Angular -->
   <script src="vendor/angular/angular.min.js"></script>
-  <script src="vendor/angular/angular-route.min.js"></script>
+<!--  <script src="vendor/angular/angular-route.min.js"></script>  -->
   <script src="vendor/angular/angular-messages.min.js"></script>
   <script src="vendor/angular/angular-cookies.min.js"></script>
   <script src="vendor/angular/angular-sanitize.min.js"></script>
 
   <!-- Bootstrap UI -->
   <script src="vendor/ui-bootstrap-tpls.min.js"></script>
+
+  <!-- UI Router -->
+  <script src="vendor/angular-ui-router.min.js"></script>
 
   <!-- Angular-JWT -->
   <script src="vendor/angular-jwt.min.js"></script>

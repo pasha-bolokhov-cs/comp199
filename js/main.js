@@ -1,44 +1,134 @@
 /**
  * Main AngularJS Application
  */
-var app = angular.module('albatrossApp', ['ngRoute', 'ui.bootstrap', 'ngMessages', 
+var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessages', 
 					  'ngCookies', 'ngSanitize', 'angular-jwt']);
 
 
 /**
  * Configure the Routes
  */
-app.config(['$routeProvider', function ($routeProvider) {
-	$routeProvider
+app.config(function($stateProvider, $urlRouterProvider) {
+	$stateProvider
+		// "Guest" state - not logged in as a user
+		.state("guest", {
+			abstract: true,
+			url: "/",
+			views: {
+				"navigation-left-view": {
+					templateUrl: "partials/guest/navigation-left.html"
+				},
+				"navigation-right-view": {
+					templateUrl: "partials/guest/navigation-right.html"
+				}
+			}
+		})
+		// "User" state - logged in as a user
+		.state("user", {
+			abstract: true,
+			url: "/user",
+			views: {
+				"navigation-left-view": {
+					templateUrl: "partials/user/navigation-left.html"
+				},
+				"navigation-right-view": {
+					templateUrl: "partials/user/navigation-right.html"
+				}
+			}
+		})
+		/*
+		 * Guest states
+		 */
 		// Home
-		.when("/",		{templateUrl: "partials/home.html", controller: "PageController"})
-		.when("/home",		{templateUrl: "partials/home.html", controller: "PageController"})
-		// Pages
-		.when("/packages",	{templateUrl: "partials/packages.html", controller: "PackagesController"})
-		.when("/trips",		{templateUrl: "partials/orders.html", controller: "OrdersController"})
-		.when("/profile",	{templateUrl: "partials/profile.html", controller: "PageController"})
-		// else 404
-		.otherwise("/404",	{templateUrl: "partials/404.html", controller: "PageController"});
-}]);
+		.state("guest.home", {
+			url: "",		// Does not add anything to the parent URL
+			views: {
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/home.html",
+					controller: "PageController"
+				}
+			}
+		})
+		// Packages - shared (duplicated) between "guest" and "user"
+		.state("guest.packagesRoot", {	// This parent state just calls the controller
+			url: "/packages",
+			abstract: true,
+			controller: "PackagesController"
+		})
+		.state("guest.packagesRoot.packages", {
+			url: "",
+			views: {
+				"select-region-view@": {	// The view in the root state
+					templateUrl: "partials/regions.html"
+				},
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/packages.html",
+					controller: "PackagesController"
+				}
+			}
+		})
+		/*
+		 * User states
+		 */
+		.state("user.packagesRoot", { // This parent state just calls the controller
+			url: "/packages",
+			abstract: true,
+			controller: "PackagesController"
+		})
+		.state("user.packagesRoot.packages", {
+			url: "",
+			views: {
+				"select-region-view@": {	// The view in the root state
+					templateUrl: "partials/regions.html"
+				},
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/packages.html",
+					controller: "PackagesController"
+				}
+			}
+		});
+	$urlRouterProvider.otherwise("/");
+});
 
 
 /**
  * Controls the app
  */
-app.controller('MainController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
+app.controller('MainController', function ($scope, $rootScope, $modal, $state /* also: $location, $http */) {
 
 	/*
 	 * Permanent initialization
 	 */
-	/* GG Arrange the page for the sign-out */
-	$rootScope.doSignOut = function() {
-		$rootScope.signedIn = false;
+	/* Arrange the page for the sign-in */
+	$rootScope.doSignIn = function() {
+		/* convert the current state to a user-space state */
+		var newState = $state.current.name.replace(/^guest\./, "user.");
+
+		/* check if it exists and load a default state if not */
+		if ($state.get(newState))
+			$state.go(newState);
+		else
+			$state.go("user.packagesRoot.packages");
 	}
+
+
+	/* Arrange the page for the sign-out */
+	$rootScope.doSignOut = function() {
+		/* convert the current state to a user-space state */
+		var newState = $state.current.name.replace(/^user\./, "guest.");
+
+		/* check if it exists and load a default state if not */
+		if ($state.get(newState))
+			$state.go(newState);
+		else
+			$state.go("guest.home");
+	}
+
 
 	/*
 	 * Resettable data initialization
 	 */
-	$rootScope.signedIn = false;
+
 
 	/*
 	 * Functions assigned to buttons
@@ -78,7 +168,4 @@ app.controller('MainController', function ($scope, $rootScope, $modal /* also: $
  * Controls other pages
  */
 app.controller('PageController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
-
-	$rootScope.onPackagesPage = false;
-
 });

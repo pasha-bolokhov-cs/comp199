@@ -2,12 +2,11 @@
 /**
  * Controls the 'Sign In' modal
  */
-app.controller('SignInController', function($scope, $rootScope, $modalInstance, $http, jwtHelper) {
+app.controller('SignInController', function($scope, $rootScope, $modalInstance, $http, jwtHelper, $state) {
 
 	/*
 	 * Permanent initialization
 	 */
-	$rootScope.onPackagesPage = true;
 	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i;
 
 	/*
@@ -55,16 +54,16 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 					$scope.error = "Error: " + data["error"];
 				}
 				$scope.showError = true;
-
-				// GG process validation errors
 			} else {
 				//GG change status to signed in
 				$modalInstance.close();
 				$token = jwtHelper.decodeToken(data["jwt"]);
 				$rootScope.loginName = $token.name;
-				$rootScope.signedIn = true;
 
 				console.log("Got token = ", $token);  //GG
+
+				/* Change the state appropriately */
+				$rootScope.doSignIn();
 			}
 		})
 		.error(function(data, status) {
@@ -84,4 +83,3 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 	}
 
 });
-

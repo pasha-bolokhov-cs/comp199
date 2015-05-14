@@ -7,7 +7,6 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 	/*
 	 * Permanent initialization
 	 */
-	$rootScope.onPackagesPage = true;
 
 	/*
 	 * Resettable data initialization
@@ -32,7 +31,10 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 		/* reset the data */
 		$scope.setup();
 	}
-	$rootScope.regionSelect = function() {
+	$rootScope.regionSelect = function(r) {
+		// Switch the current region to the selected value
+		$rootScope.region = r;
+
 		// Indicate we are waiting for data
 		$scope.waitingPackages = true;
 		$scope.request = { region: $rootScope.region.region };
@@ -94,5 +96,5 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $cookie
 	/*
 	 * Get the packages
 	 */
-	$rootScope.regionSelect();
+	$rootScope.regionSelect($rootScope.region);
 });
