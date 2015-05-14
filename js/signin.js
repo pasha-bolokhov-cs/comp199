@@ -2,7 +2,8 @@
 /**
  * Controls the 'Sign In' modal
  */
-app.controller('SignInController', function($scope, $rootScope, $modalInstance, $http, jwtHelper, $state) {
+app.controller('SignInController', function($scope, $rootScope, $modalInstance, $http,
+					    jwtHelper, $state, $localStorage) {
 
 	/*
 	 * Permanent initialization
@@ -55,11 +56,13 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 				}
 				$scope.showError = true;
 			} else {
-				//GG change status to signed in
+				/* Success - log in */
 				$modalInstance.close();
 				$token = jwtHelper.decodeToken(data["jwt"]);
 
 				console.log("Got token = ", $token);  //GG
+				/* Save the token */
+//GG				$localStorage.token = $token;
 
 				/* Change the state appropriately */
 				$rootScope.doSignIn($token.name);

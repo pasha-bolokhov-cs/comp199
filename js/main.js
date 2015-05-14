@@ -2,13 +2,13 @@
  * Main AngularJS Application
  */
 var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessages', 
-					  'ngCookies', 'ngSanitize', 'angular-jwt']);
+					  'ngSanitize', 'angular-jwt']);
 
 
-/**
- * Configure the Routes
- */
-app.config(function($stateProvider, $urlRouterProvider) {
+app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
+	/*
+	 * Configure the routes
+	 */
 	$stateProvider
 		// "Guest" state - not logged in as a user
 		.state("guest", {
@@ -88,6 +88,18 @@ app.config(function($stateProvider, $urlRouterProvider) {
 			}
 		});
 	$urlRouterProvider.otherwise("/guest/home");
+
+	/*
+	 * Configure JWT
+	 */
+	jwtInterceptorProvider.tokenGetter = ['config', function(config) {
+		// Do not apply authentication to anything in "partials" directory
+		if (config.url.match(/partials\//))
+			return null;
+
+//GG		return $localStorage.token;
+	}];
+	$httpProvider.interceptors.push('jwtInterceptor');
 });
 
 
