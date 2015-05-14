@@ -13,7 +13,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		// "Guest" state - not logged in as a user
 		.state("guest", {
 			abstract: true,
-			url: "/",
+			url: "/guest",
 			views: {
 				"navigation-left-view": {
 					templateUrl: "partials/guest/navigation-left.html"
@@ -41,7 +41,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 		 */
 		// Home
 		.state("guest.home", {
-			url: "",		// Does not add anything to the parent URL
+			url: "/home",
 			views: {
 				"@": {		// Targets the unnamed view in the root state
 					templateUrl: "partials/home.html",
@@ -87,7 +87,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
 				}
 			}
 		});
-	$urlRouterProvider.otherwise("/");
+	$urlRouterProvider.otherwise("/guest/home");
 });
 
 
