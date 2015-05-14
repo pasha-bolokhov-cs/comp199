@@ -63,6 +63,9 @@ if (!property_exists($data, "password")) {
 	goto quit;
 }
 
+/* convert 'email' to lower case */
+$data->email = strtolower($data->email);
+
 /* hash the password */
 $salt = file_get_contents("/dev/urandom", false, null, 0, 16);
 $password = crypt($data->password, $salt);
