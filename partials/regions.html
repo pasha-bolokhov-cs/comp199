@@ -3,14 +3,14 @@
 -->
 <div class="col-xs-3">
   <div class="btn-group navbar-btn" dropdown>
-    <button type="button" class="btn btn-success">Select a region</button>
+    <button type="button" class="btn btn-success">Region:&nbsp;&nbsp; {{ $root.region.region }}</button>
     <button type="button" class="btn btn-success dropdown-toggle" dropdown-toggle>
       <span class="caret"></span>
       <span class="sr-only">Split button</span>
     </button>
     <ul class="dropdown-menu" role="menu">
       <li ng-repeat="r in $root.regions" ng-class="{ disabled: !r.available }">
-        <a href="#">
+        <a href="#" ng-click="regionSelect(r)">
           {{ r.region }}
         </a>
       </li>
