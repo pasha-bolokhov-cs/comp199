@@ -94,14 +94,36 @@ app.config(function($stateProvider, $urlRouterProvider) {
 /**
  * Controls the app
  */
-app.controller('MainController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
+app.controller('MainController', function ($scope, $rootScope, $modal, $state /* also: $location, $http */) {
 
 	/*
 	 * Permanent initialization
 	 */
-	/* GG Arrange the page for the sign-out */
-	$rootScope.doSignOut = function() {
+	/* Arrange the page for the sign-in */
+	$rootScope.doSignIn = function() {
+		/* convert the current state to a user-space state */
+		var newState = $state.current.name.replace(/^guest\./, "user.");
+
+		/* check if it exists and load a default state if not */
+		if ($state.get(newState))
+			$state.go(newState);
+		else
+			$state.go("user.packagesRoot.packages");
 	}
+
+
+	/* Arrange the page for the sign-out */
+	$rootScope.doSignOut = function() {
+		/* convert the current state to a user-space state */
+		var newState = $state.current.name.replace(/^user\./, "guest.");
+
+		/* check if it exists and load a default state if not */
+		if ($state.get(newState))
+			$state.go(newState);
+		else
+			$state.go("guest.home");
+	}
+
 
 	/*
 	 * Resettable data initialization

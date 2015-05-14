@@ -54,8 +54,6 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 					$scope.error = "Error: " + data["error"];
 				}
 				$scope.showError = true;
-
-				// GG process validation errors
 			} else {
 				//GG change status to signed in
 				$modalInstance.close();
@@ -64,7 +62,8 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 
 				console.log("Got token = ", $token);  //GG
 
-				$state.go("user.packagesRoot.packages");
+				/* Change the state appropriately */
+				$rootScope.doSignIn();
 			}
 		})
 		.error(function(data, status) {
@@ -84,4 +83,3 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 	}
 
 });
-
