@@ -2,14 +2,18 @@
 	This content goes into "select-regions-view" of the root state (index.html)
 -->
 <div class="col-xs-3">
-  <form class="form-inline" role="form" ng-cloak>
-    <div class="form-group">
-      <p class="navbar-text" for="region">Select a region:
-        <select name="region" id="region" class="form-control"
-                ng-model="$root.region" ng-options='r.region disable when !r.available for r in $root.regions'
-		ng-change="regionSelect()">
-        </select>
-      </p>
-    </div>
-  </form>
+  <div class="btn-group" dropdown>
+    <button type="button" class="btn btn-success">Select a region</button>
+    <button type="button" class="btn btn-success dropdown-toggle" dropdown-toggle>
+      <span class="caret"></span>
+      <span class="sr-only">Split button</span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li ng-repeat="r in $root.regions" ng-class="{ disabled: !r.available }">
+        <a href="#">
+          {{ r.region }}
+        </a>
+      </li>
+    </ul>
+  </div>
 </div>
