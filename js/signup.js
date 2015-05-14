@@ -89,8 +89,9 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 					$scope.error = "Error: " + data["error"];
 				}
 			} else {
-				// GG Do the sign in now
 				$modalInstance.close();
+
+				// GG do the sign in
 			}
 		})
 		.error(function(data, status) {

@@ -3,22 +3,17 @@
 	To do list
 	----------
 
-	*  favicon
-
-
 	*  packages page
-
-		* fix the vertical position of the region select box
 
 		* make the position of the error and warning boxes fixed:
 
 		  style="position: absolute; top: 70px; left: 10%; right: 10%; opacity: 0.6;"
 
-		* check the availability of the packages (do not show unavailable packages)
-
 		* packages should load all packages at once, and then select menu
 
 		  should only show the appropriate ones
+
+		* show package data
 
 
         *  modal for sign up
@@ -27,12 +22,19 @@
 
 		* sign the user in once registered
 
+		* check if the email has already been registered
+
+		* correct space fluctuations in 'sing in' and 'sign up' windows
+
 
 	*  modal for sign in
 
 		* make the modal transparent?
 
 		* remove table "cookies"
+
+		* all email comparisons should be made case-insensitie
+
 
 	*  tokens for remembering the login
 

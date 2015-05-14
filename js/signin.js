@@ -58,12 +58,11 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 				//GG change status to signed in
 				$modalInstance.close();
 				$token = jwtHelper.decodeToken(data["jwt"]);
-				$rootScope.loginName = $token.name;
 
 				console.log("Got token = ", $token);  //GG
 
 				/* Change the state appropriately */
-				$rootScope.doSignIn();
+				$rootScope.doSignIn($token.name);
 			}
 		})
 		.error(function(data, status) {

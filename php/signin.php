@@ -34,11 +34,11 @@ if ($mysqli->connect_error) {
 	goto quit;
 }
 
-/* form the query */
+/* form the query - case insensitive for email */
 $query = <<<"EOF"
 	SELECT name, email, password, salt
 	       FROM customers
-	       WHERE email = "{$data->email}";
+	       WHERE LCASE(email) = LCASE("{$data->email}");
 EOF;
 error_log(" query = $query ");  //GG
 

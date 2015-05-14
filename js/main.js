@@ -100,7 +100,10 @@ app.controller('MainController', function ($scope, $rootScope, $modal, $state /*
 	 * Permanent initialization
 	 */
 	/* Arrange the page for the sign-in */
-	$rootScope.doSignIn = function() {
+	$rootScope.doSignIn = function(name) {
+		/* show the user's name */
+		$rootScope.loginName = name;
+
 		/* convert the current state to a user-space state */
 		var newState = $state.current.name.replace(/^guest\./, "user.");
 
