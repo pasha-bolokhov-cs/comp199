@@ -8,8 +8,14 @@
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
 
+/* get the authentication information */
+$jsonData = file_get_contents("php://input");
+error_log("Albatross(TM): orders.php: input = $jsonData");
+$data = json_decode($jsonData);
+
+
 /* connect to the database */
-require_once '../../../comp199-www/mysqli_auth.php';
+require_once '../../../../comp199-www/mysqli_auth.php';
 $mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
 if ($mysqli->connect_error) {
 	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '

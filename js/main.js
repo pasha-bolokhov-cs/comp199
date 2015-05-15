@@ -2,7 +2,7 @@
  * Main AngularJS Application
  */
 var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessages', 
-					  'ngSanitize', 'angular-jwt']);
+					  'ngSanitize', 'angular-jwt', 'ngStorage']);
 
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
@@ -92,12 +92,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 	/*
 	 * Configure JWT
 	 */
-	jwtInterceptorProvider.tokenGetter = ['config', function(config) {
-		// Do not apply authentication to anything in "partials" directory
-		if (config.url.match(/partials\//))
-			return null;
+	jwtInterceptorProvider.tokenGetter = ['config', '$rootScope', function(config, $rootScope) {
+console.log("tokenGetter: got token = ", $rootScope.storage.token);//GG
+		// Only apply authentication to secure PHP script requests
+		if ($rootScope.storage && $rootScope.storage.token &&
+		    config.url.match(/php\/secure\/.+\.php$/))
+			return $rootScope.storage.token;
 
-//GG		return $localStorage.token;
+		return null;
 	}];
 	$httpProvider.interceptors.push('jwtInterceptor');
 });
@@ -106,7 +108,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 /**
  * Controls the app
  */
-app.controller('MainController', function ($scope, $rootScope, $modal, $state /* also: $location, $http */) {
+app.controller('MainController', function ($scope, $rootScope, $modal, $state, $localStorage /* also: $location, $http */) {
 
 	/*
 	 * Permanent initialization
@@ -138,6 +140,9 @@ app.controller('MainController', function ($scope, $rootScope, $modal, $state /*
 		else
 			$state.go("guest.home");
 	}
+
+	/* Make a reference to $localStorage */
+	$rootScope.storage = $localStorage;
 
 
 	/*
@@ -172,8 +177,6 @@ app.controller('MainController', function ($scope, $rootScope, $modal, $state /*
 
 	/* 'Sign Out' in the navigation bar */
 	$rootScope.signOut = function() {
-		// GG send a "log-out" notification to the server
-
 		$rootScope.doSignOut();
 	}
 });
