@@ -195,19 +195,6 @@ CREATE TABLE orders (
 			ON UPDATE CASCADE ON DELETE CASCADE
 );
 
-/*
- * cookies
- */
-
-DROP TABLE IF EXISTS cookies;
-CREATE TABLE cookies (
-	sessionId	VARCHAR(255) NOT NULL,
-	customerId	int NOT NULL,
-	PRIMARY KEY	(sessionId),
-	FOREIGN KEY	(customerId) REFERENCES customers(customerId)
-			ON UPDATE CASCADE ON DELETE CASCADE
-);
-
 
 /*
  * Re-enable foreign key constraints
