@@ -79,6 +79,10 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 					$scope.signUpForm.email.$setValidity("pattern", false);
 					$scope.signUpForm.email.$setDirty();
 					break;
+				case "email-exists":
+					$scope.signUpForm.email.$setValidity("exists", false);
+					$scope.signUpForm.email.$setDirty();
+					break;
 
 				case "password-required":
 					$scope.signUpForm.password.$setValidity("required", false);

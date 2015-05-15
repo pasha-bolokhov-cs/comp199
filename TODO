@@ -22,16 +22,12 @@
 
 		* sign the user in once registered
 
-		* check if the email has already been registered
-
 		* correct space fluctuations in 'sing in' and 'sign up' windows
 
 
 	*  modal for sign in
 
 		* make the modal transparent?
-
-		* remove table "cookies"
 
 		* all email comparisons should be made case-insensitie
 

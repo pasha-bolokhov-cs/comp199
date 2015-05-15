@@ -135,6 +135,7 @@
                  ng-show="signUpForm.email.$dirty && signUpForm.email.$invalid">
             <div class="error" ng-message="pattern">Incorrect email address</div>
             <div class="error" ng-message="required">Email address is required</div>
+            <div class="error" ng-message="exists">Email address is already used</div>
           </alert>
           <alert type="danger" ng-show="(blurPassword || blurPassword2) && customer.password !== customer.password2">
             <div class="error">Passwords do not match</div>

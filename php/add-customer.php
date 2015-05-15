@@ -13,7 +13,6 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validate data */
-error_log("Albatross(TM) data = " . print_r($data, true));  //GG
 if (!property_exists($data, "name")) {
 	$response["error"] = "name-required";
 	goto quit;
@@ -81,16 +80,28 @@ if ($mysqli->connect_error) {
 	goto quit;
 }
 
+/* test if email already exists */
+$query = <<<"EOF_SELECT"
+	SELECT email FROM customers
+	       WHERE LCASE(email) = LCASE("{$data->email}");
+EOF_SELECT;
+if (($result = $mysqli->query($query)) === FALSE) {
+	$response["error"] = 'Query Error - ' . $mysqli->error;
+	goto database_quit;
+}
+if ($result->fetch_assoc()) {
+	$response["error"] = "email-exists";
+	goto database_quit;
+}
 
 /* form the query */
-$query = <<<"EOF"
+$query = <<<"EOF_INSERT"
 	INSERT INTO customers (name, birth, nationality, passportNo, passportExp, email, phone, password, salt)
                VALUES ("{$data->name}", STR_TO_DATE("$birth", "%Y-%m-%d"), "{$data->nationality}",
                        "{$data->passportNo}", STR_TO_DATE("$passportExp", "%Y-%m-%d"),
                        "{$data->email}", "{$data->phone}",
 		       "$password", "$salt");
-EOF;
-error_log("Albatross(TM) query = $query ");  //GG
+EOF_INSERT;
 
 /* do the query */
 $response = array();

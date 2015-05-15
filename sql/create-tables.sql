@@ -31,7 +31,8 @@ CREATE TABLE customers (
 	phone		varchar(80),
 	password	varchar(41) NOT NULL,
 	salt		varchar(41) NOT NULL,
-	PRIMARY KEY	(customerId)
+	PRIMARY KEY	(customerId),
+	UNIQUE		(email)
 );
 
 
