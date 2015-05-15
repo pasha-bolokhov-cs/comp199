@@ -63,6 +63,7 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 				console.log("Got token = ", $token);  //GG
 				/* Save the token */
 				$localStorage.token = $token;
+				$localStorage.jwt = data["jwt"];
 
 				/* Change the state appropriately */
 				$rootScope.doSignIn($token.name);

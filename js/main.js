@@ -95,9 +95,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 	jwtInterceptorProvider.tokenGetter = ['config', '$rootScope', function(config, $rootScope) {
 console.log("tokenGetter: got token = ", $rootScope.storage.token);//GG
 		// Only apply authentication to secure PHP script requests
-		if ($rootScope.storage && $rootScope.storage.token &&
+		if ($rootScope.storage && $rootScope.storage.jwt &&
 		    config.url.match(/php\/secure\/.+\.php$/))
-			return $rootScope.storage.token;
+			return $rootScope.storage.jwt;
 
 		return null;
 	}];
@@ -108,7 +108,8 @@ console.log("tokenGetter: got token = ", $rootScope.storage.token);//GG
 /**
  * Controls the app
  */
-app.controller('MainController', function ($scope, $rootScope, $modal, $state, $localStorage /* also: $location, $http */) {
+app.controller('MainController', function ($scope, $rootScope, $http, $modal, $state, 
+					   jwtHelper, $localStorage /* also: $location */) {
 
 	/*
 	 * Permanent initialization
@@ -126,8 +127,7 @@ app.controller('MainController', function ($scope, $rootScope, $modal, $state, $
 			$state.go(newState);
 		else
 			$state.go("user.packagesRoot.packages");
-	}
-
+	};
 
 	/* Arrange the page for the sign-out */
 	$rootScope.doSignOut = function() {
@@ -139,10 +139,43 @@ app.controller('MainController', function ($scope, $rootScope, $modal, $state, $
 			$state.go(newState);
 		else
 			$state.go("guest.home");
-	}
+	};
 
 	/* Make a reference to $localStorage */
 	$rootScope.storage = $localStorage;
+
+	/* Mild authentication - just test the token */
+	$rootScope.mildAuthenticate = function() {
+		$request = { jwt: $rootScope.storage.jwt };
+
+		$http.post("php/secure/check-token.php", $request)
+		.success(function(data) {
+			// process the response
+			if (data["error"]) {
+				switch(data["error"]) {
+				case "authentication":
+					console.log("authentication error"); //GG
+					break;
+
+				default: //GG display the global error - here and below
+					$scope.error = "Error: " + data["error"];
+					console.log("other error during authentication -", data["error"]); //GG
+				}
+				return;
+			}
+			console.log("authentication ok"); //GG
+			// total success - update the token
+			$rootScope.storage.jwt = data["jwt"];
+			$rootScope.storage.token = jwtHelper.decodeToken(data["jwt"]);
+		})
+		.error(function(data, status) {
+			console.log(data);
+			//GG display the global error
+			$rootScope.error = "Error accessing the server: " + status + ".";
+		})
+		.finally(function() {
+		});
+	};
 
 
 	/*
@@ -173,12 +206,12 @@ app.controller('MainController', function ($scope, $rootScope, $modal, $state, $
 			backdrop: 'static',			// clicking outside does not close the window
 			controller: 'SignInController'		// the controller of the opened page
 		});
-	}
+	};
 
 	/* 'Sign Out' in the navigation bar */
 	$rootScope.signOut = function() {
 		$rootScope.doSignOut();
-	}
+	};
 });
 
 
