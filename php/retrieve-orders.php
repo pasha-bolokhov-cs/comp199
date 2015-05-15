@@ -4,6 +4,10 @@
  * sends the information to the website
  *
  */
+require_once 'auth.php';
+
+if (!($token = authenticate()))
+	goto auth_error;
 
 /* get the query from JSON data */
 $jsonData = file_get_contents("php://input");
@@ -24,7 +28,7 @@ $query = <<<"EOF"
 	       FROM customers, orders, packages
 	       WHERE customers.customerId = orders.customerId
 	       AND packages.packageId = orders.packageId
-	       AND LCASE(customers.email) = LCASE("{$data->email}");
+	       AND LCASE(customers.email) = LCASE("{$token->email}");
 EOF;
 error_log(" query = $query ");  //GG
 
@@ -58,4 +62,5 @@ quit:
 
 /* return the response */
 echo json_encode($response);
+return;
 ?>

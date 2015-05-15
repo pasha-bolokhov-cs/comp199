@@ -4,7 +4,7 @@
  * a valid token (renewed or the same one), or returns an error
  *
  */
-require_once 'JWT.php';
+require_once '../JWT.php';
 
 /* get JWT from 'Authorization' */
 $headers = apache_request_headers();
