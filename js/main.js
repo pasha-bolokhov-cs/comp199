@@ -218,7 +218,7 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 
 
 	/*
-	 * Perform "mild" authentication of a token is found
+	 * Perform "mild" authentication if a token is found
 	 */
 	if ($rootScope.storage.jwt) {
 		$rootScope.mildAuthenticate().then(function() {

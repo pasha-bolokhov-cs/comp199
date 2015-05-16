@@ -72,16 +72,21 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 		// process the response
 		if (data["error"]) {
 			$scope.error = "Error: " + data["error"];
-		} else {
-			// form a new list of regions with "All" prepended
-			$rootScope.regions = [ $rootScope.region ];
-			for (var r in data["regions"]) {
-				$rootScope.regions.push({
-					"region": data["regions"][r].region,
-					"available": data["regions"][r].available
-				});
-			}
+			return;
 		}
+
+		// form a new list of regions with "All" prepended
+		$rootScope.regions = [ $rootScope.region ];
+		for (var r in data["regions"]) {
+			$rootScope.regions.push({
+				"region": data["regions"][r].region,
+				"available": data["regions"][r].available
+			});
+		}
+
+		// get the packages
+		$rootScope.regionSelect($rootScope.region);
+
 	})
 	.error(function(data, status) {
 		console.log(data);
@@ -91,10 +96,4 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 		$scope.waitingRegions = false;
 		$rootScope.showRegions = true;
 	});
-
-
-	/*
-	 * Get the packages
-	 */
-	$rootScope.regionSelect($rootScope.region);
 });
