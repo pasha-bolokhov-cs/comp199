@@ -14,7 +14,7 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* connect to the database */
-require_once '../../../comp199-www/mysqli_auth.php';
+require_once '../../../../comp199-www/mysqli_auth.php';
 $mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
 if ($mysqli->connect_error) {
 	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') ' .
@@ -55,11 +55,12 @@ while ($row = $result->fetch_assoc()) {
 	}
 }
 
-/* close the database */
-database_quit:
-$mysqli->close();
-quit:
 
+database_quit:
+/* close the database */
+$mysqli->close();
+
+quit:
 /* return the response */
 echo json_encode($response);
 return;
