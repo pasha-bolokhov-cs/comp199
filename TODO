@@ -29,8 +29,3 @@
 
 		* make the modal transparent?
 
-
-	*  tokens for remembering the login
-
-		* 'sign out' should remove the token
-

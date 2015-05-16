@@ -113,7 +113,7 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 	 * Permanent initialization
 	 */
 	/* Arrange the page for the sign-in */
-	$rootScope.doSignIn = function(name) {
+	$rootScope.doSignIn = function() {
 		/* convert the current state to a user-space state */
 		var newState = $state.current.name.replace(/^guest\./, "user.");
 

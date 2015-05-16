@@ -1,8 +1,11 @@
-<?PHP
+<?php
 /**
  * This file creates the orders into the database
  *
  */
+require_once 'auth.php';
+if (!($token = authenticate()))
+	goto auth_error;
 
 /* get the query from JSON data */
 $jsonData = file_get_contents("php://input");
@@ -32,11 +35,15 @@ if (($result = $mysqli->query($query)) === FALSE) {
 	goto database_quit;
 }
 
-/* close the database */
 database_quit:
+/* close the database */
 $mysqli->close();
-quit:
 
+quit:
 /* return the response */
+echo json_encode($response);
+
+auth_error:
+$response["error"] = "authentication";
 echo json_encode($response);
 ?>

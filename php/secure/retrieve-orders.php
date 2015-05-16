@@ -5,13 +5,11 @@
  *
  */
 require_once 'auth.php';
-
 if (!($token = authenticate()))
 	goto auth_error;
 
-/* get the query from JSON data */
-$jsonData = file_get_contents("php://input");
-$data = json_decode($jsonData);
+/* Cancel very long responses */
+define("MAX_RESPONSE_LINES", 1000);
 
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
@@ -64,4 +62,8 @@ quit:
 /* return the response */
 echo json_encode($response);
 return;
+
+auth_error:
+$response["error"] = "authentication";
+echo json_encode($response);
 ?>

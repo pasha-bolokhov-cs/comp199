@@ -66,7 +66,7 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 				$localStorage.jwt = data["jwt"];
 
 				/* Change the state appropriately */
-				$rootScope.doSignIn($token.name);
+				$rootScope.doSignIn();
 			}
 		})
 		.error(function(data, status) {
