@@ -115,9 +115,6 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 	 */
 	/* Arrange the page for the sign-in */
 	$rootScope.doSignIn = function(name) {
-		/* show the user's name */
-		$rootScope.loginName = name;
-
 		/* convert the current state to a user-space state */
 		var newState = $state.current.name.replace(/^guest\./, "user.");
 
@@ -163,6 +160,7 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 				return;
 			}
 			console.log("authentication ok"); //GG
+			console.log("current state = ", $state.current.name); //GG
 			// total success - update the token
 			$rootScope.storage.jwt = data["jwt"];
 			$rootScope.storage.token = jwtHelper.decodeToken(data["jwt"]);
@@ -211,4 +209,13 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 	$rootScope.signOut = function() {
 		$rootScope.doSignOut();
 	};
+
+
+	/*
+	 * Perform "mild" authentication of a token is found
+	 */
+	if ($rootScope.storage.jwt) {
+		$rootScope.mildAuthenticate();
+		console.log("MainController: found a token");
+	}
 });
