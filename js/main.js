@@ -92,7 +92,6 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 	 * Configure JWT
 	 */
 	jwtInterceptorProvider.tokenGetter = ['config', '$rootScope', function(config, $rootScope) {
-console.log("tokenGetter: got token = ", $rootScope.storage.token);//GG
 		// Only apply authentication to secure PHP script requests
 		if ($rootScope.storage && $rootScope.storage.jwt &&
 		    config.url.match(/php\/secure\/.+\.php$/))
@@ -129,6 +128,10 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 	$rootScope.doSignOut = function() {
 		/* convert the current state to a user-space state */
 		var newState = $state.current.name.replace(/^user\./, "guest.");
+
+		/* clear the token */
+		delete $rootScope.storage.token;
+		delete $rootScope.storage.jwt;
 
 		/* check if it exists and load a default state if not */
 		if ($state.get(newState))
