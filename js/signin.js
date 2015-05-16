@@ -58,6 +58,9 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 			} else {
 				/* Success - log in */
 				$modalInstance.close();
+
+				if (!data["jwt"])
+					return;
 				$token = jwtHelper.decodeToken(data["jwt"]);
 
 				console.log("Got token = ", $token);  //GG

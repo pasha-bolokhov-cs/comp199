@@ -1,7 +1,7 @@
 /**
  * Controls the 'Sign Up' modal
  */
-app.controller('SignUpController', function($scope, $rootScope, $modalInstance, $http) {
+app.controller('SignUpController', function($scope, $rootScope, $modalInstance, $http, jwtHelper, $localStorage) {
 
 	/*
 	 * Permanent initialization
@@ -17,6 +17,8 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 		$scope.showResult = false;
 		$scope.error = false;
 
+		// GG - add waiting status
+
 		// Indicate password input fields are pristine
 		$scope.blurPassword = false;
 		$scope.blurPassword2 = false;
@@ -28,6 +30,8 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 	 */
 	/* 'Sign-up' button in the modal */
 	$scope.signUp = function() {
+		$scope.waiting = true;
+
 		// Send the request to the PHP script
 		$http.post("php/signup.php", $scope.customer)
 		.success(function(data) {
@@ -93,9 +97,20 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 					$scope.error = "Error: " + data["error"];
 				}
 			} else {
+				// Close the window
 				$modalInstance.close();
 
-				// GG do the sign in
+				/* Fetch the token */				
+				if (!data["jwt"]) 
+					return;
+				$token = jwtHelper.decodeToken(data["jwt"]);
+
+				/* Save the token */
+				$localStorage.token = $token;
+				$localStorage.jwt = data["jwt"];
+
+				// Change to the 'signed in' state
+				$rootScope.doSignIn();
 			}
 		})
 		.error(function(data, status) {
@@ -104,7 +119,7 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
-			$scope.waitingPackages = false;
+			$scope.waiting = false;
 			$scope.showResult = true;
 		});
 	}

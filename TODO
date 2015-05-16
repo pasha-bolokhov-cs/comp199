@@ -3,6 +3,10 @@
 	To do list
 	----------
 
+	*  main application
+
+		* process and display errors in 'mildAuthenticate()'
+
 	*  packages page
 
 		* make the position of the error and warning boxes fixed:
@@ -23,6 +27,8 @@
 		* sign the user in once registered
 
 		* correct space fluctuations in 'sing in' and 'sign up' windows
+
+		* validate "email" in both js and php
 
 
 	*  modal for sign in
