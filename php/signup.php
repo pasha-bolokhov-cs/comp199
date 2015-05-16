@@ -114,8 +114,8 @@ if (($result = $mysqli->query($query)) === FALSE) {
 /* generate a token */
 $response["jwt"] = generate_jwt($data->name, $data->email);
 
-/* close the database */
 database_quit:
+/* close the database */
 $mysqli->close();
 
 quit:

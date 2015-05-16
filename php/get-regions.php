@@ -19,7 +19,7 @@ if ($mysqli->connect_error) {
 
 /* form the query for all existing regions */
 $query = <<<"EOF"
-SELECT * FROM regions;
+	SELECT * FROM regions;
 EOF;
         
 /* do the query */
@@ -71,8 +71,8 @@ foreach ($response["regions"] as $r => $v) {
 }
 
 
-/* close the database */
 database_quit:
+/* close the database */
 $mysqli->close();
 
 quit:

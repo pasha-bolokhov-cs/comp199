@@ -1,6 +1,6 @@
 <?php
 /**
- * This file creates the orders into the database
+ * This file adds a new order into the cart
  *
  */
 require_once 'auth.php';
@@ -10,6 +10,24 @@ if (!($token = authenticate()))
 /* get the query from JSON data */
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
+
+/* validate data */
+if (!property_exists($token, "email")) {
+	$response["error"] = "email-required";
+	goto quit;
+}
+if (!validate($token->email)) {
+	$response["error"] = "email-wrong";
+	goto quit;
+}
+if (!property_exists($data, "package")) {
+	$response["error"] = "package-required";
+	goto quit;
+}
+if (!validate($data->package)) {
+	$response["error"] = "package-wrong";
+	goto quit;
+}
 
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
@@ -24,9 +42,13 @@ if ($mysqli->connect_error) {
 //to be updated, need to retrieve customerId and packageId by user email in advance
 $query = <<<"EOF"
 	INSERT INTO orders (customerId, packageId, status)
-               VALUES ("{$data->customerId}", "{$data->packageId}",, "Upaid");
+               VALUES (
+			(SELECT customerId FROM customers WHERE LCASE(email) = LCASE("{$token->email}")),
+			(SELECT packageId FROM packages WHERE UCASE(name) = UCASE("{$data->package}")),
+			"Upaid"
+	       );
 EOF;
-error_log("Albatross(TM) query = $query ");  //GG
+error_log("Albatross(TM) new order query = $query ");  //GG
 
 /* do the query */
 $response = array();
@@ -42,6 +64,7 @@ $mysqli->close();
 quit:
 /* return the response */
 echo json_encode($response);
+return;
 
 auth_error:
 $response["error"] = "authentication";
