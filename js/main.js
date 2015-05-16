@@ -44,8 +44,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			url: "/home",
 			views: {
 				"@": {		// Targets the unnamed view in the root state
-					templateUrl: "partials/home.html",
-					controller: "PageController"
+					templateUrl: "partials/home.html"
 				}
 			}
 		})
@@ -212,11 +211,4 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 	$rootScope.signOut = function() {
 		$rootScope.doSignOut();
 	};
-});
-
-
-/**
- * Controls other pages
- */
-app.controller('PageController', function ($scope, $rootScope, $modal /* also: $location, $http */) {
 });

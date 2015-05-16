@@ -2,7 +2,7 @@ app.controller('OrdersController', function($scope, $http) {
 
     $scope.order = {};
     
-    $http.post("php/retrieve-orders.php")
+    $http.post("php/secure/retrieve-orders.php")
 		.success(function() {
         	
 		})
