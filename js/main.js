@@ -142,35 +142,38 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 
 	/* Mild authentication - just test the token */
 	$rootScope.mildAuthenticate = function() {
-		$request = { jwt: $rootScope.storage.jwt };
+		return new Promise(function(resolve, reject) {
+			$http.post("php/secure/check-token.php")
+			.success(function(data) {
+				// process the response
+				if (data["error"]) {
+					switch(data["error"]) {
+					case "authentication":
+						console.log("authentication error"); //GG
+						break;
 
-		$http.post("php/secure/check-token.php", $request)
-		.success(function(data) {
-			// process the response
-			if (data["error"]) {
-				switch(data["error"]) {
-				case "authentication":
-					console.log("authentication error"); //GG
-					break;
-
-				default: //GG display the global error - here and below
-					$scope.error = "Error: " + data["error"];
-					console.log("other error during authentication -", data["error"]); //GG
+					default: //GG display the global error - here and below
+						$scope.error = "Error: " + data["error"];
+						console.log("other error during authentication -", data["error"]); //GG
+					}
+					reject(data["error"]);
+					return;
 				}
+				console.log("authentication ok"); //GG
+				// total success - update the token
+				$rootScope.storage.jwt = data["jwt"];
+				$rootScope.storage.token = jwtHelper.decodeToken(data["jwt"]);
+				resolve();
 				return;
-			}
-			console.log("authentication ok"); //GG
-			console.log("current state = ", $state.current.name); //GG
-			// total success - update the token
-			$rootScope.storage.jwt = data["jwt"];
-			$rootScope.storage.token = jwtHelper.decodeToken(data["jwt"]);
-		})
-		.error(function(data, status) {
-			console.log(data);
-			//GG display the global error
-			$rootScope.error = "Error accessing the server: " + status + ".";
-		})
-		.finally(function() {
+			})
+			.error(function(data, status) {
+				console.log(data);
+				//GG display the global error
+				$rootScope.error = "Error accessing the server: " + status + ".";
+				reject(data["error"]);
+			})
+			.finally(function() {
+			});
 		});
 	};
 
@@ -215,7 +218,8 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 	 * Perform "mild" authentication of a token is found
 	 */
 	if ($rootScope.storage.jwt) {
-		$rootScope.mildAuthenticate();
-		console.log("MainController: found a token");
+		$rootScope.mildAuthenticate().then(function() {
+			$rootScope.doSignIn();		// change the state to 'signed in'
+		});
 	}
 });
