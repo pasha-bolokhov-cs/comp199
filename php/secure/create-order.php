@@ -39,7 +39,6 @@ if ($mysqli->connect_error) {
 }
 
 /* form the query */
-//to be updated, need to retrieve customerId and packageId by user email in advance
 $query = <<<"EOF"
 	INSERT INTO orders (customerId, packageId, status)
                VALUES (
