@@ -29,7 +29,7 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 	/* 'Sign-up' button in the modal */
 	$scope.signUp = function() {
 		// Send the request to the PHP script
-		$http.post("php/add-customer.php", $scope.customer)
+		$http.post("php/signup.php", $scope.customer)
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
