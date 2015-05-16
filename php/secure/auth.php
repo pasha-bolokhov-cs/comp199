@@ -1,6 +1,7 @@
 <?php
-require_once '../JWT.php';
+require_once 'JWT.php';
 require_once '../../../../comp199-www/jwt-auth.php';
+
 
 /**
  * This function checks the token in the "Authorization" header
@@ -36,4 +37,25 @@ function authenticate($return_jwt = false) {
 	
 	return $return_jwt ? $jwt : $token;
 }
+
+
+/**
+ * This function generates a JWT token based on $name and $email
+ *
+ * @params	$name		Full customer's name
+ * 		$email		Customer's email
+ *
+ * @returns			A JWT token
+ *
+ */
+function generate_jwt($name, $email) {
+	$token = array(
+		"iss"	=>	"Albatross Travel",
+		"iat"	=>	time(),
+		"name"	=>	$name,
+		"email"	=>	$email
+	);
+	return JWT::encode($token, JWT_KEY, 'HS256');
+}
+
 ?>

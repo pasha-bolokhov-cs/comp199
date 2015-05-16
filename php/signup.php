@@ -4,6 +4,7 @@
  *
  */
 require_once 'validate.php';
+require_once 'secure/auth.php';
 
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
@@ -109,6 +110,9 @@ if (($result = $mysqli->query($query)) === FALSE) {
 	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto database_quit;
 }
+
+/* generate a token */
+$response["jwt"] = generate_jwt($data->name, $data->email);
 
 /* close the database */
 database_quit:

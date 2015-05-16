@@ -4,8 +4,7 @@
  *
  */
 require_once 'validate.php';
-require_once 'JWT.php';
-require_once '../../../comp199-www/jwt-auth.php';
+require_once 'secure/auth.php';
 
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
@@ -70,14 +69,7 @@ if ($passwordInput != $password){
 }
 
 /* generate a token */
-$token = array(
-	"iss"	=>	"Albatross Travel",
-	"iat"	=>	time(),
-	"name"	=>	$name,
-	"email"	=>	$email
-);
-$jwt = JWT::encode($token, JWT_KEY, 'HS256');
-$response["jwt"] = $jwt;
+$response["jwt"] = generate_jwt($name, $email);
 
 database_quit:
 /* close the database */
@@ -87,4 +79,3 @@ quit:
 /* return the response */
 echo json_encode($response);
 ?>
-
