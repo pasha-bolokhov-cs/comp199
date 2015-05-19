@@ -2,7 +2,7 @@
  * Controls the 'packages' page
  */
 // GG remove '$sce' if not needed
-app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
+app.controller('PackagesController', function($scope, $rootScope, $http, $state, $sce) {
 
 	/*
 	 * Permanent initialization
@@ -58,8 +58,12 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $sce) {
 			$scope.waitingPackages = false;
 			$scope.showError = true;
 		});
-	}
-
+	};
+	$scope.go = function() {
+		/* offer a login modal if not in user space */
+		if (!$state.current.name.match(/^user\//)) {
+		}
+	};
 
 	/*
 	 * Get the list of regions
