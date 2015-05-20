@@ -2,7 +2,7 @@
  * Controls the 'packages' page
  */
 // GG remove '$sce' if not needed
-app.controller('PackagesController', function($scope, $rootScope, $http, $state, $sce) {
+app.controller('PackagesController', function($scope, $rootScope, $http, $state, $modal, $sce) {
 
 	/*
 	 * Permanent initialization
@@ -59,10 +59,26 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state,
 			$scope.showError = true;
 		});
 	};
-	$scope.go = function() {
-		/* offer a login modal if not in user space */
-		if (!$state.current.name.match(/^user\//)) {
+	$scope.go = function(name) {
+		/* switch to the 'Trips' page */
+		goToTrips = function() {
+console.log("switching to the 'trips' page with package `" + name + "'"); //GG
+			$state.go('user.trips', { package: name });
 		}
+		/* offer a login modal if not in user space */
+		if (!$state.current.name.match(/^user\./)) {
+			var modal = $modal.open({
+				animation: true,			// whether to use animation
+				templateUrl: 'partials/signin.html',	// what to show in the modal
+				size: 'sm',				// size
+				backdrop: 'static',			// clicking outside does not close the window
+				controller: 'SignInController'		// the controller of the opened page
+			});
+			/* on successful authentication - change the state to "trips" */
+			modal.result.then(goToTrips);
+			return;
+		}
+		goToTrips();
 	};
 
 	/*

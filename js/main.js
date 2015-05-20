@@ -51,8 +51,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		// Packages - shared (duplicated) between "guest" and "user"
 		.state("guest.packagesRoot", {	// This parent state just calls the controller
 			url: "/packages",
-			abstract: true,
-			controller: "PackagesController"
+			abstract: true
 		})
 		.state("guest.packagesRoot.packages", {
 			url: "",
@@ -71,8 +70,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		 */
 		.state("user.packagesRoot", { // This parent state just calls the controller
 			url: "/packages",
-			abstract: true,
-			controller: "PackagesController"
+			abstract: true
 		})
 		.state("user.packagesRoot.packages", {
 			url: "",
@@ -83,6 +81,18 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				"@": {		// Targets the unnamed view in the root state
 					templateUrl: "partials/packages.html",
 					controller: "PackagesController"
+				}
+			}
+		})
+		.state("user.trips", {
+			url: "/trips",
+			params: {
+				package: null
+			},
+			views: {
+				"@": {
+					templateUrl: "partials/orders.html",
+					controller: "OrdersController"
 				}
 			}
 		});
@@ -162,7 +172,6 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 					reject(data["error"]);
 					return;
 				}
-				console.log("authentication ok"); //GG
 				// total success - update the token
 				$rootScope.storage.jwt = data["jwt"];
 				$rootScope.storage.token = jwtHelper.decodeToken(data["jwt"]);
