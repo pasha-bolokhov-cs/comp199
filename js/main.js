@@ -209,6 +209,8 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 			backdrop: 'static',			// clicking outside does not close the window
 			controller: 'SignInController'		// the controller of the opened page
 		});
+		/* on successful authentication - change the state appropriately */
+		modal.result.then($rootScope.doSignIn);
 	};
 
 	/* 'Sign Out' in the navigation bar */

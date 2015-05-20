@@ -56,20 +56,17 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 				}
 				$scope.showError = true;
 			} else {
-				/* Success - log in */
+				/* Success */
 				$modalInstance.close();
 
 				if (!data["jwt"])
 					return;
 				$token = jwtHelper.decodeToken(data["jwt"]);
 
-				console.log("Got token = ", $token);  //GG
+				console.log("signIn controller(): Got token = ", $token);  //GG
 				/* Save the token */
 				$localStorage.token = $token;
 				$localStorage.jwt = data["jwt"];
-
-				/* Change the state appropriately */
-				$rootScope.doSignIn();
 			}
 		})
 		.error(function(data, status) {
