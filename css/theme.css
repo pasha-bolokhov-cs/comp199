@@ -1,8 +1,8 @@
 
 /*
- * Background for the main page
+ * Background for the home page
  */
-.background {
+.home-background {
 	background: url(../images/xl_GreeceSunset.jpg) no-repeat center center;
 	background-size: cover;
 }
@@ -11,6 +11,8 @@
 /*
  * Sign-in form
  */
+/* GG not needed anymore
 .signin {
 	background-color: rgba(222, 223, 234, 0.4);
 }
+*/
