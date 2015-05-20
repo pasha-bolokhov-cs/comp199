@@ -1,4 +1,4 @@
-<?php
+ <?php
 /**
  * This script refer the customer information from the database
  *
