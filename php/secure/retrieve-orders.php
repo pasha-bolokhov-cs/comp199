@@ -7,7 +7,6 @@
 require_once 'auth.php';
 if (!($token = authenticate()))
 	goto auth_error;
-error_log("token = " . print_r($token, true));
 
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);

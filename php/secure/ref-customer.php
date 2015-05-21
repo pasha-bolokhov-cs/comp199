@@ -28,7 +28,6 @@ $query = <<<"EOF"
 	       FROM customers
 		   WHERE email = "{$data->email}";
 EOF;
-error_log("Albatross(TM) query = $query ");  //GG
 
 /* do the query */
 $response = array();

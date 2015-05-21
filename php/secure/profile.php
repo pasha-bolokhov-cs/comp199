@@ -27,7 +27,6 @@ $query = <<<"EOF"
 	       FROM customers
 		   WHERE LCASE(email) = LCASE("{$data->email}");
 EOF;
-error_log("Albatross(TM) query = $query ");  //GG
 
 /* do the query */
 $response = array();
