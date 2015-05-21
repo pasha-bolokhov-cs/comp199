@@ -12,21 +12,33 @@
                   background-size: cover;
                   color: white;'>
         <div class="row">
+          <!-- package name -->
           <div class="col-xs-3">
             <span class="lead">{{ trip["package"] }}</span>
           </div>
+          <!-- order status -->
           <div class="col-xs-3">
             <span class="lead">{{ trip["status"] }}</span>
           </div>
+          <!-- purchaseDate -->
           <div class="col-xs-3" ng-show='trip["receiptId"]'>
             <span class="lead">{{ trip["purchaseDate"] }}</span>
           </div>
+          <!-- receiptId -->
           <div class="col-xs-3" ng-show='trip["receiptId"]'>
             <span class="lead">{{ trip["receiptId"] }}</span>
           </div>
-          <div class="col-xs-3 col-xs-offset-3" ng-show='!trip["receiptId"]'>
+          <!-- Or: -->
+          <!-- "Order" button -->
+          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
             <button class="btn btn-success">
               <span class="glyphicon glyphicon-road"></span>&nbsp;Order
+            </button>
+          </div>
+          <!-- "Remove" button -->
+          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
+            <button class="btn btn-default">
+              <span class="glyphicon glyphicon-remove"></span>&nbsp;Remove
             </button>
           </div>
         </div>
