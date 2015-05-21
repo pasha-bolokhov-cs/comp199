@@ -2,11 +2,32 @@
 <!-- Order Tables -->
 <!------------------>
 <div class="container">
-  <div class="row">
+  <br>
+  <br>
+  <div class="row" ng-repeat="trip in trips">
     <div class="col-xs-12">
 
-
+      <div class="well well-lg container"
+           style='background: url(images/{{ trip["fileName"] }}) no-repeat center center;
+                  background-size: cover;
+                  color: white;'>
+        <div class="row">
+          <div class="col-xs-3">
+            <span class="lead">{{ trip["package"] }}</span>
+          </div>
+          <div class="col-xs-3">
+            <span class="lead">{{ trip["status"] }}</span>
+          </div>
+          <div class="col-xs-3">
+            <span class="lead">{{ trip["purchaseDate"] }}</span>
+          </div>
+          <div class="col-xs-3">
+            <span class="lead">{{ trip["receiptId"] }}</span>
+          </div>
+        </div>
+      </div>
 
     </div>
-  </div>
+  </div> <!-- external row -->
+
 </div> <!-- /container -->

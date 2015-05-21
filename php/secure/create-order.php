@@ -44,7 +44,7 @@ $query = <<<"EOF"
                VALUES (
 			(SELECT customerId FROM customers WHERE LCASE(email) = LCASE("{$token->email}")),
 			(SELECT packageId FROM packages WHERE UCASE(name) = UCASE("{$data->package}")),
-			"Upaid"
+			"Unpaid"
 	       );
 EOF;
 error_log("Albatross(TM) new order query = $query ");  //GG

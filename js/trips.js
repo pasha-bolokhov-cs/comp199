@@ -20,7 +20,6 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 				$scope.error = "Error: " + data["error"];
 		} else {
 			$scope.trips = data["data"];
-console.log("got orders =", $scope.trips);
 		}
 	})
 	.error(function(data, status) {
