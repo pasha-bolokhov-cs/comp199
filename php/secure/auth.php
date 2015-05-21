@@ -1,5 +1,5 @@
 <?php
-require_once 'JWT.php';
+require_once __DIR__ . '/JWT.php';
 require_once __DIR__ . '/../../../../comp199-www/jwt-auth.php';
 
 
