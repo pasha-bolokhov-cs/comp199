@@ -84,11 +84,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				}
 			}
 		})
-		/* Add profile */
-		.state("user.profile", { // This parent state just calls the controller
+		.state("user.profile", {
 			url: "/profile",	
 			controller: "ProfileController",
-			views: { templateUrl: "partials/profile.html" },			
+			views: {
+				"@": {
+					templateUrl: "partials/profile.html"
+				}
+			}
 		})
 		.state("user.trips", {
 			url: "/trips",
