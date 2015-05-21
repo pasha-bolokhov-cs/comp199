@@ -1,12 +1,12 @@
 /**
  * Controls the 'trips' page
  */
-app.controller('OrdersController', function($scope, $http, $stateParams) {
+app.controller('TripsController', function($scope, $http, $stateParams) {
 
 	if ($stateParams.package) 
-		console.log("OrdersController(): got package name = `" + $stateParams.package + "'");
+		console.log("TripsController(): got package name = `" + $stateParams.package + "'");
 	else
-		console.log("OrdersController(): got invoked without a package");
+		console.log("TripsController(): got invoked without a package");
 
 	$scope.order = {};
 

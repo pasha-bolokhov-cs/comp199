@@ -62,7 +62,6 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state,
 	$scope.go = function(name) {
 		/* switch to the 'Trips' page */
 		goToTrips = function() {
-console.log("switching to the 'trips' page with package `" + name + "'"); //GG
 			$state.go('user.trips', { package: name });
 		}
 		/* offer a login modal if not in user space */

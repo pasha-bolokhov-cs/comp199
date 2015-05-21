@@ -100,8 +100,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			},
 			views: {
 				"@": {
-					templateUrl: "partials/orders.html",
-					controller: "OrdersController"
+					templateUrl: "partials/trips.html",
+					controller: "TripsController"
 				}
 			}
 		});

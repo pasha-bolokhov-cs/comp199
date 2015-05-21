@@ -6,7 +6,6 @@ app.controller('ProfileController', function($scope, $rootScope, $modalInstance,
 	/*
 	 * Permanent initialization
 	 */
-	$rootScope.onPackagesPage = true;
 	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i;
 
 	/*
