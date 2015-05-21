@@ -14,7 +14,6 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validate data */
-error_log(" data = " . print_r($data, true));  //GG
 //GGGG validate and test existence !!!
 if (!property_exists($data, "email")) {
 	$response["error"] = "email-required";
@@ -40,7 +39,6 @@ $query = <<<"EOF"
 	       FROM customers
 	       WHERE LCASE(email) = LCASE("{$data->email}");
 EOF;
-error_log(" query = $query ");  //GG
 
 /* do the query */
 $response = array();
