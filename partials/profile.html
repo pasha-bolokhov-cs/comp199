@@ -28,7 +28,7 @@
           <!-- Birth -->
           <label for="regBirth" class="col-xs-12 col-md-6 control-label" required>
             Birth date
-            <input type="date" id="regBirth" name="birth" ng-model="customer.birth" class="form-control">
+            <input type="text" id="regBirth" name="birth" ng-model="customer.birth" class="form-control">
           </label>
         </fieldset>
         <br>
@@ -53,7 +53,7 @@
           <!-- Passport Expiry -->
           <label for="regPassportExp" class="col-xs-12 col-md-5 control-label" required>
             Expiration Date
-            <input type="date" id="regPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control">
+            <input type="text" id="regPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control">
           </label>
         </fieldset>
         <br>
@@ -78,18 +78,18 @@
         <br>
       </div> <!-- /row -->
 
-      <!-- ** Choose a password ** -->
+      <!-- ** Choose a password ** 
       <div class="row">
         <fieldset>
           <p class="lead"><small>Choose a password</small></p>
-          <!-- Password -->
+          <!-- Password --
           <label for="regPassword" class="col-xs-12 col-md-6 control-label">
             Password
             <input type="password" id="regPassword" name="password" ng-model="customer.password"
                    ng-focus="blurPassword=false" ng-blur="blurPassword=true" class="form-control" required>
           </label>
 
-          <!-- Re-enter password -->
+          <!-- Re-enter password --
           <label for="regPassword2" class="col-xs-12 col-md-6 control-label">
             Re-enter password
             <input type="password" id="regPassword2" name="password2" ng-model="customer.password2"

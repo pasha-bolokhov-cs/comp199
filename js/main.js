@@ -85,11 +85,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			}
 		})
 		.state("user.profile", {
-			url: "/profile",	
-			controller: "ProfileController",
+			url: "/profile",				
 			views: {
 				"@": {
-					templateUrl: "partials/profile.html"
+					templateUrl: "partials/profile.html",
+					controller: "ProfileController"
 				}
 			}
 		})

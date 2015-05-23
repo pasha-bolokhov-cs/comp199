@@ -1,7 +1,7 @@
 /**
  * Controls the 'Profile' modal
  */
-app.controller('ProfileController', function($scope, $rootScope, $modalInstance, $http) {
+app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelper, $localStorage) {
 
 	/*
 	 * Permanent initialization
@@ -14,29 +14,25 @@ app.controller('ProfileController', function($scope, $rootScope, $modalInstance,
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
-		$scope.customer.email = $rootScope.customerEmail;
+		$scope.customer.email = $rootScope.storage.token.email;
 		$scope.showResult = true;
-		$scope.error = false;	
-		// Indicate password input fields are pristine
-		$scope.blurPassword = false;
-		$scope.blurPassword2 = false;
+		$scope.error = false;		
 	}
 	$scope.setup();
-	$scope.modify();
 	
 	/*
 	 * Functions assigned to buttons
 	 */
-	/* 'modify' button in the modal */
-	$scope.modify = function() {
+	/* 'profile' in the modal */
+	$scope.profile = function() {
 		// Indicate we are waiting for data
 		$scope.showError = false;
-		$scope.waitingPackages = true;
+		$scope.waitingPackages = true;		
 		
-		$scope.customer.email = $rootScope.customeremail;
 		// Send the request to the PHP script
-		$http.post("php/ref-customer", $scope.customer)
+		$http.post("php/secure/profile.php", $scope.customer)
 		.success(function(data) {
+	
 			// process the response
 			if (data["error"]) {
 				switch(data["error"]) {
@@ -61,19 +57,19 @@ app.controller('ProfileController', function($scope, $rootScope, $modalInstance,
 
 				// GG process validation errors
 			} else {
-				//GG change status to signed in
-				$modalInstance.close();
-				$token = jwtHelper.decodeToken(data["jwt"]);
-				$rootScope.loginName = $token.name;
-				$rootScope.customerEmail = $scope.customer.email
-				$rootScope.signedIn = true;
-				$Scope.customerName = data->name;
-
-				console.log("Got token = ", $token);  //GG
+				//GG change status to signed in				
+					
+				$scope.customer.name = data["name"];
+				$scope.customer.email = data["email"];
+				$scope.customer.birth = data["birth"];
+				$scope.customer.nationality = data["nationality"];			
+				$scope.customer.passportNo = data["passportNo"];
+				$scope.customer.passportExp = data["passportExp"];
+				$scope.customer.phone = data["phone"];
 			}
 		})
-		.error(function(data, status) {
-			console.log(data);
+		.error(function(data, status) {		
+	
 			$scope.error = "Error accessing the server: " + status + ".";
 			$scope.showError = true;
 		})
@@ -82,6 +78,7 @@ app.controller('ProfileController', function($scope, $rootScope, $modalInstance,
 			$scope.waitingPackages = false;
 		});
 	}
+	$scope.profile();
 
 	/* 'Clear' button in the modal */
 	$scope.reset = function() {
@@ -93,7 +90,8 @@ app.controller('ProfileController', function($scope, $rootScope, $modalInstance,
 
 	/* 'Cancel' button in the modal */
 	$scope.cancel = function() {
-		$modalInstance.dismiss();
+		//$modalInstance.dismiss();
+		
 	}
 	
 	/* dfine signIn from signIn.js*/
