@@ -44,27 +44,8 @@ $response['phone'] = $resultArray['phone'];
 $name = $resultArray['name'];
 $email = $resultArray['email'];
 $password = $resultArray['password'];
-$salt = $resultArray['salt'];
-    
-/* hash the password *//*
-$salt = base64_decode($salt);
-$passwordInput = crypt($data->password, $salt);
-$passwordInput = base64_encode($passwordInput);
-/* check the password */
-/*if ($passwordInput != $password){
-	$response["error"] = "login";
-	goto quit;
-}
-/* generate a token *//*
-$key = "super secret";		//GG change it and move it away
-$token = array(
-	"iss"	=>	"Albatross Travel",
-	"iat"	=>	time(),
-	"name"	=>	$name,
-	"email"	=>	$email
-);
-$jwt = JWT::encode($token, $key, 'HS256');
-$response["jwt"] = $jwt;*/
+$salt = $resultArray['salt'];    
+
 quit:
 /* return the response */
 echo json_encode($response);
