@@ -30,13 +30,13 @@
           </div>
           <!-- Or: -->
           <!-- "Order" button -->
-          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
+          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]' ng-click='pay()'>
             <button class="btn btn-success">
               <span class="glyphicon glyphicon-road"></span>&nbsp;Order
             </button>
           </div>
           <!-- "Remove" button -->
-          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
+          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]' ng-click='removeOrders()'>
             <button class="btn btn-default">
               <span class="glyphicon glyphicon-remove"></span>&nbsp;Remove
             </button>
