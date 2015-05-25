@@ -8,7 +8,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 	if ($stateParams.package) {
 		$scope.request.package = $stateParams.package;
 	}
-
+	
 	$rootScope.waiting = true;
 	$http.post("php/secure/retrieve-orders.php", $scope.request)
 	.success(function(data) {
@@ -30,12 +30,15 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 		$rootScope.waiting = false;
 	});
 	
+
+
+	
+	$scope.orders = {};
 	/* remove the orders */
-	$scope.removeOrders = function() {
+	$scope.removeOrders = function(package) {
 		$rootScope.waiting = true;
-		$scope.orders = {};
 		$scope.orders.email = $rootScope.storage.token.email;
-		$scope.orders.package = $stateParams.package;
+		$scope.orders.package = package;
 		
 		$http.post("php/secure/remove-orders.php", $scope.orders)
 		.success(function(data) {
@@ -54,9 +57,13 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 			$rootScope.error = "Error accessing the server: " + status + ".";
 		})
 		.finally(function() { 
-			$rootScope.waiting = false;
+			$rootScope.waiting = true;
 		});
+
+
+		// Refresh the 'Trips' page
+		//$state.go("user.packagesRoot.packages");
 				
-	};
+	};	
 
 });
