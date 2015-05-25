@@ -5,7 +5,7 @@
   <!-- Modal Header -->
   <!------------------>
   <div class="modal-header text-center">
-    <span class="lead">Create Account</span>
+    <span class="lead">Personal Information</span>
   </div>
 
   
@@ -22,13 +22,13 @@
           <!-- Name -->
           <label for="regName" class="col-xs-12 col-md-6 control-label">
             Name
-            <input type="text" id="regName" name="name" readonly="readonly" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" required>
+            <input type="text" id="regName" name="name" ng-readonly="readOn" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" required>
           </label>
 
           <!-- Birth -->
           <label for="regBirth" class="col-xs-12 col-md-6 control-label" required>
             Birth date
-            <input type="text" id="regBirth" name="birth" readonly="readonly" ng-model="customer.birth" class="form-control">
+            <input type="type" id="regBirth" name="birth" ng-readonly="readOn" ng-model="customer.birth" class="form-control">
           </label>
         </fieldset>
         <br>
@@ -41,19 +41,19 @@
           <!-- Nationality -->
           <label for="regNationality" class="col-xs-12 col-md-4 control-label" required>
             Nationality
-            <input type="text" id="regNationality" name="nationality" readonly="readonly" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control">
+            <input type="text" id="regNationality" name="nationality" ng-readonly="readOn" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control">
           </label>
 
           <!-- Passport No -->
           <label for="regPassportNo" class="col-xs-12 col-md-3 control-label" required>
             Passport No
-            <input type="text" id="regPassportNo" name="passportNo" readonly="readonly" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control">
+            <input type="text" id="regPassportNo" name="passportNo" ng-readonly="readOn" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control">
           </label>
 
           <!-- Passport Expiry -->
           <label for="regPassportExp" class="col-xs-12 col-md-5 control-label" required>
             Expiration Date
-            <input type="text" id="regPassportExp" name="passportExp" readonly="readonly" ng-model="customer.passportExp" class="form-control">
+            <input type="text" id="regPassportExp" name="passportExp" ng-readonly="readOn" ng-model="customer.passportExp" class="form-control">
           </label>
         </fieldset>
         <br>
@@ -66,30 +66,30 @@
           <!-- Phone -->
           <label for="regPhone" class="col-xs-12 col-md-6 control-label">
             Phone
-            <input type="phone" id="regPhone" name="phone" readonly="readonly" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control">
+            <input type="phone" id="regPhone" name="phone" ng-readonly="readOn" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control">
           </label>
 
           <!-- Email -->
           <label for="regEmail" class="col-xs-12 col-md-6 control-label">
             Email Address
-            <input type="type" id="regEmail" name="email" readonly="readonly" ng-model="customer.email" ng-pattern="stringPattern" class="form-control">
+            <input type="type" id="regEmail" name="email" ng-readonly="readOn" ng-model="customer.email" ng-pattern="stringPattern" class="form-control">
           </label>
         </fieldset>
         <br>
       </div> <!-- /row -->
 
-      <!-- ** Choose a password ** 
-      <div class="row">
+      <!-- ** Choose a password ** -->
+      <div class="row" ng-show="!readOn">
         <fieldset>
           <p class="lead"><small>Choose a password</small></p>
-          <!-- Password --
+          <!-- Password -->
           <label for="regPassword" class="col-xs-12 col-md-6 control-label">
             Password
             <input type="password" id="regPassword" name="password" ng-model="customer.password"
                    ng-focus="blurPassword=false" ng-blur="blurPassword=true" class="form-control" required>
           </label>
 
-          <!-- Re-enter password --
+          <!-- Re-enter password -->
           <label for="regPassword2" class="col-xs-12 col-md-6 control-label">
             Re-enter password
             <input type="password" id="regPassword2" name="password2" ng-model="customer.password2"
@@ -156,7 +156,7 @@
   <!---------------------------->
   <div class="modal-footer">
     <!-- Register -->
-    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="signUp()">
+    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="modify()">     
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;Modify
     </button>
   
