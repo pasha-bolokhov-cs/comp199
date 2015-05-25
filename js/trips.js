@@ -57,7 +57,6 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 			$rootScope.waiting = false;
 		});
 				
-	}
-	$scope.removeOrders();
+	};
 
 });
