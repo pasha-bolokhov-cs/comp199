@@ -44,7 +44,8 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			url: "/home",
 			views: {
 				"@": {		// Targets the unnamed view in the root state
-					templateUrl: "partials/home.html"
+					templateUrl: "partials/home.html",
+					controller: "HomeController"
 				}
 			}
 		})

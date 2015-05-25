@@ -2,17 +2,8 @@
 /*
  * Background for the home page
  */
+//GG - looks like not needed anymore
 .home-background {
 	background: url(../images/xl_GreeceSunset.jpg) no-repeat center center;
 	background-size: cover;
 }
-
-
-/*
- * Sign-in form
- */
-/* GG not needed anymore
-.signin {
-	background-color: rgba(222, 223, 234, 0.4);
-}
-*/

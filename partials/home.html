@@ -1,60 +1,40 @@
-<div class="jumbotron home-background">
-  <div class="container-fluid">
-  
-    <!-------------------->
-    <!-- Vertical space -->
-    <!-------------------->
-    <div class="row">
-      <div class="col-xs-12">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
+<!------------------>
+<!-- The Carousel -->
+<!------------------>
+<carousel interval="interval">
+  <slide ng-repeat="slide in slides" active="slide.active">
+    <div style="background:  url({{ slide.image }}) no-repeat center center;
+                background-size: cover;" class="container-fluid">
+      <div class="row">
+        <div class="col-xs-12">
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <h1 style="color: white">{{ slide.text }}</h1>
+          <br>
+          <br>
+          <h3 style="color: white">{{ slide.slogan }}</h3>
+          <br>
+          <br>
+          <br>
+          <button class="btn btn-primary btn-lg" ng-click="go()">{{ slide.button }}</button>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+          <br>
+        </div>
       </div>
     </div>
-  
-  
-    <!-------------------->
-    <!-- actual content -->
-    <!-------------------->
-    <div class="row">
-      <div class="col-xs-12">
-        <br>
-        <br>
-        <br>
-        <br>
-        <h1 class="text-center" style="color: white">
-          Albatross Travel<sup><sup><small style="color: white">&reg;</small></sup></sup>
-        </h1>
-        <br>
-        <br>
-        <p class="text-center lead" style="color: white">LET THE HORIZON COME TO YOU</p>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-      </div>
-    </div>
-  
-  
-    <!-------------------->
-    <!-- Vertical space -->
-    <!-------------------->
-    <div class="row">
-      <div class="col-xs-12">
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-        <br>
-      </div>
-    </div>
-
-  </div> <!-- /container-fluid -->
-</div> <!-- /jumbotron -->
+  </slide>
+</carousel>
