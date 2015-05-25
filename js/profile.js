@@ -11,12 +11,14 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	/*
 	 * Resettable data initialization
 	 */
+	 
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
 		$scope.customer.email = $rootScope.storage.token.email;
 		$scope.showResult = true;
-		$scope.error = false;		
+		$scope.error = false;
+		$scope.readOn = true;
 	}
 	$scope.setup();
 	
@@ -24,6 +26,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	 * Functions assigned to buttons
 	 */
 	/* 'profile' in the modal */
+
 	$scope.profile = function() {
 		// Indicate we are waiting for data
 		$scope.showError = false;
@@ -58,7 +61,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 				// GG process validation errors
 			} else {
 				//GG change status to signed in				
-					
+
 				$scope.customer.name = data["name"];
 				$scope.customer.email = data["email"];
 				$scope.customer.birth = data["birth"];
@@ -66,10 +69,10 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 				$scope.customer.passportNo = data["passportNo"];
 				$scope.customer.passportExp = data["passportExp"];
 				$scope.customer.phone = data["phone"];
+				
 			}
 		})
 		.error(function(data, status) {		
-	
 			$scope.error = "Error accessing the server: " + status + ".";
 			$scope.showError = true;
 		})
@@ -79,24 +82,8 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 		});
 	}
 	$scope.profile();
-
-	/* 'Clear' button in the modal */
-	$scope.reset = function() {
-		/* reset the data */
-		$scope.setup();
-
-		$scope.signUpForm.$setPristine();
-	}
-
-	/* 'Cancel' button in the modal */
-	$scope.cancel = function() {
-		//$modalInstance.dismiss();
-		
-	}
-	
-	/* dfine signIn from signIn.js*/
-	$scope.signIn = function(customerSignIn) {
-		signIn();
-		angular.module('appSignIn').controller('ProfileController', ProfileController);
+	/* modify function */	
+	$scope.modify = function() {
+		$scope.readOn = false;		
 	}
 });
