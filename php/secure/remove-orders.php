@@ -43,7 +43,8 @@ if ($mysqli->connect_error) {
 /* form the query for delete the orders */
 $query = <<<"EOF_DELETE"
   DELETE FROM orders
-  WHERE packageId = "{$data->package}" 
+  WHERE packageId = (SELECT packageId FROM packages
+                     WHERE LCASE(name) = LCASE("{$data->package}")) 
   AND customerId = 
 	                (SELECT customerId FROM customers
 	                 WHERE LCASE(email) = LCASE("{$data->email}"));
