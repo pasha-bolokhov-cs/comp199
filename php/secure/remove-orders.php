@@ -14,8 +14,6 @@ if (!($token = authenticate()))
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
-error_log("Debugger data: ".print_r($data->email, true)."\n");
-
 /* validate data */
 if (!array_key_exists("email", $token)) {
 	$response["error"] = "email-required";
@@ -46,19 +44,30 @@ if ($mysqli->connect_error) {
 $query = <<<"EOF_DELETE"
   DELETE FROM orders
   WHERE packageId = "{$data->package}" 
-   WHERE LCASE(name) = LCASE("{$data->package}")
   AND customerId = 
 	                (SELECT customerId FROM customers
 	                 WHERE LCASE(email) = LCASE("{$data->email}"));
 EOF_DELETE;
-
-error_log("Debugger query: ".print_r($query,true)."\n");
         
 /* do the query */
 $response = array();
 if (($result = $mysqli->query($query)) === FALSE) {
 	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto database_quit;
+}
+
+/* fetch the results and put into response */
+$response["data"] = array();
+while ($row = $result->fetch_assoc()) {
+	// append the row
+	$response["data"][] = $row;
+	
+	// check how many lines we have
+	if (count($response["data"]) > MAX_RESPONSE_LINES) {
+		$response["data"] = NULL;
+		$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
+		goto database_quit;
+	}
 }
 
 database_quit:

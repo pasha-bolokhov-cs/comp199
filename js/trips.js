@@ -31,17 +31,15 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 		$rootScope.waiting = false;
 	});	
 
-	$scope.orders = {};
-	});
 
+
+	$scope.orders = {};
 	/* remove the orders */
 	$scope.removeOrders = function(package) {
-		$scope.orders = {};
 		$rootScope.waiting = true;
 		$scope.orders.email = $rootScope.storage.token.email;
 		$scope.orders.package = package;
-		console.log("Debug:$scope.orders: ", $scope.orders);
-
+		
 		$http.post("php/secure/remove-orders.php", $scope.orders)
 		.success(function(data) {
 			// process the response
@@ -61,7 +59,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 			$rootScope.error = "Error accessing the server: " + status + ".";
 		})
 		.finally(function() { 
-			$rootScope.waiting = false;
+			$rootScope.waiting = true;
 		});
 		debugger;
 
