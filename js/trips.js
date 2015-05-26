@@ -2,7 +2,7 @@
  * Controls the 'trips' page
  */
 app.controller('TripsController', function($scope, $rootScope, $http, $stateParams) {
-
+	debugger;
 	/* form the request if package name was supplied */
 	$scope.request = {};
 	if ($stateParams.package) {
@@ -12,6 +12,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 	$rootScope.waiting = true;
 	$http.post("php/secure/retrieve-orders.php", $scope.request)
 	.success(function(data) {
+	console.log(data);
 		// process the response
 		if (data["error"]) {
 			if (data["error"] == "authentication")
@@ -28,11 +29,10 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 	})
 	.finally(function() { 
 		$rootScope.waiting = false;
-	});
-	
+	});	
 
 
-	
+
 	$scope.orders = {};
 	/* remove the orders */
 	$scope.removeOrders = function(package) {
@@ -44,11 +44,13 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
+				console.log(data["error"]);
 				if (data["error"] == "authentication")
 					$rootScope.doSignOut();
 				else
 					$scope.error = "Error: " + data["error"];
 			} else {
+				console.log("no error");
 				$scope.trips = data["data"];
 			}
 		})
@@ -59,7 +61,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 		.finally(function() { 
 			$rootScope.waiting = true;
 		});
-
+		debugger;
 
 		// Refresh the 'Trips' page
 		//$state.go("user.packagesRoot.packages");
