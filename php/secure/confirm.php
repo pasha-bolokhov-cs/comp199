@@ -91,10 +91,12 @@ if (($result = $mysqli->query($query)) === FALSE) {
 	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto quit;
 }
+/*
 if (($resultArray = $result->fetch_assoc()) == NULL) {
 	$response["error"] = "login";
 	goto quit;
 }
+*/
 $response['name'] = $data->name;
 $response['birth'] = $data->birth;
 $response['nationality'] = $data->nationality;
@@ -102,12 +104,7 @@ $response['passportNo'] = $data->passportNo;
 $response['passportExp'] = $data->passportExp;
 $response['email'] = $data->email;
 $response['phone'] = $data->phone;
-/*
-$name = $resultArray['name'];
-$email = $resultArray['email'];
-$password = $resultArray['password'];
-$salt = $resultArray['salt'];    
-*/
+
 quit:
 /* return the response */
 echo json_encode($response);

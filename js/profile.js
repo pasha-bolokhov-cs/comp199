@@ -125,7 +125,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 				}
 				$scope.showError = true;
 			} else {
-				$root.storage.token.name = data2["name"];
+				$rootScope.doSignOut();
 			}
 		})
 		.error(function(data2, status) {		
