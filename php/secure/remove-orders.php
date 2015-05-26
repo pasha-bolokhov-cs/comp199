@@ -42,33 +42,18 @@ if ($mysqli->connect_error) {
 
 /* form the query for delete the orders */
 $query = <<<"EOF_DELETE"
-  DELETE FROM orders
-  WHERE packageId = (SELECT packageId FROM packages
-                     WHERE LCASE(name) = LCASE("{$data->package}")) 
-  AND customerId = 
-	                (SELECT customerId FROM customers
-	                 WHERE LCASE(email) = LCASE("{$data->email}"));
+	DELETE FROM orders
+	       WHERE packageId = (SELECT packageId FROM packages
+				         WHERE UCASE(name) = UCASE("{$data->package}")) 
+	       AND customerId = (SELECT customerId FROM customers
+				 WHERE LCASE(email) = LCASE("{$token['email']}"));
 EOF_DELETE;
         
 /* do the query */
 $response = array();
-if (($result = $mysqli->query($query)) === FALSE) {
+if ($mysqli->query($query) === FALSE) {
 	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto database_quit;
-}
-
-/* fetch the results and put into response */
-$response["data"] = array();
-while ($row = $result->fetch_assoc()) {
-	// append the row
-	$response["data"][] = $row;
-	
-	// check how many lines we have
-	if (count($response["data"]) > MAX_RESPONSE_LINES) {
-		$response["data"] = NULL;
-		$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
-		goto database_quit;
-	}
 }
 
 database_quit:
