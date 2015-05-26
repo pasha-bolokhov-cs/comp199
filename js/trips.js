@@ -37,7 +37,6 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 	/* remove the orders */
 	$scope.removeOrders = function(package) {
 		$rootScope.waiting = true;
-		$scope.orders.email = $rootScope.storage.token.email;
 		$scope.orders.package = package;
 		
 		$http.post("php/secure/remove-orders.php", $scope.orders)
@@ -50,8 +49,13 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 				else
 					$scope.error = "Error: " + data["error"];
 			} else {
-				console.log("no error");
-				$scope.trips = data["data"];
+				// remove the selected trip
+				for (var t = 0; t < $scope.trips.length; t++) {
+					if ($scope.trips[t]["package"] == package) {
+						$scope.trips.splice(t, 1);
+						break;
+					}
+				}
 			}
 		})
 		.error(function(data, status) {
@@ -59,16 +63,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 			$rootScope.error = "Error accessing the server: " + status + ".";
 		})
 		.finally(function() { 
-			$rootScope.waiting = true;
+			$rootScope.waiting = false;
 		});
-
-		
-		// Refresh the 'Trips' page
-		$state.go("user.trips");
-		//$state.go("user.profile");  //test
-		
-
-				
 	};	
-
 });
