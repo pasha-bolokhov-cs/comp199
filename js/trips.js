@@ -1,8 +1,8 @@
 /**
  * Controls the 'trips' page
  */
-app.controller('TripsController', function($scope, $rootScope, $http, $stateParams) {
-	debugger;
+app.controller('TripsController', function($scope, $rootScope, $http, $state, $stateParams) {
+	
 	/* form the request if package name was supplied */
 	$scope.request = {};
 	if ($stateParams.package) {
@@ -61,10 +61,13 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 		.finally(function() { 
 			$rootScope.waiting = true;
 		});
-		debugger;
 
+		
 		// Refresh the 'Trips' page
-		//$state.go("user.packagesRoot.packages");
+		$state.go("user.trips");
+		//$state.go("user.profile");  //test
+		
+
 				
 	};	
 
