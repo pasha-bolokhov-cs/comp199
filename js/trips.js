@@ -29,17 +29,26 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 	})
 	.finally(function() { 
 		$rootScope.waiting = false;
+<<<<<<< HEAD
 	});	
 
 
 
 	$scope.orders = {};
+=======
+	});
+	
+	
+	
+>>>>>>> c3c3bd6f47a1bbe933cf835ec7f80f9a5c31dfed
 	/* remove the orders */
 	$scope.removeOrders = function(package) {
+		$scope.orders = {};
 		$rootScope.waiting = true;
 		$scope.orders.email = $rootScope.storage.token.email;
 		$scope.orders.package = package;
-		
+		console.log("Debug:$scope.orders: ", $scope.orders);
+
 		$http.post("php/secure/remove-orders.php", $scope.orders)
 		.success(function(data) {
 			// process the response
@@ -49,17 +58,21 @@ app.controller('TripsController', function($scope, $rootScope, $http, $statePara
 					$rootScope.doSignOut();
 				else
 					$scope.error = "Error: " + data["error"];
+<<<<<<< HEAD
 			} else {
 				console.log("no error");
 				$scope.trips = data["data"];
 			}
+=======
+			} 		
+>>>>>>> c3c3bd6f47a1bbe933cf835ec7f80f9a5c31dfed
 		})
 		.error(function(data, status) {
 			console.log(data);
 			$rootScope.error = "Error accessing the server: " + status + ".";
 		})
 		.finally(function() { 
-			$rootScope.waiting = true;
+			$rootScope.waiting = false;
 		});
 		debugger;
 
