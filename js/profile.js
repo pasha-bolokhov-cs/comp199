@@ -16,9 +16,14 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 		// Initialization
 		$scope.customer = {};
 		$scope.customer.email = $rootScope.storage.token.email;
+		$scope.customer.preemail = $scope.customer.email;
 		$scope.showResult = true;
 		$scope.error = false;
 		$scope.readOn = true;
+		
+		// Indicate password input fields are pristine
+		$scope.blurPassword = false;
+		$scope.blurPassword2 = false;
 	}
 	$scope.setup();
 	
@@ -85,5 +90,52 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	/* modify function */	
 	$scope.modify = function() {
 		$scope.readOn = false;		
+	}
+
+	$scope.confirm = function() {
+		$scope.readOn = true;
+			
+		// Indicate we are waiting for data
+		$scope.showError = false;
+		$scope.waitingPackages = true;		
+		
+		// Send the request to the PHP script
+		$http.post("php/secure/confirm.php", $scope.customer)
+		.success(function(data2) {
+	
+			// process the response
+			if (data2["error"]) {
+				switch(data2["error"]) {
+				case "name-required":
+					$scope.signInForm.name.$setValidity("required", false);
+					$scope.signInForm.name.$setDirty();
+					break;
+
+				case "password-required":
+					$scope.signUpForm.password.$setValidity("required", false);
+					$scope.signUpForm.password.$setDirty();
+					break;
+
+				case "login":
+					$scope.error = "Invalid email or password";
+					break;
+
+				default:
+					$scope.error = "Error: " + data2["error"];
+				}
+				$scope.showError = true;
+			} else {
+				$root.storage.token.name = data2["name"];
+			}
+		})
+		.error(function(data2, status) {		
+			$scope.error = "Error accessing the server: " + status + ".";
+			$scope.showError = true;
+		})
+		.finally(function() { 
+			// Indicate that we have an answer
+			$scope.waitingPackages = false;		
+		});
+		
 	}
 });
