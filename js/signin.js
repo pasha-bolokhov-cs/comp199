@@ -18,7 +18,7 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 		$scope.customer = {};
 		$scope.showError = false;
 		$scope.error = false;
-		$scope.waitingPackages = false;
+		$scope.waiting = false;
 	}
 	$scope.setup();
 
@@ -29,7 +29,7 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 	$scope.signIn = function() {
 		// Indicate we are waiting for data
 		$scope.showError = false;
-		$scope.waitingPackages = true;
+		$scope.waiting = true;
 
 		// Send the request to the PHP script
 		$http.post("php/signin.php", $scope.customer)
@@ -76,13 +76,19 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
-			$scope.waitingPackages = false;
+			$scope.waiting = false;
 		});
 	}
 
 	/* 'Cancel' button in the modal */
 	$scope.cancel = function() {
 		$modalInstance.dismiss();
+	}
+
+	/* Occurs when the user closes the "...loading..." message */
+	$scope.reset = function() {
+		$scope.setup();			// reset the data
+		$scope.signUpForm.$setPristine();
 	}
 
 });

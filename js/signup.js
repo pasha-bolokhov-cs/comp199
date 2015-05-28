@@ -16,8 +16,7 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 		$scope.customer = {};
 		$scope.showResult = false;
 		$scope.error = false;
-
-		// GG - add waiting status
+		$scope.waiting = false;
 
 		// Indicate password input fields are pristine
 		$scope.blurPassword = false;
