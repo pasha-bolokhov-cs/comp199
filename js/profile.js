@@ -11,15 +11,16 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	/*
 	 * Resettable data initialization
 	 */
-	 
+	 debugger;
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
+		
 		$scope.customer.email = $rootScope.storage.token.email;
 		$scope.customer.preemail = $scope.customer.email;
 		$scope.showResult = true;
 		$scope.error = false;
-		$scope.readOn = true;
+		$scope.readOn = true;		
 		
 		// Indicate password input fields are pristine
 		$scope.blurPassword = false;
@@ -50,8 +51,8 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 					break;
 
 				case "password-required":
-					$scope.signUpForm.password.$setValidity("required", false);
-					$scope.signUpForm.password.$setDirty();
+					$scope.profileForm.password.$setValidity("required", false);
+					$scope.profileForm.password.$setDirty();
 					break;
 
 				case "login":
@@ -74,7 +75,8 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 				$scope.customer.passportNo = data["passportNo"];
 				$scope.customer.passportExp = data["passportExp"];
 				$scope.customer.phone = data["phone"];
-				
+				$scope.customer.password = "";
+				$scope.customer.password2 = "";				
 			}
 		})
 		.error(function(data, status) {		
@@ -88,12 +90,17 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	}
 	$scope.profile();
 	/* modify function */	
+
 	$scope.modify = function() {
-		$scope.readOn = false;		
+		$scope.readOn = false;
+		
+		$scope.customer.password = "";
+		$scope.customer.password2 = "";
 	}
 
 	$scope.confirm = function() {
 		$scope.readOn = true;
+		$scope.waiting = true;
 			
 		// Indicate we are waiting for data
 		$scope.showError = false;
@@ -102,30 +109,82 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 		// Send the request to the PHP script
 		$http.post("php/secure/confirm.php", $scope.customer)
 		.success(function(data2) {
-	
+			
 			// process the response
 			if (data2["error"]) {
 				switch(data2["error"]) {
 				case "name-required":
-					$scope.signInForm.name.$setValidity("required", false);
-					$scope.signInForm.name.$setDirty();
+					$scope.profileForm.name.$setValidity("required", false);
+					$scope.profileForm.name.$setDirty();
+					break;
+				case "name-wrong":
+					$scope.profileForm.name.$setValidity("pattern", false);
+					$scope.profileForm.name.$setDirty();
+					break;
+
+				case "birth-required":
+					$scope.profileForm.birth.$setValidity("required", false);
+					$scope.profileForm.birth.$setDirty();
+					break;
+
+				case "nationality-required":
+					$scope.profileForm.nationality.$setValidity("required", false);
+					$scope.profileForm.nationality.$setDirty();
+					break;
+				case "nationality-wrong":
+					$scope.profileForm.nationality.$setValidity("pattern", false);
+					$scope.profileForm.nationality.$setDirty();
+					break;
+
+				case "passportNo-required":
+					$scope.profileForm.passportNo.$setValidity("required", false);
+					$scope.profileForm.passportNo.$setDirty();
+					break;
+				case "passportNo-wrong":
+					$scope.profileForm.passportNo.$setValidity("pattern", false);
+					$scope.profileForm.passportNo.$setDirty();
+					break;
+
+				case "passportExp-required":
+					$scope.profileForm.passportExp.$setValidity("required", false);
+					$scope.profileForm.passportExp.$setDirty();
+					break;
+
+				case "email-required":
+					$scope.profileForm.email.$setValidity("required", false);
+					$scope.profileForm.email.$setDirty();
+					break;
+				case "email-wrong":
+					$scope.profileForm.email.$setValidity("pattern", false);
+					$scope.profileForm.email.$setDirty();
+					break;
+				case "email-exists":
+					$scope.profileForm.email.$setValidity("exists", false);
+					$scope.profileForm.email.$setDirty();
 					break;
 
 				case "password-required":
-					$scope.signUpForm.password.$setValidity("required", false);
-					$scope.signUpForm.password.$setDirty();
-					break;
-
-				case "login":
-					$scope.error = "Invalid email or password";
+					$scope.profileForm.password.$setValidity("required", false);
+					$scope.profileForm.password.$setDirty();
 					break;
 
 				default:
-					$scope.error = "Error: " + data2["error"];
+					$scope.error = "Error: " + data2["error"];				
 				}
 				$scope.showError = true;
 			} else {
-				$rootScope.doSignOut();
+				//console.log(data2);			
+				/* Fetch the token */				
+				if (!data2["jwt"]) 
+					return;
+				$token = jwtHelper.decodeToken(data2["jwt"]);
+
+				/* Save the token */
+				$localStorage.token = $token;
+				$localStorage.jwt = data2["jwt"];
+
+				// Change to the 'signed in' state
+				$rootScope.doSignIn();				
 			}
 		})
 		.error(function(data2, status) {		
@@ -136,6 +195,9 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 			// Indicate that we have an answer
 			$scope.waitingPackages = false;		
 		});
-		
+
+		$scope.setup();
+		$scope.profile();
+	
 	}
 });

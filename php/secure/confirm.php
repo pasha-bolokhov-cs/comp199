@@ -4,6 +4,8 @@
  *
  */
 require_once '../validate.php';
+require_once 'auth.php';
+
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
 /* get the query from JSON data */
@@ -85,6 +87,7 @@ $query = <<<"EOF"
 	  phone = "{$data->phone}", password = "$password", salt = "$salt"  
   WHERE LCASE(email) = LCASE("{$data->preemail}");  
 EOF;
+
 /* do the query */
 $response = array();
 if (($result = $mysqli->query($query)) === FALSE) {
@@ -104,6 +107,20 @@ $response['passportNo'] = $data->passportNo;
 $response['passportExp'] = $data->passportExp;
 $response['email'] = $data->email;
 $response['phone'] = $data->phone;
+
+/* hash the password */
+$salt = base64_decode($salt);
+$passwordInput = crypt($data->password, $salt);
+$passwordInput = base64_encode($passwordInput);
+
+/* check the password */
+if ($passwordInput != $password){
+	$response["error"] = "login";
+	goto quit;
+}
+
+/* generate a token */
+$response["jwt"] = generate_jwt($data->name, $data->email);
 
 quit:
 /* return the response */

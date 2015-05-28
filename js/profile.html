@@ -140,7 +140,9 @@
           <alert type="danger" ng-show="(blurPassword || blurPassword2) && customer.password !== customer.password2">
             <div class="error">Passwords do not match</div>
           </alert>
-	
+		  <alert type="danger" ng-show="angular.equals(customer.password, '')">
+            <div class="error">Password is required</div>
+          </alert>	
           <alert type="danger" ng-show="error && showResult" close="error=false">
             {{ error }}
           </alert>
@@ -161,7 +163,7 @@
     </button>
   
     <!-- Conform -->
-    <button class="btn btn-warning pull-left" ng-show="(blurPassword || blurPassword2) && customer.password === customer.password2" ng-click="confirm()">
+    <button class="btn btn-warning pull-left" ng-show="confirm" ng-click="confirm()">
       <span class="glyphicon glyphicon-erase"></span>&nbsp;Confirm
     </button>
   
