@@ -7,6 +7,11 @@
 
 		* process and display errors in 'mildAuthenticate()'
 
+		* create a function 'getCustomerId()' in "auth.php"
+
+		* display global errors on top of the screen
+
+
 	*  packages page
 
 		* make the position of the error and warning boxes fixed:
@@ -24,11 +29,7 @@
 
 		* disable "Sign up" if the form is invalid
 
-		* sign the user in once registered
-
 		* correct space fluctuations in 'sing in' and 'sign up' windows
-
-		* validate "email" in both js and php
 
 
 	*  modal for sign in
