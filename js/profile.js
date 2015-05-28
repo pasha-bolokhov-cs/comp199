@@ -173,18 +173,21 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 				}
 				$scope.showError = true;
 			} else {
-				//console.log(data2);			
-				/* Fetch the token */				
-				if (!data2["jwt"]) 
-					return;
-				$token = jwtHelper.decodeToken(data2["jwt"]);
-
-				/* Save the token */
-				$localStorage.token = $token;
-				$localStorage.jwt = data2["jwt"];
-
-				// Change to the 'signed in' state
-				$rootScope.doSignIn();				
+////
+//// Profile page should not log the customer in
+//// or save new token
+////
+////				/* Fetch the token */				
+////				if (!data2["jwt"]) 
+////					return;
+////				$token = jwtHelper.decodeToken(data2["jwt"]);
+////
+////				/* Save the token */
+////				$localStorage.token = $token;
+////				$localStorage.jwt = data2["jwt"];
+////
+////				// Change to the 'signed in' state
+////				$rootScope.doSignIn();				
 			}
 		})
 		.error(function(data2, status) {		
