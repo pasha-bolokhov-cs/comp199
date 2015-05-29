@@ -6,6 +6,8 @@ app.controller('HomeController', function($scope, $state) {
 	$scope.interval = 4000;
 
 	$scope.slides = [
+		{ image: "images/xl_GreeceSunset.jpg", text: "Let the Horizon Come to You",
+		  slogan: "The airport lights are already blinking", button: "Start your vacation" },
 		{ image: "images/flip-flops-2.jpg", text: "Dreaming of a different you?",
 		  slogan: "Pour a handful of white beach sand on your desk", button: "Start your change" },
 		{ image: "images/woman.jpg", text: "Office Work Brings you Nothing but Stress?",
@@ -14,8 +16,6 @@ app.controller('HomeController', function($scope, $state) {
 		  slogan: "Get all the air of the world", button: "Start breathing" },
 		{ image: "images/starfish-2.jpg", text: "Stars are Calling you?",
 		  slogan: "The sky is not too far to reach", button: "Dive now" },
-		{ image: "images/xl_GreeceSunset.jpg", text: "Let the Horizon Come to You",
-		  slogan: "The airport lights are already blinking", button: "Start your vacation" },
 		{ image: "images/albatross.jpg", text:"Albatross Travel ®",
 		  slogan: "A Different Measure of Distance", button: "Hop on Our Back" },
 	];
