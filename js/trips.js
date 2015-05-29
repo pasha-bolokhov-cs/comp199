@@ -39,7 +39,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 		$rootScope.waiting = true;
 		$scope.orders.package = package;
 		
-		$http.post("php/secure/remove-orders.php", $scope.orders)
+		$http.post("php/secure/remove-order.php", $scope.orders)
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
