@@ -36,7 +36,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	$scope.profile = function() {
 		// Indicate we are waiting for data
 		$scope.showError = false;
-		$scope.waitingPackages = true;		
+		$scope.waiting = true;		
 		
 		// Send the request to the PHP script
 		$http.post("php/secure/profile.php", $scope.customer)
@@ -85,7 +85,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
-			$scope.waitingPackages = false;
+			$scope.waiting = false;
 		});
 	}
 	$scope.profile();
@@ -104,7 +104,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 			
 		// Indicate we are waiting for data
 		$scope.showError = false;
-		$scope.waitingPackages = true;		
+		$scope.waiting = true;		
 		
 		// Send the request to the PHP script
 		$http.post("php/secure/confirm.php", $scope.customer)
@@ -196,7 +196,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
-			$scope.waitingPackages = false;		
+			$scope.waiting = false;		
 		});
 
 		$scope.setup();

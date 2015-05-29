@@ -11,6 +11,8 @@
 
 		* display global errors on top of the screen
 
+		* move MAX_RESPONSE_LINES into a single file
+
 
 	*  packages page
 

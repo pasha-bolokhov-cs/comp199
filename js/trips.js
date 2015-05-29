@@ -12,7 +12,6 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 	$rootScope.waiting = true;
 	$http.post("php/secure/retrieve-orders.php", $scope.request)
 	.success(function(data) {
-	console.log(data);
 		// process the response
 		if (data["error"]) {
 			if (data["error"] == "authentication")
@@ -43,7 +42,6 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
-				console.log(data["error"]);
 				if (data["error"] == "authentication")
 					$rootScope.doSignOut();
 				else

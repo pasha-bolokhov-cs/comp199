@@ -40,13 +40,17 @@ if ($mysqli->connect_error) {
 	goto quit;
 }
 
+/* get customerId */
+if (!($customerId = get_customerId($mysqli, $token))) {
+	goto auth_error_database;
+}
+
 /* form the query for delete the orders */
 $query = <<<"EOF_DELETE"
 	DELETE FROM orders
 	       WHERE packageId = (SELECT packageId FROM packages
 				         WHERE UCASE(name) = UCASE("{$data->package}")) 
-	       AND customerId = (SELECT customerId FROM customers
-				 WHERE LCASE(email) = LCASE("{$token['email']}"));
+	       AND customerId = $customerId;
 EOF_DELETE;
         
 /* do the query */
@@ -64,6 +68,13 @@ quit:
 /* return the response */
 echo json_encode($response);
 return;
+
+/*** Normal execution does not go beyond this point ***/
+
+
+auth_error_database:
+/* close the database */
+$mysqli->close();
 
 auth_error:
 $response["error"] = "authentication";

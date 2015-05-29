@@ -6,8 +6,12 @@
 require_once '../validate.php';
 require_once 'auth.php';
 
+if (!($token = authenticate()))
+	goto auth_error;
+
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
+
 /* get the query from JSON data */
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
@@ -62,6 +66,11 @@ if (!property_exists($data, "password")) {
 	goto quit;
 }
 
+/* get customerId */
+if (!($customerId = get_customerId($mysqli, $token))) {
+	goto auth_error_database;
+}
+
 /* convert 'email' to lower case */
 $data->email = strtolower($data->email);
 
@@ -81,11 +90,11 @@ if ($mysqli->connect_error) {
 }
 /* form the query */
 $query = <<<"EOF"
-  UPDATE customers
-  SET name = "{$data->name}", birth = STR_TO_DATE("$data->birth", "%Y-%m-%d"), nationality = "{$data->nationality}",
-      passportNo = "{$data->passportNo}", passportExp = STR_TO_DATE("$data->passportExp", "%Y-%m-%d"), email = "{$data->email}",
-	  phone = "{$data->phone}", password = "$password", salt = "$salt"  
-  WHERE LCASE(email) = LCASE("{$data->preemail}");  
+	UPDATE customers
+	SET name = "{$data->name}", birth = STR_TO_DATE("$data->birth", "%Y-%m-%d"), nationality = "{$data->nationality}",
+	    passportNo = "{$data->passportNo}", passportExp = STR_TO_DATE("$data->passportExp", "%Y-%m-%d"),
+	    email = "{$data->email}", phone = "{$data->phone}", password = "$password", salt = "$salt"  
+	WHERE customerId = $customerId;
 EOF;
 
 /* do the query */
@@ -125,4 +134,16 @@ $response["jwt"] = generate_jwt($data->name, $data->email);
 quit:
 /* return the response */
 echo json_encode($response);
-?> 
+return;
+
+/*** Normal execution does not go beyond this point ***/
+
+
+auth_error_database:
+/* close the database */
+$mysqli->close();
+
+auth_error:
+$response["error"] = "authentication";
+echo json_encode($response);
+?>

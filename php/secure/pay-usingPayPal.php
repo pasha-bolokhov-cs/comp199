@@ -40,6 +40,11 @@ if (!validate($data->package)) {
 	goto quit;
 }
 
+/* get customerId */
+if (!($customerId = get_customerId($mysqli, $token))) {
+	goto auth_error_database;
+}
+
 
 /* * * * * * * * * * * */
 /* * * * * * * * * * * */
@@ -133,7 +138,7 @@ if ($mysqli->connect_error) {
 $query = <<<"EOF"
 	UPDATE orders
 	SET receiptId = $receiptId
-	WHERE customerId = (SELECT customerId FROM customers WHERE LCASE(email) = LCASE("{$token->email}"))
+	WHERE customerId = $customerId
 	AND UCASE(packageId) = UCASE("{$data->package}");
 EOF;
 error_log("Albatross(TM) new order query = $query ");  //GG
@@ -153,6 +158,13 @@ quit:
 /* return the response */
 echo json_encode($response);
 return;
+
+/*** Normal execution does not go beyond this point ***/
+
+
+auth_error_database:
+/* close the database */
+$mysqli->close();
 
 auth_error:
 $response["error"] = "authentication";

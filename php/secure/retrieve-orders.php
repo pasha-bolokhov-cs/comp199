@@ -40,6 +40,10 @@ if ($mysqli->connect_error) {
 	goto quit;
 }
 
+/* get customerId */
+if (!($customerId = get_customerId($mysqli, $token))) {
+	goto auth_error_database;
+}
 
 /*
  * If a package name is supplied, we must attempt to add a new order first
@@ -66,8 +70,8 @@ EOF_PACKAGE_QUERY;
 		 * let us see if the customer hasn't yet booked this trip
 		 */
 		$query = <<<"EOF_CHECK_QUERY"
-			SELECT customerId, packageId FROM orders
-			       WHERE customerId = (SELECT customerId FROM customers WHERE LCASE(email) = LCASE('{$token["email"]}'))
+			SELECT packageId FROM orders
+			       WHERE customerId = $customerId
 			       AND packageId = $packageId;
 EOF_CHECK_QUERY;
 		/* do the query */
@@ -81,8 +85,7 @@ EOF_CHECK_QUERY;
 			$query = <<<"EOF_INSERT_QUERY"
 				INSERT INTO orders (customerId, packageId, status)
 				       VALUES (
-						(SELECT customerId FROM customers WHERE LCASE(email) = LCASE('{$token["email"]}')),
-						$packageId, "Unpaid"
+						$customerId, $packageId, "Unpaid"
 				       );
 EOF_INSERT_QUERY;
 
@@ -103,9 +106,8 @@ EOF_INSERT_QUERY;
 $query = <<<"EOF_RETRIEVE_QUERY"
 	SELECT p.name AS package, i.fileName AS fileName, 
 	       o.status, o.purchaseDate, o.receiptId
-	       FROM customers c, orders o, packages p, images i
-	       WHERE c.customerId = o.customerId
-	       AND LCASE(c.email) = LCASE("{$token['email']}")
+	       FROM orders o, packages p, images i
+	       WHERE o.customerId = $customerId
 	       AND p.packageId = o.packageId
 	       AND i.imageName = p.imageName;
 EOF_RETRIEVE_QUERY;
@@ -139,6 +141,13 @@ quit:
 /* return the response */
 echo json_encode($response);
 return;
+
+/*** Normal execution does not go beyond this point ***/
+
+
+auth_error_database:
+/* close the database */
+$mysqli->close();
 
 auth_error:
 $response["error"] = "authentication";
