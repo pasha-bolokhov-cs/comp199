@@ -3,6 +3,8 @@
  * This file checks the client token, and either returns
  * a valid token (renewed or the same one), or returns an error
  *
+ * This program is the back-end for 'mildAuthenticate()'
+ *
  */
 require_once "auth.php";
 
