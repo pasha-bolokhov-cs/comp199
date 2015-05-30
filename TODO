@@ -25,6 +25,11 @@
 		* show package data
 
 
+	* Paypal page
+
+		* change the "available" field of a package when ordered
+
+
         *  modal for sign up
 
 		* disable "Sign up" if the form is invalid

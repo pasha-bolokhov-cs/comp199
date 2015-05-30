@@ -68,9 +68,13 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		})
 		.state("guest.packagesRoot.packages.view", {
 			url: "/view",
+			params: {
+				package: null
+			},
 			views: {
 				"@": {		// Targets the unnamed view in the root state
-					templateUrl: "partials/package-details.html"
+					templateUrl: "partials/packages.view.html",
+					controller: "PackagesViewController"
 				}
 			}
 		})
@@ -90,6 +94,18 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				"@": {		// Targets the unnamed view in the root state
 					templateUrl: "partials/packages.html",
 					controller: "PackagesController"
+				}
+			}
+		})
+		.state("user.packagesRoot.packages.view", {
+			url: "/view",
+			params: {
+				package: null
+			},
+			views: {
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/packages.view.html",
+					controller: "PackagesViewController"
 				}
 			}
 		})

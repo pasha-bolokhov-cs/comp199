@@ -59,25 +59,8 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state,
 			$scope.showError = true;
 		});
 	};
-	$scope.go = function(name) {
-		/* switch to the 'Trips' page */
-		goToTrips = function() {
-			$state.go('user.trips', { package: name });
-		}
-		/* offer a login modal if not in user space */
-		if (!$state.current.name.match(/^user\./)) {
-			var modal = $modal.open({
-				animation: true,			// whether to use animation
-				templateUrl: 'partials/signin.html',	// what to show in the modal
-				size: 'sm',				// size
-				backdrop: 'static',			// clicking outside does not close the window
-				controller: 'SignInController'		// the controller of the opened page
-			});
-			/* on successful authentication - change the state to "trips" */
-			modal.result.then(goToTrips);
-			return;
-		}
-		goToTrips();
+	$scope.view = function(name) {
+		$state.go('.view', { package: name });
 	};
 
 	/*
