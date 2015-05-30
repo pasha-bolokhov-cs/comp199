@@ -66,6 +66,14 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				}
 			}
 		})
+		.state("guest.packagesRoot.packages.view", {
+			url: "/view",
+			views: {
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/package-details.html"
+				}
+			}
+		})
 		/*
 		 * User states
 		 */
