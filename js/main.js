@@ -44,7 +44,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			url: "/home",
 			views: {
 				"@": {		// Targets the unnamed view in the root state
-					templateUrl: "partials/home.html",
+					templateUrl: "partials/guest/home.html",
 					controller: "HomeController"
 				}
 			}
@@ -97,7 +97,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			url: "/profile",				
 			views: {
 				"@": {
-					templateUrl: "partials/profile.html",
+					templateUrl: "partials/user/profile.html",
 					controller: "ProfileController"
 				}
 			}
@@ -109,7 +109,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			},
 			views: {
 				"@": {
-					templateUrl: "partials/trips.html",
+					templateUrl: "partials/user/trips.html",
 					controller: "TripsController"
 				}
 			}
