@@ -5,20 +5,12 @@
 
 	*  main application
 
-		* process and display errors in 'mildAuthenticate()'
-
-		* display global errors on top of the screen
-
 		* move MAX_RESPONSE_LINES into a single file
 
 		* decrease numerous "console_log()"
 
 
 	*  packages page
-
-		* make the position of the error and warning boxes fixed:
-
-		  style="position: absolute; top: 70px; left: 10%; right: 10%; opacity: 0.6;"
 
 		* packages should load all packages at once, and then select menu
 
@@ -27,7 +19,7 @@
 		* show package data
 
 
-	* Paypal page
+	*  Paypal page
 
 		* change the "available" field of a package when ordered
 
@@ -38,8 +30,12 @@
 
 		* correct space fluctuations in 'sing in' and 'sign up' windows
 
+		* Php validation errors don't clear out when user starts typing
+
 
 	*  modal for sign in
 
 		* make the modal transparent?
+
+		* Php validation errors don't clear out when user starts typing
 
