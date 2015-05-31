@@ -81,10 +81,4 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 		$modalInstance.dismiss();
 	}
 
-	/* Occurs when the user closes the "...loading..." message */
-	$scope.reset = function() {
-		$scope.setup();			// reset the data
-		$scope.signUpForm.$setPristine();
-	}
-
 });
