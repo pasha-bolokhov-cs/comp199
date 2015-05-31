@@ -11,16 +11,13 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	/*
 	 * Resettable data initialization
 	 */
-	 debugger;
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
 		
 		$scope.customer.email = $rootScope.storage.token.email;
 		$scope.customer.preemail = $scope.customer.email;
-		$scope.showResult = true;
-		$scope.error = false;
-		$scope.readOn = true;		
+		$scope.readOnly = true;		
 		
 		// Indicate password input fields are pristine
 		$scope.blurPassword = false;
@@ -31,12 +28,9 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	/*
 	 * Functions assigned to buttons
 	 */
-	/* 'profile' in the modal */
-
 	$scope.profile = function() {
 		// Indicate we are waiting for data
-		$scope.showError = false;
-		$scope.waiting = true;		
+		$rootScope.waiting = true;		
 		
 		// Send the request to the PHP script
 		$http.post("php/secure/profile.php", $scope.customer)
@@ -46,8 +40,8 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 			if (data["error"]) {
 				switch(data["error"]) {
 				case "name-required":
-					$scope.signInForm.name.$setValidity("required", false);
-					$scope.signInForm.name.$setDirty();
+					$scope.profileForm.name.$setValidity("required", false);
+					$scope.profileForm.name.$setDirty();
 					break;
 
 				case "password-required":
@@ -60,9 +54,8 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 					break;
 
 				default:
-					$scope.error = "Error: " + data["error"];
+					$rootScope.error = "Error: " + data["error"];
 				}
-				$scope.showError = true;
 
 				// GG process validation errors
 			} else {
@@ -80,31 +73,28 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 			}
 		})
 		.error(function(data, status) {		
-			$scope.error = "Error accessing the server: " + status + ".";
-			$scope.showError = true;
+			$rootScope.error = "Error accessing the server: " + status + ".";
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
-			$scope.waiting = false;
+			$rootScope.waiting = false;
 		});
 	}
 	$scope.profile();
-	/* modify function */	
 
+	/* modify function */	
 	$scope.modify = function() {
-		$scope.readOn = false;
+		$scope.readOnly = false;
 		
 		$scope.customer.password = "";
 		$scope.customer.password2 = "";
 	}
 
 	$scope.confirm = function() {
-		$scope.readOn = true;
-		$scope.waiting = true;
-			
+		$scope.readOnly = true;
+
 		// Indicate we are waiting for data
-		$scope.showError = false;
-		$scope.waiting = true;		
+		$rootScope.waiting = true;		
 		
 		// Send the request to the PHP script
 		$http.post("php/secure/confirm.php", $scope.customer)
@@ -169,11 +159,10 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 					break;
 
 				default:
-					$scope.error = "Error: " + data2["error"];				
+					$rootScope.error = "Error: " + data2["error"];				
 				}
-				$scope.showError = true;
 			} else {
-////
+//// GG
 //// Profile page should not log the customer in
 //// or save new token
 ////
@@ -191,16 +180,13 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 			}
 		})
 		.error(function(data2, status) {		
-			$scope.error = "Error accessing the server: " + status + ".";
-			$scope.showError = true;
+			$rootScope.error = "Error accessing the server: " + status + ".";
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
-			$scope.waiting = false;		
+			$rootScope.waiting = false;		
 		});
 
 		$scope.setup();
-		$scope.profile();
-	
 	}
 });

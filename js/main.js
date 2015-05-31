@@ -158,6 +158,10 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 	 */
 	/* Arrange the page for the sign-in */
 	$rootScope.doSignIn = function() {
+		/* no action if already in user-space */
+		if ($state.includes("user"))
+			return;
+
 		/* convert the current state to a user-space state */
 		var newState = $state.current.name.replace(/^guest\./, "user.");
 
@@ -170,12 +174,16 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 
 	/* Arrange the page for the sign-out */
 	$rootScope.doSignOut = function() {
-		/* convert the current state to a user-space state */
-		var newState = $state.current.name.replace(/^user\./, "guest.");
-
 		/* clear the token */
 		delete $rootScope.storage.token;
 		delete $rootScope.storage.jwt;
+
+		/* no more action if already in guest-space */
+		if ($state.includes("guest"))
+			return;
+
+		/* convert the current state to a user-space state */
+		var newState = $state.current.name.replace(/^user\./, "guest.");
 
 		/* check if it exists and load a default state if not */
 		if ($state.get(newState))
@@ -196,12 +204,12 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 				if (data["error"]) {
 					switch(data["error"]) {
 					case "authentication":
-						console.log("authentication error"); //GG
+						console.log("authentication error"); // GG - clear token on failure
 						break;
 
-					default: //GG display the global error - here and below
-						$scope.error = "Error: " + data["error"];
-						console.log("other error during authentication -", data["error"]); //GG
+					default:
+						$rootScope.error = "Error: " + data["error"];
+						console.log("other error during authentication -", data["error"]);
 					}
 					reject(data["error"]);
 					return;
@@ -214,7 +222,6 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 			})
 			.error(function(data, status) {
 				console.log(data);
-				//GG display the global error
 				$rootScope.error = "Error accessing the server: " + status + ".";
 				reject(data["error"]);
 			})
@@ -266,8 +273,9 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 	 * Perform "mild" authentication if a token is found
 	 */
 	if ($rootScope.storage.jwt) {
-		$rootScope.mildAuthenticate().then(function() {
-			$rootScope.doSignIn();		// change the state to 'signed in'
-		});
+		$rootScope.mildAuthenticate().then(
+			$rootScope.doSignIn,		// change the state to 'signed in'
+			$rootScope.doSignOut		// clear the token and change the state if necessary
+		);
 	}
 });

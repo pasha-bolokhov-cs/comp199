@@ -17,7 +17,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 			if (data["error"] == "authentication")
 				$rootScope.doSignOut();
 			else
-				$scope.error = "Error: " + data["error"];
+				$rootScope.error = "Error: " + data["error"];
 		} else {
 			$scope.trips = data["data"];
 		}
@@ -32,12 +32,15 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 
 
 
-	$scope.orders = {};
-	/* remove the orders */
+	/*
+	 * Functions assigned to buttons
+	 */
+	/* remove an order */
 	$scope.removeOrders = function(package) {
-		$rootScope.waiting = true;
+		$scope.orders = {};
 		$scope.orders.package = package;
-		
+
+		$rootScope.waiting = true;
 		$http.post("php/secure/remove-order.php", $scope.orders)
 		.success(function(data) {
 			// process the response
@@ -45,7 +48,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 				if (data["error"] == "authentication")
 					$rootScope.doSignOut();
 				else
-					$scope.error = "Error: " + data["error"];
+					$rootScope.error = "Error: " + data["error"];
 			} else {
 				// remove the selected trip
 				for (var t = 0; t < $scope.trips.length; t++) {

@@ -11,11 +11,6 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 	 * Resettable data initialization
 	 */
 	$scope.setup = function() {
-		// Initialization
-		$scope.showError = false;
-		$scope.error = false;
-		$scope.waiting = false;
-
 		// Data Initialization
 		$scope.request = {};
 		$scope.result = undefined;
@@ -32,26 +27,25 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 
 	// Indicate we are waiting for data
 	$scope.request = { package: $stateParams.package };
-	$scope.waiting = true;
+	$rootScope.waiting = true;
 
 	// Send the request to the PHP script
 	$http.post("php/packages.view.php", $scope.request)
 	.success(function(data) {
 		// process the response
 		if (data["error"]) {
-			$scope.error = "Error: " + data["error"];
+			$rootScope.error = "Error: " + data["error"];
 		} else {
-			$scope.result = data["data"];
+			$rootScope.details = data["data"];
 		}
 	})
 	.error(function(data, status) {
 		console.log(data);
-		$scope.error = "Error accessing the server: " + status + ".";
+		$rootScope.error = "Error accessing the server: " + status + ".";
 	})
 	.finally(function() { 
 		// Indicate that we have an answer
-		$scope.waiting = false;
-		$scope.showError = true;
+		$rootScope.waiting = false;
 	});
 
 	$scope.go = function() {

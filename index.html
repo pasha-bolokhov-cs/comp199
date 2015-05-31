@@ -57,6 +57,26 @@
   </div> <!-- /container-fluid -->
 
 
+  <!---------------------------->
+  <!-- Errors and Diagnostics -->
+  <!---------------------------->
+  <div class="container-fluid" style="position: absolute; top: 70px; left: 10%; right: 10%; opacity: 0.6; z-index: 100">
+    <!-- error message -->
+    <div class="row" ng-show="$root.error" ng-cloak>
+      <div class="col-xs-12 col-md-8 col-md-offset-2">
+        <alert class="text-center" type="danger" close="$root.error = false">{{ $root.error }}</alert>
+      </div>
+    </div> <!-- /div with any errors -->
+  
+    <!-- ... loading ... -->
+    <div class="row" ng-show="$root.waiting">
+      <div class="col-xs-12 col-md-8 col-md-offset-2">
+        <alert class="text-center" type="warning" close="$root.waiting = false"><em>...&nbsp;loading&nbsp;...</em></alert>
+      </div>
+    </div> <!-- /div with ...loading... -->
+  </div>
+
+
   <!---------------------->
   <!-- The partial view -->
   <!---------------------->

@@ -14,7 +14,6 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
-		$scope.showResult = false;
 		$scope.error = false;
 		$scope.waiting = false;
 
@@ -119,7 +118,6 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 		.finally(function() { 
 			// Indicate that we have an answer
 			$scope.waiting = false;
-			$scope.showResult = true;
 		});
 	}
 

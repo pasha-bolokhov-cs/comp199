@@ -16,7 +16,6 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
-		$scope.showError = false;
 		$scope.error = false;
 		$scope.waiting = false;
 	}
@@ -28,7 +27,6 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 	/* 'Sign-In' button in the modal */
 	$scope.signIn = function() {
 		// Indicate we are waiting for data
-		$scope.showError = false;
 		$scope.waiting = true;
 
 		// Send the request to the PHP script
@@ -54,7 +52,6 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 				default:
 					$scope.error = "Error: " + data["error"];
 				}
-				$scope.showError = true;
 			} else {
 				/* Success */
 				$modalInstance.close();
@@ -72,7 +69,6 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 		.error(function(data, status) {
 			console.log(data);
 			$scope.error = "Error accessing the server: " + status + ".";
-			$scope.showError = true;
 		})
 		.finally(function() { 
 			// Indicate that we have an answer

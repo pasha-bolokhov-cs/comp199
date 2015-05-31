@@ -1,27 +1,7 @@
-<!---------------------------->
-<!-- Errors and Diagnostics -->
-<!---------------------------->
-<div class="container-fluid">
-  <!-- error message -->
-  <div class="row" ng-show="showError && error" ng-cloak>
-    <div class="col-xs-12 col-md-8 col-md-offset-2">
-      <alert class="text-center" type="danger" close="showError=false">{{ error }}</alert>
-    </div>
-  </div> <!-- /div with any errors -->
-
-  <!-- ... loading ... -->
-  <div class="row" ng-show="waitingPackages || waitingRegions">
-    <div class="col-xs-12 col-md-8 col-md-offset-2">
-      <alert class="text-center" type="warning" close="reset()"><em>...&nbsp;loading&nbsp;...</em></alert>
-    </div>
-  </div> <!-- /div with ...loading... -->
-</div>
-
-
 <!-------------->
 <!-- Packages -->
 <!-------------->
-<div class="jumbotron" ng-repeat="p in result" ng-show='p["available"] > 0'
+<div class="jumbotron" ng-repeat="p in packages" ng-show='p["available"] > 0'
      style='background: url(images/{{ p["fileName"] }}) no-repeat center center;
             background-size: cover;
             margin-bottom: 0;'>

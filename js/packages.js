@@ -1,8 +1,7 @@
 /**
  * Controls the 'packages' page
  */
-// GG remove '$sce' if not needed
-app.controller('PackagesController', function($scope, $rootScope, $http, $state, $modal, $sce) {
+app.controller('PackagesController', function($scope, $rootScope, $http, $state) {
 
 	/*
 	 * Permanent initialization
@@ -12,15 +11,9 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state,
 	 * Resettable data initialization
 	 */
 	$scope.setup = function() {
-		// Initialization
-		$scope.showError = false;
-		$scope.error = false;
-		$scope.waitingRegions = false;
-		$scope.waitingPackages = false;
-
 		// Data Initialization
 		$scope.request = {};
-		$scope.result = undefined;
+		$scope.packages = undefined;
 	}
 	$scope.setup();
 
@@ -36,7 +29,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state,
 		$rootScope.region = r;
 
 		// Indicate we are waiting for data
-		$scope.waitingPackages = true;
+		$rootScope.waiting = true;
 		$scope.request = { region: $rootScope.region.region };
 	
 		// Send the request to the PHP script
@@ -44,19 +37,18 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state,
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
-				$scope.error = "Error: " + data["error"];
+				$rootScope.error = "Error: " + data["error"];
 			} else {
-				$scope.result = data["data"];
+				$scope.packages = data["data"];
 			}
 		})
 		.error(function(data, status) {
 			console.log(data);
-			$scope.error = "Error accessing the server: " + status + ".";
+			$rootScope.error = "Error accessing the server: " + status + ".";
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
-			$scope.waitingPackages = false;
-			$scope.showError = true;
+			$rootScope.waiting = false;
 		});
 	};
 	$scope.view = function(name) {
@@ -67,13 +59,12 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state,
 	 * Get the list of regions
 	 */
 	$rootScope.showRegions = false;
-	$scope.waitingRegions = true;
 	$rootScope.region = {"region": "All", "available": true};
 	$http.post("php/get-regions.php")
 	.success(function(data) {
 		// process the response
 		if (data["error"]) {
-			$scope.error = "Error: " + data["error"];
+			$rootScope.error = "Error: " + data["error"];
 		} else {
 			// form a new list of regions with "All" prepended
 			$rootScope.regions = [ $rootScope.region ];
@@ -85,14 +76,14 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state,
 			}
 			// get the packages
 			$rootScope.regionSelect($rootScope.region);
+			$rootScope.showRegions = true;
 		}
 	})
 	.error(function(data, status) {
 		console.log(data);
-		$scope.error = "Error accessing the server: " + status + ".";
+		$rootScope.error = "Error accessing the server: " + status + ".";
 	})
 	.finally(function() { 
-		$scope.waitingRegions = false;
-		$rootScope.showRegions = true;
+		$scope.waiting = false;
 	});
 });

@@ -11,6 +11,8 @@
 
 		* move MAX_RESPONSE_LINES into a single file
 
+		* decrease numerous "console_log()"
+
 
 	*  packages page
 
