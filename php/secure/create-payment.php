@@ -41,6 +41,15 @@ if (!validate($data->package)) {
 	goto quit;
 }
 
+/* connect to the database */
+require_once '../../../../comp199-www/mysqli_auth.php';
+$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+if ($mysqli->connect_error) {
+	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
+			     . $mysqli->connect_error;
+	goto quit;
+}
+
 /* get customerId */
 if (!($customerId = get_customerId($mysqli, $token))) {
 	goto auth_error_database;
@@ -126,14 +135,6 @@ $receiptId = $payment->getId();
 /*  into the database  */
 /* * * * * * * * * * * */
 
-/* connect to the database */
-require_once '../../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
-	goto quit;
-}
 
 /* form the query */
 $query = <<<"EOF"
