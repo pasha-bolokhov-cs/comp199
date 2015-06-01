@@ -35,8 +35,42 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 	/*
 	 * Functions assigned to buttons
 	 */
+	//GG place this function properly
+	$scope.merchantId = 'DYTNTCAVH97J4';
+//	window.paypalCheckoutReady = function () { 
+//console.log("paypalCheckoutReady()"); //GG
+//		paypal.checkout.setup($scope.merchantId, {
+//			environment: 'sandbox',
+//			container: [ 'checkout-button-0' ]
+//		}); 
+//	};
+
+	//GG one of the calls is redundant
+	$scope.ecToken = "EC-46316657V6786642E";
+	paypal.checkout.setup($scope.merchantId, {
+		container: 'trips-paypal-container',
+		environment: 'sandbox',
+		click: function () {
+			paypal.checkout.initXO();
+
+			paypal.checkout.startFlow($scope.ecToken);
+
+//			paypal.checkout.closeFlow();
+		}
+	});
+
+	/* place an order */
+	$scope.pay = function(package) {
+		if (!package)
+			return;
+
+	}
+
 	/* remove an order */
 	$scope.removeOrders = function(package) {
+		if (!package)
+			return;
+
 		$scope.orders = {};
 		$scope.orders.package = package;
 

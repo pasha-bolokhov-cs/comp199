@@ -4,6 +4,10 @@
 <div class="container">
   <br>
   <br>
+<div class="row">
+  <div class="col-xs-12" id="trips-paypal-container">
+  </div>
+</div>
   <div class="row" ng-repeat="trip in trips">
     <div class="col-xs-12">
 
@@ -30,7 +34,7 @@
           </div>
           <!-- Or: -->
           <!-- "Order" button -->
-          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]' ng-click='pay()'>
+          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
             <button class="btn btn-success">
               &nbsp;&nbsp;
               <span class="glyphicon glyphicon-road"></span>&nbsp;Order

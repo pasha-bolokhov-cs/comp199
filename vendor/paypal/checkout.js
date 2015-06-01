@@ -554,7 +554,7 @@ if (!Date.now) {
                         _track({"status": "IC_DESTROY_TO_CANCEL_URL"});
                     }
 
-                    window.location.replace(config.cancelUrl);
+		    //PAB                    window.location.replace(config.cancelUrl);
 
                 } else if(!config.returnUrl){       //if no cancel or return url is passed in
                     UI.wrapper.parentNode.removeChild(UI.wrapper);
@@ -578,7 +578,7 @@ if (!Date.now) {
                         UI.wrapper.parentNode.removeChild(UI.wrapper);
                     }
                 }
-                window.location.replace(config.returnUrl);
+		//PAB                window.location.replace(config.returnUrl);
             }
 
         }
