@@ -109,15 +109,28 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				}
 			}
 		})
-		.state("user.profile", {
-			url: "/profile",				
-			views: {
+		.state("user.profile",{
+			url="profile",
+			abstract:true;
+		}
+		.state("user.profile.view", {
+			url: "",				
+			views {
 				"@": {
 					templateUrl: "partials/user/profile.html",
 					controller: "ProfileController"
 				}
 			}
 		})
+		.state("user.profile.modify", {
+                        url: "/user",
+                        views {
+                                "@": {
+                                        templateUrl: "partials/user/profile.html",
+                                        controller: "ProfileController"
+                                }
+                        }
+                })
 		.state("user.trips", {
 			url: "/trips",
 			params: {
