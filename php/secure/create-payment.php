@@ -1,8 +1,9 @@
 <?php
-/* Create Payment using PayPal as payment method
-   and 
-   Store recepit id in the database
-*/
+/* 
+ * Create Payment using PayPal as payment method
+ * and store receipt id in the database
+ *
+ */
 
 require __DIR__ . '/../bootstrap.php';
 use PayPal\Api\Address;
@@ -169,11 +170,4 @@ $mysqli->close();
 auth_error:
 $response["error"] = "authentication";
 echo json_encode($response);
-
-
-if(isset($redirectUrl)) {
-	header("Location: $redirectUrl");
-	exit;
-}
-
 ?>
