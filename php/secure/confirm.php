@@ -67,6 +67,9 @@ if (!property_exists($data, "password")) {
 }
 
 /* get customerId */
+require_once '../../../../comp199-www/mysqli_auth.php';
+$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+
 if (!($customerId = get_customerId($mysqli, $token))) {
 	goto auth_error_database;
 }
@@ -81,8 +84,8 @@ $salt = base64_encode($salt);
 $password = base64_encode($password);
 
 /* connect to the database */
-require_once '../../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+/* require_once '../../../../comp199-www/mysqli_auth.php';
+$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB); */
 if ($mysqli->connect_error) {
 	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
 			     . $mysqli->connect_error;

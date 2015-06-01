@@ -28,7 +28,8 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 	/*
 	 * Functions assigned to buttons
 	 */
-	$scope.profile = function() {
+		debugger;	
+		$scope.profile = function() {
 		// Indicate we are waiting for data
 		$rootScope.waiting = true;		
 		
@@ -81,7 +82,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 		});
 	}
 	$scope.profile();
-
+	
 	/* modify function */	
 	$scope.modify = function() {
 		$scope.readOnly = false;
@@ -89,7 +90,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 		$scope.customer.password = "";
 		$scope.customer.password2 = "";
 	}
-
+	
 	$scope.confirm = function() {
 		$scope.readOnly = true;
 
@@ -162,6 +163,14 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 					$rootScope.error = "Error: " + data2["error"];				
 				}
 			} else {
+				$scope.customer.name = data2["name"];
+				$scope.customer.email = data2["email"];
+				$scope.customer.birth = data2["birth"];
+				$scope.customer.nationality = data2["nationality"];			
+				$scope.customer.passportNo = data2["passportNo"];
+				$scope.customer.passportExp = data2["passportExp"];
+				$scope.customer.phone = data2["phone"];
+
 //// GG
 //// Profile page should not log the customer in
 //// or save new token
@@ -186,7 +195,7 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 			// Indicate that we have an answer
 			$rootScope.waiting = false;		
 		});
-
-		$scope.setup();
+		debugger;
+		//$scope.setup();
 	}
 });
