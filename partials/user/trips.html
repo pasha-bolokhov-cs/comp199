@@ -32,12 +32,14 @@
           <!-- "Order" button -->
           <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]' ng-click='pay()'>
             <button class="btn btn-success">
+              &nbsp;&nbsp;
               <span class="glyphicon glyphicon-road"></span>&nbsp;Order
+              &nbsp;&nbsp;
             </button>
           </div>
           <!-- "Remove" button -->
           <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]' ng-click='removeOrders(trip["package"])'>
-            <button class="btn btn-default">
+            <button class="btn btn-warning">
               <span class="glyphicon glyphicon-remove"></span>&nbsp;Remove
             </button>
           </div>
