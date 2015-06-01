@@ -111,7 +111,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		})
 		.state("user.profile",{
 			url="profile",
-			abstract:true;
+			abstract:true
 		}
 		.state("user.profile.view", {
 			url: "",				
@@ -126,8 +126,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
                         url: "/user",
                         views {
                                 "@": {
-                                        templateUrl: "partials/user/profile.html",
-                                        controller: "ProfileController"
+                                        templateUrl: "partials/user/profile.html"
                                 }
                         }
                 })
