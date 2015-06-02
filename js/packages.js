@@ -52,7 +52,7 @@ app.controller('PackagesController', function($scope, $rootScope, $http, $state)
 		});
 	};
 	$scope.view = function(name) {
-		$state.go('.view', { package: name });
+		$state.go('^.view', { package: name });
 	};
 
 	/*

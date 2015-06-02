@@ -1,7 +1,7 @@
 /**
  * Controls the 'packages.view' page
  */
-app.controller('PackagesViewController', function($scope, $rootScope, $http, $state, $stateParams, $modal) {
+app.controller('ViewController', function($scope, $rootScope, $http, $state, $stateParams, $modal) {
 
 	/*
 	 * Permanent initialization
@@ -30,7 +30,7 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 	$rootScope.waiting = true;
 
 	// Send the request to the PHP script
-	$http.post("php/packages.view.php", $scope.request)
+	$http.post("php/view.php", $scope.request)
 	.success(function(data) {
 		// process the response
 		if (data["error"]) {
@@ -70,3 +70,4 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 	};
 
 });
+

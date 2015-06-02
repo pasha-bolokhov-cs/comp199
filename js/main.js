@@ -66,15 +66,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				}
 			}
 		})
-		.state("guest.packagesRoot.packages.view", {
+		.state("guest.packagesRoot.view", {
 			url: "/view",
 			params: {
 				package: null
 			},
 			views: {
 				"@": {		// Targets the unnamed view in the root state
-					templateUrl: "partials/packages.view.html",
-					controller: "PackagesViewController"
+					templateUrl: "partials/view.html",
+					controller: "ViewController"
 				}
 			}
 		})
@@ -97,15 +97,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				}
 			}
 		})
-		.state("user.packagesRoot.packages.view", {
+		.state("user.packagesRoot.view", {
 			url: "/view",
 			params: {
 				package: null
 			},
 			views: {
 				"@": {		// Targets the unnamed view in the root state
-					templateUrl: "partials/packages.view.html",
-					controller: "PackagesViewController"
+					templateUrl: "partials/view.html",
+					controller: "ViewController"
 				}
 			}
 		})
