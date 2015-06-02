@@ -126,17 +126,18 @@ goto database_quit; //GG
 
 //GGGG payment isn't done yet
 /* save the payment id */
-$receiptId = $payment->getId();
+$paymentId = $payment->getId();
 
 
 /* * * * * * * * * * * */
-/*  Store recepit id   */
+/*  Store receipt id   */
 /*  into the database  */
 /* * * * * * * * * * * */
 
 
 /* form the query */
 //GGGG $data->package is not packageId!!!
+//GGGG $paymentId is not receitId!!!
 $query = <<<"EOF"
 	UPDATE orders
 	SET receiptId = $receiptId
