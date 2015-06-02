@@ -72,6 +72,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				package: null
 			},
 			views: {
+				"select-region-view@": {	// The view in the root state
+					// Do not show the region select tool
+				},
 				"@": {		// Targets the unnamed view in the root state
 					templateUrl: "partials/packages.view.html",
 					controller: "PackagesViewController"
@@ -103,6 +106,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 				package: null
 			},
 			views: {
+				"select-region-view@": {	// The view in the root state
+					// Do not show the region select tool
+				},
 				"@": {		// Targets the unnamed view in the root state
 					templateUrl: "partials/packages.view.html",
 					controller: "PackagesViewController"
