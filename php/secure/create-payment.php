@@ -5,7 +5,8 @@
  *
  */
 
-require __DIR__ . '/../bootstrap.php';
+require __DIR__ . '/../../vendor/autoload.php';
+require __DIR__ . '/../../../../comp199-www/paypal-credentials.php';
 use PayPal\Api\Address;
 use PayPal\Api\Amount;
 use PayPal\Api\Payer;
@@ -14,46 +15,48 @@ use PayPal\Api\FundingInstrument;
 use PayPal\Api\RedirectUrls;
 use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
+use PayPal\Auth\OAuthTokenCredential;
 
-require_once 'auth.php';
-if (!($token = authenticate()))
-	goto auth_error;
-	
-/* get the query from JSON data */
-$jsonData = file_get_contents("php://input");
-$data = json_decode($jsonData);
-
-/* validate data */
-if (!property_exists($token, "email")) {
-	$response["error"] = "email-required";
-	goto quit;
-}
-if (!validate($token->email)) {
-	$response["error"] = "email-wrong";
-	goto quit;
-}
-if (!property_exists($data, "package")) {
-	$response["error"] = "package-required";
-	goto quit;
-}
-if (!validate($data->package)) {
-	$response["error"] = "package-wrong";
-	goto quit;
-}
-
-/* connect to the database */
-require_once '../../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
-	goto quit;
-}
-
-/* get customerId */
-if (!($customerId = get_customerId($mysqli, $token))) {
-	goto auth_error_database;
-}
+//require_once 'auth.php';
+//if (!($token = authenticate()))
+//	goto auth_error;
+//	
+///* get the query from JSON data */
+//$jsonData = file_get_contents("php://input");
+//$data = json_decode($jsonData);
+//$response = array();
+//
+///* validate data */
+//if (!property_exists($token, "email")) {
+//	$response["error"] = "email-required";
+//	goto quit;
+//}
+//if (!validate($token->email)) {
+//	$response["error"] = "email-wrong";
+//	goto quit;
+//}
+//if (!property_exists($data, "package")) {
+//	$response["error"] = "package-required";
+//	goto quit;
+//}
+//if (!validate($data->package)) {
+//	$response["error"] = "package-wrong";
+//	goto quit;
+//}
+//
+///* connect to the database */
+//require_once '../../../../comp199-www/mysqli_auth.php';
+//$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+//if ($mysqli->connect_error) {
+//	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
+//			     . $mysqli->connect_error;
+//	goto quit;
+//}
+//
+///* get customerId */
+//if (!($customerId = get_customerId($mysqli, $token))) {
+//	goto auth_error_database;
+//}
 
 
 /* * * * * * * * * * * */
@@ -69,8 +72,8 @@ $payer->setPayment_method("paypal");
 
 /* Payment Amount */
 $amount = new Amount();
-$amount->setCurrency("CAD");
-$amount->setTotal("1.00");     //tobeupdated
+$amount->setCurrency("CAD")
+	->setTotal("77.77");     //GG
 
 
 /* Transaction */
@@ -79,31 +82,28 @@ $amount->setTotal("1.00");     //tobeupdated
    Transaction is created with a `Payee` and `Amount` types.
 */
 $transaction = new Transaction();
-$transaction->setAmount($amount);
-$transaction->setDescription("This is the payment description.");
+$transaction->setAmount($amount)
+		->setDescription("This is the payment description.");
 
 
 /* Redirect urls after payment approval/ cancellation */
 $baseUrl = getBaseUrl();
 $redirectUrls = new RedirectUrls();
-$redirectUrls->setReturn_url("$baseUrl/ExecutePayment.php?success=true");      //tobeupdated
-$redirectUrls->setCancel_url("$baseUrl/ExecutePayment.php?success=false");     //tobeupdated
+$redirectUrls->setReturn_url("$baseUrl/?success=true")      //GG
+		->setCancel_url("$baseUrl/?success=false");     //GG
 
 
 /* Payment */
-/* create one using the above types and intent as 'sale' */
+/* add details and set intent as 'sale' */
 $payment = new Payment();
-$payment->setIntent("sale");
-$payment->setPayer($payer);
-$payment->setRedirect_urls($redirectUrls);
-$payment->setTransactions(array($transaction));
+$payment->setIntent("sale")
+	->setPayer($payer)
+	->setRedirect_urls($redirectUrls)
+	->setTransactions(array($transaction));
 
 
 /* Api Context */
-/* Pass in a `ApiContext` object to authenticate the call 
-   and to send a unique request id (that ensures idempotency).
-   The SDK generates a request id if you do not pass one explicitly. */
-$apiContext = new ApiContext($cred, 'Request' . time());
+$apiContext = new ApiContext(new OAuthTokenCredential(PayPal_App_ClientID, PayPal_App_Secret));
 
 /* Create Payment */
 /* by posting to the APIService using a valid apiContext.
@@ -112,20 +112,16 @@ $apiContext = new ApiContext($cred, 'Request' . time());
 */
 try {
 	$payment->create($apiContext);
-} catch (\PPConnectionException $ex) {
-	echo "Exception: " . $ex->getMessage() . PHP_EOL;
-	var_dump($ex->getData());	
-	exit(1);
+} catch (Exception $ex) {
+	$response["error"] = "exception: " . $ex->getMessage();
+	goto database_quit;
 }
 
 /* Redirect buyer to paypal */
-/* Retrieve buyer approval url from the `payment` object. */
-foreach($payment->getLinks() as $link) {
-	if($link->getRel() == 'approval_url') {
-		$redirectUrl = $link->getHref();
-	}
-}
+$approvalUrl = $payment->getApprovalLink();
+error_log("create-payment.php: approvalUrl = \"$approvalUrl\""); //GG
 
+//GGGG payment isn't done yet
 /* save the payment id */
 $receiptId = $payment->getId();
 
@@ -137,6 +133,7 @@ $receiptId = $payment->getId();
 
 
 /* form the query */
+//GGGG $data->package is not packageId!!!
 $query = <<<"EOF"
 	UPDATE orders
 	SET receiptId = $receiptId
