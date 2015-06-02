@@ -6,6 +6,7 @@
  */
 require_once 'auth.php';
 require_once '../validate.php';
+require_once '../../../../comp199-www/paypal-credentials.php';
 
 if (!($token = authenticate()))
 	goto auth_error;
@@ -132,6 +133,10 @@ while ($row = $result->fetch_assoc()) {
 		goto database_quit;
 	}
 }
+
+/* put Merchant Id into the response */
+if (count($response["data"]))
+	$response["merchant_id"] = PayPal_MerchantID;
 
 database_quit:
 /* close the database */

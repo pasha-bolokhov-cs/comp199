@@ -21,13 +21,22 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 		} else {
 			$scope.trips = data["data"];
 
+			/* no need to process if there are no orders */
+			if ($scope.trips.length == 0)
+				return;
+
 			/* obtain merchantId */
-			//GG implement
-			$scope.merchantId = 'MERCHANT-ID-TO-BE-IMPLEMENTED';
+			if (!data["merchant_id"]) {
+				$rootScope.error = "Error: server did not provide Merchant Id";
+				return;
+			}
+			$scope.merchantId = data["merchant_id"];
+			/* create the list of button id's */
 			buttonList = [];
 			for (k = 0; k < $scope.trips.length; k++) {
 				buttonList.push("trips-paypal-container-" + k.toString());
 			}
+			/* defer initialization of paypal */
 			$scope.$applyAsync(function() {
 				paypal.checkout.setup($scope.merchantId, {
 					container: buttonList,
