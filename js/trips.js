@@ -28,8 +28,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 			for (k = 0; k < $scope.trips.length; k++) {
 				buttonList.push("trips-paypal-container-" + k.toString());
 			}
-			$scope.$evalAsync(function() {
-				console.log("$evalAsync()");
+			$scope.$applyAsync(function() {
 				paypal.checkout.setup($scope.merchantId, {
 					container: buttonList,
 					environment: 'sandbox',
