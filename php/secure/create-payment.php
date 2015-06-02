@@ -5,6 +5,7 @@
  *
  */
 
+require __DIR__ . '/../common.php';
 require __DIR__ . '/../../vendor/autoload.php';
 require __DIR__ . '/../../../../comp199-www/paypal-credentials.php';
 use PayPal\Api\Address;
@@ -17,46 +18,47 @@ use PayPal\Api\Transaction;
 use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 
-//require_once 'auth.php';
-//if (!($token = authenticate()))
-//	goto auth_error;
-//	
-///* get the query from JSON data */
-//$jsonData = file_get_contents("php://input");
-//$data = json_decode($jsonData);
-//$response = array();
-//
-///* validate data */
-//if (!property_exists($token, "email")) {
-//	$response["error"] = "email-required";
-//	goto quit;
-//}
-//if (!validate($token->email)) {
-//	$response["error"] = "email-wrong";
-//	goto quit;
-//}
-//if (!property_exists($data, "package")) {
-//	$response["error"] = "package-required";
-//	goto quit;
-//}
-//if (!validate($data->package)) {
-//	$response["error"] = "package-wrong";
-//	goto quit;
-//}
-//
-///* connect to the database */
-//require_once '../../../../comp199-www/mysqli_auth.php';
-//$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-//if ($mysqli->connect_error) {
-//	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-//			     . $mysqli->connect_error;
-//	goto quit;
-//}
-//
-///* get customerId */
-//if (!($customerId = get_customerId($mysqli, $token))) {
-//	goto auth_error_database;
-//}
+require_once 'auth.php';
+require_once '../validate.php';
+if (!($token = authenticate()))
+	goto auth_error;
+	
+/* get the query from JSON data */
+$jsonData = file_get_contents("php://input");
+$data = json_decode($jsonData);
+$response = array();
+
+/* validate data */
+if (!array_key_exists("email", $token)) {
+	$response["error"] = "email-required";
+	goto quit;
+}
+if (!validate($token["email"])) {
+	$response["error"] = "email-wrong";
+	goto quit;
+}
+if (!property_exists($data, "package")) {
+	$response["error"] = "package-required";
+	goto quit;
+}
+if (!validate($data->package)) {
+	$response["error"] = "package-wrong";
+	goto quit;
+}
+
+/* connect to the database */
+require_once '../../../../comp199-www/mysqli_auth.php';
+$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
+if ($mysqli->connect_error) {
+	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
+			     . $mysqli->connect_error;
+	goto quit;
+}
+
+/* get customerId */
+if (!($customerId = get_customerId($mysqli, $token))) {
+	goto auth_error_database;
+}
 
 
 /* * * * * * * * * * * */
@@ -67,7 +69,7 @@ use PayPal\Auth\OAuthTokenCredential;
 
 /* Payer */
 $payer = new Payer();
-$payer->setPayment_method("paypal");
+$payer->setPaymentMethod("paypal");
 
 
 /* Payment Amount */
@@ -89,8 +91,8 @@ $transaction->setAmount($amount)
 /* Redirect urls after payment approval/ cancellation */
 $baseUrl = getBaseUrl();
 $redirectUrls = new RedirectUrls();
-$redirectUrls->setReturn_url("$baseUrl/?success=true")      //GG
-		->setCancel_url("$baseUrl/?success=false");     //GG
+$redirectUrls->setReturnUrl("$baseUrl?success=true")
+		->setCancelUrl("$baseUrl?success=false");     //GG
 
 
 /* Payment */
@@ -98,7 +100,7 @@ $redirectUrls->setReturn_url("$baseUrl/?success=true")      //GG
 $payment = new Payment();
 $payment->setIntent("sale")
 	->setPayer($payer)
-	->setRedirect_urls($redirectUrls)
+	->setRedirectUrls($redirectUrls)
 	->setTransactions(array($transaction));
 
 
@@ -119,7 +121,8 @@ try {
 
 /* Redirect buyer to paypal */
 $approvalUrl = $payment->getApprovalLink();
-error_log("create-payment.php: approvalUrl = \"$approvalUrl\""); //GG
+$response["approval_link"] = $approvalUrl; //GG
+goto database_quit; //GG
 
 //GGGG payment isn't done yet
 /* save the payment id */

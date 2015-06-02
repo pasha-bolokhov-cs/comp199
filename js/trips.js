@@ -18,37 +18,38 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 				$rootScope.doSignOut();
 			else
 				$rootScope.error = "Error: " + data["error"];
-		} else {
-			$scope.trips = data["data"];
 
-			/* no need to process if there are no orders */
-			if ($scope.trips.length == 0)
-				return;
-
-			/* obtain merchantId */
-			if (!data["merchant_id"]) {
-				$rootScope.error = "Error: server did not provide Merchant Id";
-				return;
-			}
-			$scope.merchantId = data["merchant_id"];
-			/* create the list of button id's */
-			buttonList = [];
-			for (k = 0; k < $scope.trips.length; k++) {
-				buttonList.push("trips-paypal-container-" + k.toString());
-			}
-			/* defer initialization of paypal */
-			$scope.$applyAsync(function() {
-				paypal.checkout.setup($scope.merchantId, {
-					container: buttonList,
-					environment: 'sandbox',
-					click: $scope.pay,
-					accepted: $scope.accepted,
-					rejected: $scope.rejected
-				});
-			});
-
-
+			return;
 		}
+
+		// success
+		$scope.trips = data["data"];
+
+		/* no need to process if there are no orders */
+		if ($scope.trips.length == 0)
+			return;
+
+		/* obtain merchantId */
+		if (!data["merchant_id"]) {
+			$rootScope.error = "Error: server did not provide Merchant Id";
+			return;
+		}
+		$scope.merchantId = data["merchant_id"];
+		/* create the list of button id's */
+		buttonList = [];
+		for (k = 0; k < $scope.trips.length; k++) {
+			buttonList.push("trips-paypal-container-" + k.toString());
+		}
+		/* defer initialization of paypal */
+		$scope.$applyAsync(function() {
+			paypal.checkout.setup($scope.merchantId, {
+				container: buttonList,
+				environment: 'sandbox',
+				click: $scope.pay,
+				accepted: $scope.accepted,
+				rejected: $scope.rejected
+			});
+		});
 	})
 	.error(function(data, status) {
 		console.log(data);
@@ -64,14 +65,40 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 	 */
 	/* place an order */
 	$scope.pay = function(event, idx) {
+
 		/* Initialize PayPal environment */
 		paypal.checkout.initXO();
 
 		/* Send request to the server */
+		$scope.request = { package: $scope.trips[idx].package };
+		$rootScope.waiting = true;
+		$http.post("php/secure/create-payment.php", $scope.request)
+		.success(function(data) {
+			// process the response
+			if (data["error"]) {
+				if (data["error"] == "authentication")
+					$rootScope.doSignOut();
+				else
+					$rootScope.error = "Error: " + data["error"];
+
+				return;
+			}
+
+			// success
+console.log("approvalLink = ", data["approval_link"]);
+		})
+		.error(function(data, status) {
+			console.log(data);
+			$rootScope.error = "Error accessing the server: " + status + ".";
+		})
+		.finally(function() { 
+			$rootScope.waiting = false;
+		});	
+		
 		//GG
 
-		$scope.ecToken = "EC-2PH22151F9744123W";
-		paypal.checkout.startFlow($scope.ecToken);
+//		$scope.ecToken = "EC-2PH22151F9744123W";
+//		paypal.checkout.startFlow($scope.ecToken);
 
 //		paypal.checkout.closeFlow();
 	};
