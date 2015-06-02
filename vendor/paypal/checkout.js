@@ -825,7 +825,8 @@ if (!Date.now) {
                 btnContainers = [];
 
             //for IE8 and IE9
-            if(jsBtnIds && jsBtnIds.length && this.onreadystatechange && !(this.readyState === 'loaded' || this.readyState === 'complete')){
+//PAB            if(jsBtnIds && jsBtnIds.length && this.onreadystatechange && !(this.readyState === 'loaded' || this.readyState === 'complete')){
+            if(jsBtnIds && jsBtnIds.length && this && this.onreadystatechange && !(this.readyState === 'loaded' || this.readyState === 'complete')) {	//PAB - check "this"
                 return;
             }
 
