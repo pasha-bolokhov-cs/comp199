@@ -1,4 +1,4 @@
-<form name="profileForm" ng-submit="" ng-readonly="readOnly" class="container" novalidate>
+<form name="profileForm" ng-submit="" class="container" novalidate>
 
 
   <!------------>
@@ -22,13 +22,13 @@
           <!-- Name -->
           <label for="regName" class="col-xs-12 col-md-6 control-label">
             Name
-            <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" required>
+            <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly" required>
           </label>
 
           <!-- Birth -->
           <label for="regBirth" class="col-xs-12 col-md-6 control-label" required>
             Birth date
-            <input type="type" id="regBirth" name="birth" ng-model="customer.birth" class="form-control">
+            <input type="type" id="regBirth" name="birth" ng-model="customer.birth" ng-readonly="readOnly" class="form-control">
           </label>
         </fieldset>
         <br>
@@ -41,19 +41,19 @@
           <!-- Nationality -->
           <label for="regNationality" class="col-xs-12 col-md-4 control-label" required>
             Nationality
-            <input type="text" id="regNationality" name="nationality" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control">
+            <input type="text" id="regNationality" name="nationality" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly">
           </label>
 
           <!-- Passport No -->
           <label for="regPassportNo" class="col-xs-12 col-md-3 control-label" required>
             Passport No
-            <input type="text" id="regPassportNo" name="passportNo" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control">
+            <input type="text" id="regPassportNo" name="passportNo" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control" ng-readonly="readOnly">
           </label>
 
           <!-- Passport Expiry -->
           <label for="regPassportExp" class="col-xs-12 col-md-5 control-label" required>
             Expiration Date
-            <input type="text" id="regPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control">
+            <input type="text" id="regPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control" ng-readonly="readOnly">
           </label>
         </fieldset>
         <br>
@@ -66,13 +66,13 @@
           <!-- Phone -->
           <label for="regPhone" class="col-xs-12 col-md-6 control-label">
             Phone
-            <input type="phone" id="regPhone" name="phone" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control">
+            <input type="phone" id="regPhone" name="phone" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control" ng-readonly="readOnly">
           </label>
 
           <!-- Email -->
           <label for="regEmail" class="col-xs-12 col-md-6 control-label">
             Email Address
-            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control">
+            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly">
           </label>
         </fieldset>
         <br>
@@ -155,8 +155,8 @@
   <!-- Footer - Buttons -->
   <!---------------------->
   <div class="modal-footer">
-    <!-- Register -->
-    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="modify()">     
+    <!-- Modify -->
+    <button type="submit" class="btn btn-primary pull-left" ng-click="modify()" ng-show="'user.profile.view' | includedByState">
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;Modify
     </button>
   

@@ -1,7 +1,7 @@
 /**
  * Controls the 'Profile' modal
  */
-app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelper, $localStorage) {
+app.controller('ProfileController', function($scope, $rootScope, $state, $http, jwtHelper, $localStorage) {
 
 	/*
 	 * Permanent initialization
@@ -24,71 +24,70 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 		$scope.blurPassword2 = false;
 	}
 	$scope.setup();
+
+	/* 
+	 * Fetch the profile
+	 */
+	// Indicate we are waiting for data
+	$rootScope.waiting = true;		
+	
+	// Send the request to the PHP script
+	$http.post("php/secure/profile.php", $scope.customer)
+	.success(function(data) {
+		// process the response
+		if (data["error"]) {
+			switch(data["error"]) {
+			case "name-required":
+				$scope.profileForm.name.$setValidity("required", false);
+				$scope.profileForm.name.$setDirty();
+				break;
+
+			case "password-required":
+				$scope.profileForm.password.$setValidity("required", false);
+				$scope.profileForm.password.$setDirty();
+				break;
+
+			case "login":
+				$scope.error = "Invalid email or password";
+				break;
+
+			default:
+				$rootScope.error = "Error: " + data["error"];
+			}
+
+			// GG process validation errors
+			return;
+		}
+		//GG change status to signed in				
+
+		$scope.customer.name = data["name"];
+		$scope.customer.email = data["email"];
+		$scope.customer.birth = data["birth"];
+		$scope.customer.nationality = data["nationality"];			
+		$scope.customer.passportNo = data["passportNo"];
+		$scope.customer.passportExp = data["passportExp"];
+		$scope.customer.phone = data["phone"];
+		$scope.customer.password = "";
+		$scope.customer.password2 = "";				
+	})
+	.error(function(data, status) {		
+		$rootScope.error = "Error accessing the server: " + status + ".";
+	})
+	.finally(function() { 
+		// Indicate that we have an answer
+		$rootScope.waiting = false;
+	});
+
 	
 	/*
 	 * Functions assigned to buttons
 	 */
-		debugger;	
-		$scope.profile = function() {
-		// Indicate we are waiting for data
-		$rootScope.waiting = true;		
-		
-		// Send the request to the PHP script
-		$http.post("php/secure/profile.php", $scope.customer)
-		.success(function(data) {
-	
-			// process the response
-			if (data["error"]) {
-				switch(data["error"]) {
-				case "name-required":
-					$scope.profileForm.name.$setValidity("required", false);
-					$scope.profileForm.name.$setDirty();
-					break;
-
-				case "password-required":
-					$scope.profileForm.password.$setValidity("required", false);
-					$scope.profileForm.password.$setDirty();
-					break;
-
-				case "login":
-					$scope.error = "Invalid email or password";
-					break;
-
-				default:
-					$rootScope.error = "Error: " + data["error"];
-				}
-
-				// GG process validation errors
-			} else {
-				//GG change status to signed in				
-
-				$scope.customer.name = data["name"];
-				$scope.customer.email = data["email"];
-				$scope.customer.birth = data["birth"];
-				$scope.customer.nationality = data["nationality"];			
-				$scope.customer.passportNo = data["passportNo"];
-				$scope.customer.passportExp = data["passportExp"];
-				$scope.customer.phone = data["phone"];
-				$scope.customer.password = "";
-				$scope.customer.password2 = "";				
-			}
-		})
-		.error(function(data, status) {		
-			$rootScope.error = "Error accessing the server: " + status + ".";
-		})
-		.finally(function() { 
-			// Indicate that we have an answer
-			$rootScope.waiting = false;
-		});
-	}
-	$scope.profile();
-	
-	/* modify function */	
+	/* Modify */	
 	$scope.modify = function() {
-		$scope.readOnly = false;
-		
 		$scope.customer.password = "";
 		$scope.customer.password2 = "";
+
+		$state.go("user.profile.modify");		
 	}
 	
 	$scope.confirm = function() {
@@ -195,7 +194,6 @@ app.controller('ProfileController', function($scope, $rootScope, $http, jwtHelpe
 			// Indicate that we have an answer
 			$rootScope.waiting = false;		
 		});
-		debugger;
 		//$scope.setup();
 	}
 });

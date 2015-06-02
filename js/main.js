@@ -129,12 +129,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			url: ""
 		})
 		.state("user.profile.modify", {
-                        url: "/modify",
-                        views: {
-                                "@": {
-                               /*         templateUrl: "partials/user/profile.html" */
-                                }
-                        }
+                        url: "/modify"
                 })
 		.state("user.trips", {
 			url: "/trips",
