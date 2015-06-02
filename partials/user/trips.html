@@ -4,10 +4,11 @@
 <div class="container">
   <br>
   <br>
-<div class="row"><!-- GG -->
-  <div class="col-xs-12" id="trips-paypal-container">
+  <div class="row">
+    <alert type="success" class="col-xs-12 text-center" ng-show="!trip.length">
+      <span>You do not have any outstanding orders</span>
+    </alert>
   </div>
-</div>
   <div class="row" ng-repeat="trip in trips">
     <div class="col-xs-12">
 
@@ -34,10 +35,10 @@
           </div>
           <!-- Or: -->
           <!-- "Order" button -->
-<div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
-<div id="trips-paypal-container-{{ $index }}" name="trips-{{ $index }}">
-</div>
-</div>
+          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
+            <div id="trips-paypal-container-{{ $index }}" name="trips-{{ $index }}">
+            </div>
+          </div>
 <!--
           <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
             <button class="btn btn-success">
