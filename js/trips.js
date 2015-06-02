@@ -33,7 +33,9 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 				paypal.checkout.setup($scope.merchantId, {
 					container: buttonList,
 					environment: 'sandbox',
-					click: $scope.pay
+					click: $scope.pay,
+					accepted: $scope.accepted,
+					rejected: $scope.rejected
 				});
 			});
 
@@ -64,7 +66,17 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 		paypal.checkout.startFlow($scope.ecToken);
 
 //		paypal.checkout.closeFlow();
-	}
+	};
+
+	/* order accepted */
+	$scope.accepted = function() {
+		console.log("order has been accepted");
+	};
+
+	/* order rejected or other failure */
+	$scope.rejected = function() {
+		console.log("order has been rejected");
+	};
 
 	/* remove an order */
 	$scope.removeOrders = function(package) {

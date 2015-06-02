@@ -555,6 +555,8 @@ if (!Date.now) {
                     }
 
 //PAB		    window.location.replace(config.cancelUrl);
+			if (config.merchantConfig.rejected)		//PAB
+				config.merchantConfig.rejected();	//PAB
 
                 } else if(!config.returnUrl){       //if no cancel or return url is passed in
                     UI.wrapper.parentNode.removeChild(UI.wrapper);
@@ -579,6 +581,8 @@ if (!Date.now) {
                     }
                 }
 //PAB		window.location.replace(config.returnUrl);
+		if (config.merchantConfig.accepted)		//PAB
+			config.merchantConfig.accepted();	//PAB
             }
 
         }
