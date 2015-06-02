@@ -11,6 +11,8 @@
 
 		* the brand link should discrete between user and guest states
 
+		* "signed in as" label remains after cache wipe-out
+
 
 	*  packages page
 
