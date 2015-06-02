@@ -20,6 +20,24 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 				$rootScope.error = "Error: " + data["error"];
 		} else {
 			$scope.trips = data["data"];
+
+			/* obtain merchantId */
+			//GG implement
+			$scope.merchantId = 'MERCHANT-ID-TO-BE-IMPLEMENTED';
+			buttonList = [];
+			for (k = 0; k < $scope.trips.length; k++) {
+				buttonList.push("trips-paypal-container-" + k.toString());
+			}
+			$scope.$evalAsync(function() {
+				console.log("$evalAsync()");
+				paypal.checkout.setup($scope.merchantId, {
+					container: buttonList,
+					environment: 'sandbox',
+					click: $scope.pay
+				});
+			});
+
+
 		}
 	})
 	.error(function(data, status) {
@@ -31,39 +49,21 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 	});	
 
 
-
 	/*
 	 * Functions assigned to buttons
 	 */
-	//GG place this function properly
-	$scope.merchantId = 'DYTNTCAVH97J4';
-//	window.paypalCheckoutReady = function () { 
-//console.log("paypalCheckoutReady()"); //GG
-//		paypal.checkout.setup($scope.merchantId, {
-//			environment: 'sandbox',
-//			container: [ 'checkout-button-0' ]
-//		}); 
-//	};
-
-	//GG one of the calls is redundant
-	$scope.ecToken = "EC-46316657V6786642E";
-	paypal.checkout.setup($scope.merchantId, {
-		container: 'trips-paypal-container',
-		environment: 'sandbox',
-		click: function () {
-			paypal.checkout.initXO();
-
-			paypal.checkout.startFlow($scope.ecToken);
-
-//			paypal.checkout.closeFlow();
-		}
-	});
-
 	/* place an order */
-	$scope.pay = function(package) {
-		if (!package)
-			return;
+	$scope.pay = function(event, idx) {
+		/* Initialize PayPal environment */
+		paypal.checkout.initXO();
 
+		/* Send request to the server */
+		//GG
+
+		$scope.ecToken = "EC-2PH22151F9744123W";
+		paypal.checkout.startFlow($scope.ecToken);
+
+//		paypal.checkout.closeFlow();
 	}
 
 	/* remove an order */

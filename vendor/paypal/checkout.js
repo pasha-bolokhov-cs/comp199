@@ -554,7 +554,7 @@ if (!Date.now) {
                         _track({"status": "IC_DESTROY_TO_CANCEL_URL"});
                     }
 
-		    //PAB                    window.location.replace(config.cancelUrl);
+//PAB		    window.location.replace(config.cancelUrl);
 
                 } else if(!config.returnUrl){       //if no cancel or return url is passed in
                     UI.wrapper.parentNode.removeChild(UI.wrapper);
@@ -578,7 +578,7 @@ if (!Date.now) {
                         UI.wrapper.parentNode.removeChild(UI.wrapper);
                     }
                 }
-		//PAB                window.location.replace(config.returnUrl);
+//PAB		window.location.replace(config.returnUrl);
             }
 
         }
@@ -620,14 +620,14 @@ if (!Date.now) {
             removeEvent(window, 'keyup', _toggleLightbox);
         }
 
-        function _clickHandler(event){
+        function _clickHandler(event, idx){	// PAB - add 'idx'
             var merchantConfig = config.merchantConfig;
             if(merchantConfig && merchantConfig.condition && !merchantConfig.condition()) {
                 return null;
             }
             var customClick = merchantConfig && merchantConfig.click;
             if(customClick) {
-                customClick(event);
+                customClick(event, idx);	// PAB
             } else {
                 _render.call(this, event);
             }
@@ -640,15 +640,15 @@ if (!Date.now) {
 
             var i = btnList.length;
             while (i--) {
-                _setTrigger(btnList[i]);
+                _setTrigger(btnList[i], i);
             }
         }
 
         /*
          * Adds click event listeners
          */
-        function _setTrigger(el) {
-            addEvent(el, 'click', _clickHandler, this);
+        function _setTrigger(el, idx) {
+            addEvent(el, 'click', _clickHandler, this, idx);
         }
 
         /**
@@ -991,7 +991,7 @@ if (!Date.now) {
             _destroy();
 
             if (successUrl) {
-                top.location.href = successUrl;
+//PAB                top.location.href = successUrl;
             }
         };
 
@@ -1016,14 +1016,15 @@ if (!Date.now) {
      * @param {Function} fn The callback function to add
      * @param {Object} scope A custom scope to use in the callback (optional)
      */
-    function addEvent(obj, type, fn, scope) {
+    function addEvent(obj, type, fn, scope, idx) {  //PAB - add 'idx'
         scope = scope || obj;
+	idx = typeof idx !== 'undefined' ? idx : null;			//PAB
 
         var wrappedFn;
 
         if (obj.addEventListener) {
             wrappedFn = function (e) {
-                fn.call(scope, e);
+                fn.call(scope, e, idx);		//PAB - add 'idx'
             };
             obj.addEventListener(type, wrappedFn, false);
         } else if (obj.attachEvent) {
@@ -1035,7 +1036,7 @@ if (!Date.now) {
                     window.event.returnValue = false;
                 };
 
-                fn.call(scope, e);
+                fn.call(scope, e, idx);		//PAB - add 'idx'
             };
 
             obj.attachEvent('on' + type, wrappedFn);

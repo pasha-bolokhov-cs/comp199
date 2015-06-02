@@ -69,7 +69,7 @@
     </div> <!-- /div with any errors -->
   
     <!-- ... loading ... -->
-    <div class="row" ng-show="$root.waiting">
+    <div class="row" ng-show="$root.waiting" ng-cloak>
       <div class="col-xs-12 col-md-8 col-md-offset-2">
         <alert class="text-center" type="warning" close="$root.waiting = false"><em>...&nbsp;loading&nbsp;...</em></alert>
       </div>

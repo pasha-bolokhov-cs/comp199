@@ -1,10 +1,10 @@
- <!------------------>
-<!-- Order Tables -->
-<!------------------>
+<!------------>
+<!-- Orders -->
+<!------------>
 <div class="container">
   <br>
   <br>
-<div class="row">
+<div class="row"><!-- GG -->
   <div class="col-xs-12" id="trips-paypal-container">
   </div>
 </div>
@@ -34,6 +34,11 @@
           </div>
           <!-- Or: -->
           <!-- "Order" button -->
+<div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
+<div id="trips-paypal-container-{{ $index }}" name="trips-{{ $index }}">
+</div>
+</div>
+<!--
           <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
             <button class="btn btn-success">
               &nbsp;&nbsp;
@@ -41,6 +46,7 @@
               &nbsp;&nbsp;
             </button>
           </div>
+-->
           <!-- "Remove" button -->
           <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]' ng-click='removeOrders(trip["package"])'>
             <button class="btn btn-warning">
