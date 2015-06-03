@@ -103,7 +103,8 @@ if (!Date.now) {
                 showMiniB: true,
                 sandBox: false,
                 devMode: false,
-                log: true,
+//PAB                log: true,
+                log: false,		//PAB - _track() produces warning messages if "log" is true
                 mbWidth: 450,
                 mbHeight: 535,
                 cookiedExp: docCookies.getItem("PPXOEXP"),
@@ -555,8 +556,9 @@ if (!Date.now) {
                     }
 
 //PAB		    window.location.replace(config.cancelUrl);
-			if (config.merchantConfig.rejected)		//PAB
-				config.merchantConfig.rejected();	//PAB
+			if (config.cancelUrl && !config.returnUrl &&			//PAB
+			    config.merchantConfig.rejected)				//PAB
+				config.merchantConfig.rejected(config.cancelUrl);	//PAB
 
                 } else if(!config.returnUrl){       //if no cancel or return url is passed in
                     UI.wrapper.parentNode.removeChild(UI.wrapper);
@@ -581,8 +583,8 @@ if (!Date.now) {
                     }
                 }
 //PAB		window.location.replace(config.returnUrl);
-		if (config.merchantConfig.accepted)		//PAB
-			config.merchantConfig.accepted();	//PAB
+		if (config.merchantConfig.accepted)				//PAB
+			config.merchantConfig.accepted(config.returnUrl);	//PAB
             }
 
         }
