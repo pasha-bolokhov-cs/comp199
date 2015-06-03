@@ -155,9 +155,14 @@
   <!-- Footer - Buttons -->
   <!---------------------->
   <div class="modal-footer">
-    <!-- Modify -->
+    <!-- Modify Profile -->
     <button type="submit" class="btn btn-primary pull-left" ng-click="modify()" ng-show="'user.profile.view' | includedByState">
-      <span class="glyphicon glyphicon-pencil"></span>&nbsp;Modify
+      <span class="glyphicon glyphicon-text-background"></span>&nbsp;Modify Profile
+    </button>
+    
+    <!-- Modify Password -->
+    <button type="submit" class="btn btn-primary pull-left" ng-click="modifyPassword()" ng-show="'user.profile.view' | includedByState">
+      <span class="glyphicon glyphicon-pencil"></span>&nbsp;Modify Password
     </button>
   
     <!-- Confirm -->
