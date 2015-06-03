@@ -51,3 +51,4 @@
 
 		* Php validation errors don't clear out when user starts typing
 
+	*  send the confirmation to customer after payment
