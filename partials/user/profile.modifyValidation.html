@@ -1,0 +1,54 @@
+<form name="modifyValidation" id="modifyValidation" ng-submit="" novalidate>
+
+
+  <!------------------>
+  <!-- Modal Header -->
+  <!------------------>
+  <div class="modal-header text-center">
+    <span class="lead">Validation</span>
+  </div>
+
+  
+  <!---------------->
+  <!-- Modal Body -->
+  <!---------------->
+  <div class="modal-body">
+    <div class="container-fluid">
+
+      <!-- ** Password ** -->
+      <div class="row">
+          <!-- Password -->
+          <label for="regPassword" class="col-xs-12 control-label">
+            Password
+            <input type="password" id="regPassword" name="password" ng-model="validation.password" class="form-control" required>
+          </label>
+      </div> <!-- row -->
+
+      <!-- ... loading ... -->
+      <div class="row" ng-show="waiting">
+        <div class="col-xs-12 col-md-8 col-md-offset-2">
+          <br>
+          <alert class="text-center" type="warning" close="waiting = false"><em>...&nbsp;loading&nbsp;...</em></alert>
+        </div>
+      </div> <!-- /div with ...loading... -->
+
+    </div> <!-- /container-fluid -->
+  </div> <!-- /modal-body -->
+
+
+  <!---------------------------->
+  <!-- Modal Footer - Buttons -->
+  <!---------------------------->
+  <div class="modal-footer">
+    <!-- Confirm -->
+    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="modifyValidation()">
+      <span class="glyphicon glyphicon-ok"></span>&nbsp;Confirm
+    </button>
+  
+    <!-- Cancel -->
+    <button class="btn btn-danger" ng-click="cancel()">
+      <span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel
+    </button>
+  </div>
+
+</form>
