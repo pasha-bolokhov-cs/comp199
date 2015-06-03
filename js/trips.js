@@ -8,56 +8,60 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 	if ($stateParams.package) {
 		$scope.request.package = $stateParams.package;
 	}
-	
-	$rootScope.waiting = true;
-	$http.post("php/secure/retrieve-orders.php", $scope.request)
-	.success(function(data) {
-		// process the response
-		if (data["error"]) {
-			if (data["error"] == "authentication")
-				$rootScope.doSignOut();
-			else
-				$rootScope.error = "Error: " + data["error"];
 
-			return;
-		}
+	/* function which retrieves the orders and updates the list of trips */
+	$scope.getOrders = function() {	
+		$rootScope.waiting = true;
+		$http.post("php/secure/retrieve-orders.php", $scope.request)
+		.success(function(data) {
+			// process the response
+			if (data["error"]) {
+				if (data["error"] == "authentication")
+					$rootScope.doSignOut();
+				else
+					$rootScope.error = "Error: " + data["error"];
 
-		// success
-		$scope.trips = data["data"];
+				return;
+			}
 
-		/* no need to process if there are no orders */
-		if ($scope.trips.length == 0)
-			return;
+			// success
+			$scope.trips = data["data"];
 
-		/* obtain merchantId */
-		if (!data["merchant_id"]) {
-			$rootScope.error = "Error: server did not provide Merchant Id";
-			return;
-		}
-		$scope.merchantId = data["merchant_id"];
-		/* create the list of button id's */
-		buttonList = [];
-		for (k = 0; k < $scope.trips.length; k++) {
-			buttonList.push("trips-paypal-container-" + k.toString());
-		}
-		/* defer initialization of paypal */
-		$scope.$applyAsync(function() {
-			paypal.checkout.setup($scope.merchantId, {
-				container: buttonList,
-				environment: 'sandbox',
-				click: $scope.pay,
-				accepted: $scope.accepted,
-				rejected: $scope.rejected
+			/* no need to process if there are no orders */
+			if ($scope.trips.length == 0)
+				return;
+
+			/* obtain merchantId */
+			if (!data["merchant_id"]) {
+				$rootScope.error = "Error: server did not provide Merchant Id";
+				return;
+			}
+			$scope.merchantId = data["merchant_id"];
+			/* create the list of button id's */
+			buttonList = [];
+			for (k = 0; k < $scope.trips.length; k++) {
+				buttonList.push("trips-paypal-container-" + k.toString());
+			}
+			/* defer initialization of paypal */
+			$scope.$applyAsync(function() {
+				paypal.checkout.setup($scope.merchantId, {
+					container: buttonList,
+					environment: 'sandbox',
+					click: $scope.pay,
+					accepted: $scope.accepted,
+					rejected: $scope.rejected
+				});
 			});
+		})
+		.error(function(data, status) {
+			console.log(data);
+			$rootScope.error = "Error accessing the server: " + status + ".";
+		})
+		.finally(function() { 
+			$rootScope.waiting = false;
 		});
-	})
-	.error(function(data, status) {
-		console.log(data);
-		$rootScope.error = "Error accessing the server: " + status + ".";
-	})
-	.finally(function() { 
-		$rootScope.waiting = false;
-	});	
+	}
+	$scope.getOrders();
 
 
 	/*
@@ -81,21 +85,52 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 				else
 					$rootScope.error = "Error: " + data["error"];
 
+				paypal.checkout.closeFlow();
 				return;
 			}
 
 			// success
 			if (!data["ec_token"]) {
 				$rootScope.error = "Error: no EC-token received";
+				paypal.checkout.closeFlow();
 				return;
 			}
 			$scope.ecToken = data["ec_token"];
 console.log("GG EC token = ", $scope.ecToken);
 
-
 			paypal.checkout.startFlow($scope.ecToken);
+		})
+		.error(function(data, status) {
+			console.log(data);
+			$rootScope.error = "Error accessing the server: " + status + ".";
+			paypal.checkout.closeFlow();
+		})
+		.finally(function() { 
+			$rootScope.waiting = false;
+		});			
+	};
 
-//			paypal.checkout.closeFlow();
+	/* order accepted */
+	$scope.accepted = function(url) {
+		console.log("GG order has been accepted with url = ", url);
+	
+		$scope.paymentRequest = {};
+		$scope.paymentRequest.url = url;
+		$rootScope.waiting = false;
+		$http.post("php/secure/execute-payment.php", $scope.paymentRequest)
+		.success(function(data) {
+			// process the response
+			if (data["error"]) {
+				if (data["error"] == "authentication")
+					$rootScope.doSignOut();
+				else
+					$rootScope.error = "Error: " + data["error"];
+
+				return;
+			}
+
+			// success - refresh the list of trips
+			$scope.getOrders();
 		})
 		.error(function(data, status) {
 			console.log(data);
@@ -106,14 +141,9 @@ console.log("GG EC token = ", $scope.ecToken);
 		});			
 	};
 
-	/* order accepted */
-	$scope.accepted = function(url) {
-		console.log("order has been accepted with url = ", url);
-	};
-
 	/* order rejected or other failure */
 	$scope.rejected = function(url) {
-		console.log("order has been rejected with url = ", url);
+		console.log("GG order has been rejected with url = ", url);
 	};
 
 	/* remove an order */

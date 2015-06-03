@@ -1,7 +1,8 @@
 <?php
 /* 
- * Create Payment using PayPal as payment method
- * and store receipt id in the database
+ *
+ * Create Payment using PayPal
+ * Pass EC-Token to the client
  *
  */
 
@@ -67,35 +68,61 @@ if (!($customerId = get_customerId($mysqli, $token))) {
 /* * * * * * * * * * * */
 /* * * * * * * * * * * */
 
-/* Payer */
+/** Get Package Details **/
+/* form the query */
+$query = <<<"EOF_PACKAGE_QUERY"
+	SELECT name, price, available
+	       FROM packages
+	       WHERE UCASE(name) = UCASE("{$data->package}");
+EOF_PACKAGE_QUERY;
+
+/* do the query */
+if (($result = $mysqli->query($query)) === FALSE) {
+	$response["error"] = 'Query Error - ' . $mysqli->error;
+	goto database_quit;
+}
+if (!($row = $result->fetch_assoc())) {
+	$response["error"] = "package-non-existent";
+	goto database_quit;
+}
+if (array_key_exists("available", $row) && $row["available"] == 0) {
+	$response["error"] = "package-sold-out";
+	goto database_quit;
+}
+if (!array_key_exists("name", $row) || !array_key_exists("price", $row)) {
+	$response["error"] = "could not get package details";
+	goto database_quit;
+}
+$package = $row["name"];
+$price = $row["price"];
+
+
+/** Payer **/
 $payer = new Payer();
 $payer->setPaymentMethod("paypal");
 
 
-/* Payment Amount */
+/** Payment Amount **/
 $amount = new Amount();
 $amount->setCurrency("CAD")
-	->setTotal("77.77");     //GG
+	->setTotal($price);
 
 
-/* Transaction */
-/* A transaction defines the contract of a payment
-   - what is the payment for and who is fulfilling it.
-   Transaction is created with a `Payee` and `Amount` types.
-*/
+/** Transaction **/
+/* set package name as description */
 $transaction = new Transaction();
 $transaction->setAmount($amount)
-		->setDescription("This is the payment description.");
+		->setDescription($package);
 
 
-/* Redirect urls after payment approval / cancellation */
+/** Redirect urls after payment approval / cancellation **/
 $baseUrl = getBaseUrl();
 $redirectUrls = new RedirectUrls();
-$redirectUrls->setReturnUrl("$baseUrl?success=true")
-		->setCancelUrl("$baseUrl?success=false");     //GG
+$redirectUrls->setReturnUrl("$baseUrl/execute-payment.php?success=true")
+		->setCancelUrl("$baseUrl/execute-payment.php?success=false");     //GG
 
 
-/* Add payment details and set intent as 'sale' */
+/** Add payment details and set intent as 'sale' **/
 $payment = new Payment();
 $payment->setIntent("sale")
 	->setPayer($payer)
@@ -103,10 +130,10 @@ $payment->setIntent("sale")
 	->setTransactions(array($transaction));
 
 
-/* Api Context */
+/** Api Context **/
 $apiContext = new ApiContext(new OAuthTokenCredential(PayPal_App_ClientID, PayPal_App_Secret));
 
-/* Create Payment */
+/** Create Payment **/
 try {
 	$payment->create($apiContext);
 } catch (Exception $ex) {
@@ -114,9 +141,8 @@ try {
 	goto database_quit;
 }
 
-/* Redirect buyer to paypal - in our case, extract the EC token */
+/** Redirect buyer to paypal - in our case, extract the EC token **/
 $approvalUrl = $payment->getApprovalLink();
-$response["approval_link"] = $approvalUrl; //GG
 
 $url_components = parse_url($approvalUrl);
 if (!array_key_exists("query", $url_components)) {
@@ -128,37 +154,10 @@ if (!array_key_exists("token", $url_params)) {
 	$response["error"] = "approval URL does not have a EC token";
 	goto database_quit;
 }
+
+/** Return the token to the client **/
 $response["ec_token"] = $url_params["token"];
-goto database_quit; //GG
 
-//GGGG payment isn't done yet
-/* save the payment id */
-$paymentId = $payment->getId();
-
-
-/* * * * * * * * * * * */
-/*  Store receipt id   */
-/*  into the database  */
-/* * * * * * * * * * * */
-
-
-/* form the query */
-//GGGG $data->package is not packageId!!!
-//GGGG $paymentId is not receitId!!!
-$query = <<<"EOF"
-	UPDATE orders
-	SET receiptId = $receiptId
-	WHERE customerId = $customerId
-	AND UCASE(packageId) = UCASE("{$data->package}");
-EOF;
-error_log("Albatross(TM) new order query = $query ");  //GG
-
-/* do the query */
-$response = array();
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto database_quit;
-}
 
 database_quit:
 /* close the database */
