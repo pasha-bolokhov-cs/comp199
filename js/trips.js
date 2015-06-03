@@ -85,7 +85,17 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 			}
 
 			// success
-console.log("approvalLink = ", data["approval_link"]);
+			if (!data["ec_token"]) {
+				$rootScope.error = "Error: no EC-token received";
+				return;
+			}
+			$scope.ecToken = data["ec_token"];
+console.log("GG EC token = ", $scope.ecToken);
+
+
+			paypal.checkout.startFlow($scope.ecToken);
+
+//			paypal.checkout.closeFlow();
 		})
 		.error(function(data, status) {
 			console.log(data);
@@ -93,24 +103,17 @@ console.log("approvalLink = ", data["approval_link"]);
 		})
 		.finally(function() { 
 			$rootScope.waiting = false;
-		});	
-		
-		//GG
-
-//		$scope.ecToken = "EC-2PH22151F9744123W";
-//		paypal.checkout.startFlow($scope.ecToken);
-
-//		paypal.checkout.closeFlow();
+		});			
 	};
 
 	/* order accepted */
-	$scope.accepted = function() {
-		console.log("order has been accepted");
+	$scope.accepted = function(url) {
+		console.log("order has been accepted with url = ", url);
 	};
 
 	/* order rejected or other failure */
-	$scope.rejected = function() {
-		console.log("order has been rejected");
+	$scope.rejected = function(url) {
+		console.log("order has been rejected with url = ", url);
 	};
 
 	/* remove an order */

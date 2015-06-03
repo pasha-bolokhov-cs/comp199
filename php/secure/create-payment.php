@@ -88,15 +88,14 @@ $transaction->setAmount($amount)
 		->setDescription("This is the payment description.");
 
 
-/* Redirect urls after payment approval/ cancellation */
+/* Redirect urls after payment approval / cancellation */
 $baseUrl = getBaseUrl();
 $redirectUrls = new RedirectUrls();
 $redirectUrls->setReturnUrl("$baseUrl?success=true")
 		->setCancelUrl("$baseUrl?success=false");     //GG
 
 
-/* Payment */
-/* add details and set intent as 'sale' */
+/* Add payment details and set intent as 'sale' */
 $payment = new Payment();
 $payment->setIntent("sale")
 	->setPayer($payer)
@@ -108,10 +107,6 @@ $payment->setIntent("sale")
 $apiContext = new ApiContext(new OAuthTokenCredential(PayPal_App_ClientID, PayPal_App_Secret));
 
 /* Create Payment */
-/* by posting to the APIService using a valid apiContext.
-   The return object contains the status 
-   and the url to which the buyer must be redirected to for payment approval
-*/
 try {
 	$payment->create($apiContext);
 } catch (Exception $ex) {
@@ -119,9 +114,21 @@ try {
 	goto database_quit;
 }
 
-/* Redirect buyer to paypal */
+/* Redirect buyer to paypal - in our case, extract the EC token */
 $approvalUrl = $payment->getApprovalLink();
 $response["approval_link"] = $approvalUrl; //GG
+
+$url_components = parse_url($approvalUrl);
+if (!array_key_exists("query", $url_components)) {
+	$response["error"] = "approval URL has no parameters";
+	goto database_quit;
+}
+parse_str($url_components["query"], $url_params);
+if (!array_key_exists("token", $url_params)) {
+	$response["error"] = "approval URL does not have a EC token";
+	goto database_quit;
+}
+$response["ec_token"] = $url_params["token"];
 goto database_quit; //GG
 
 //GGGG payment isn't done yet
