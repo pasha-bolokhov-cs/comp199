@@ -835,6 +835,7 @@ if (!Date.now) {
             //get all container list
             _getBtnContainers(jsBtnIds || customBtnIds, btnContainers);
 
+            btnList = [];			//PAB
             if(customBtnIds) {
                 for(var i in btnContainers) {
                     btnList.push(btnContainers[i]);
