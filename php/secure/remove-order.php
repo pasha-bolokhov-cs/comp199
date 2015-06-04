@@ -15,6 +15,7 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validate data */
+$response = array();
 if (!array_key_exists("email", $token)) {
 	$response["error"] = "email-required";
 	goto quit;
@@ -33,36 +34,38 @@ define("MAX_RESPONSE_LINES", 1000);
 
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') ' .
-			     $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
 
 /* get customerId */
-if (!($customerId = get_customerId($mysqli, $token))) {
+if (!($customerId = get_customerId_PDO($dbh, $token))) {
 	goto auth_error_database;
 }
 
-/* form the query for delete the orders */
-$query = <<<"EOF_DELETE"
-	DELETE FROM orders
-	       WHERE packageId = (SELECT packageId FROM packages
-				         WHERE UCASE(name) = UCASE("{$data->package}")) 
-	       AND customerId = $customerId;
-EOF_DELETE;
+try {
+	/* form the query to delete the order */
+	$sth = $dbh->prepare(
+		"DELETE FROM orders
+			WHERE packageId = (SELECT packageId FROM packages
+						  WHERE UCASE(name) = UCASE(:package)) 
+			AND customerId = :customerId"
+	);
         
-/* do the query */
-$response = array();
-if ($mysqli->query($query) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
+	/* do the query */
+	$sth->execute(array(":package" => $data->package, ":customerId" => $customerId));
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
 }
 
 database_quit:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 quit:
 /* return the response */
@@ -74,7 +77,7 @@ return;
 
 auth_error_database:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 auth_error:
 $response["error"] = "authentication";
