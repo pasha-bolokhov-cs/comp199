@@ -2,15 +2,11 @@
  * Controls the 'trips' page
  */
 app.controller('TripsController', function($scope, $rootScope, $http, $state, $stateParams) {
-	
-	/* form the request if package name was supplied */
-	$scope.request = {};
-	if ($stateParams.package) {
-		$scope.request.package = $stateParams.package;
-	}
 
 	/* function which retrieves the orders and updates the list of trips */
-	$scope.getOrders = function() {	
+	$scope.getOrders = function(newPackage) {
+		/* add a request if a package was supplied */
+		$scope.request = newPackage ? { package: newPackage } : {};
 		$rootScope.waiting = true;
 		$http.post("php/secure/retrieve-orders.php", $scope.request)
 		.success(function(data) {
@@ -65,7 +61,8 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 			$rootScope.waiting = false;
 		});
 	}
-	$scope.getOrders();
+	/* add a package if it was supplied */
+	$scope.getOrders($stateParams.package);
 
 
 	/*
@@ -167,15 +164,12 @@ console.log("GG EC token = ", $scope.ecToken);
 					$rootScope.doSignOut();
 				else
 					$rootScope.error = "Error: " + data["error"];
-			} else {
-				// remove the selected trip
-				for (var t = 0; t < $scope.trips.length; t++) {
-					if ($scope.trips[t]["package"] == package) {
-						$scope.trips.splice(t, 1);
-						break;
-					}
-				}
+
+				return;
 			}
+
+			// success - renew the list of orders
+			$scope.getOrders();
 		})
 		.error(function(data, status) {
 			console.log(data);
