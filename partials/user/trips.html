@@ -5,7 +5,7 @@
   <br>
   <br>
   <div class="row">
-    <alert type="success" class="col-xs-12 text-center" ng-show="!trips.length">
+    <alert type="success" class="col-xs-12 text-center" ng-show="!trips.length && !$root.waiting">
       <span>You do not have any outstanding orders</span>
     </alert>
   </div>
@@ -39,15 +39,6 @@
             <div id="trips-paypal-container-{{ $index }}" name="trips-{{ $index }}">
             </div>
           </div>
-<!--
-          <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]'>
-            <button class="btn btn-success">
-              &nbsp;&nbsp;
-              <span class="glyphicon glyphicon-road"></span>&nbsp;Order
-              &nbsp;&nbsp;
-            </button>
-          </div>
--->
           <!-- "Remove" button -->
           <div class="col-xs-3 text-center" ng-show='!trip["receiptId"]' ng-click='removeOrders(trip["package"])'>
             <button class="btn btn-warning">
