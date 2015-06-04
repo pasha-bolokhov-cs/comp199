@@ -5,6 +5,10 @@
  */
 require __DIR__ . '/../../vendor/autoload.php';
 require __DIR__ . '/../../../../comp199-www/paypal-credentials.php';
+use PayPal\Api\Transaction;
+use PayPal\Api\Transactions;
+use PayPal\Api\RelatedResources;
+use PayPal\Api\Sale;
 use PayPal\Api\ExecutePayment;
 use PayPal\Api\Payment;
 use PayPal\Api\PaymentExecution;
@@ -37,15 +41,16 @@ if (!property_exists($data, "url")) {
 
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
 
 /* get customerId */
-if (!($customerId = get_customerId($mysqli, $token))) {
+if (!($customerId = get_customerId_PDO($dbh, $token))) {
 	goto auth_error_database;
 }
 
@@ -79,32 +84,48 @@ $apiContext = new ApiContext(new OAuthTokenCredential(PayPal_App_ClientID, PayPa
 
 /* Get the payment Object by passing paymentId */
 $payment = Payment::get($paymentId, $apiContext);
-/* Payment Execute */
+
+/* Get the name of the package (as description) */
+$transactions = $payment->getTransactions();
+$transaction = $transactions[0];
+$description = $transaction->getDescription();
+
+/* Check that the package is still available and GG lock the table */
+try {
+	$sth = $dbh->prepare(
+		"SELECT available FROM packages WHERE UCASE(name) = UCASE(:description) AND available > 0"
+	);
+	$sth->execute(array(":description" => $description));
+	if (!($row = $sth->fetch())) {
+		$response["error"] = "package-sold-out";
+		goto database_quit;
+	}
+	if (!array_key_exists("available", $row)) {
+		$response["error"] = "could not access package availability";
+		goto database_quit;
+	}
+	$available = $row["available"];
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
+	goto database_quit;
+}
+
+/* Execute Payment */
 $execution = new PaymentExecution();
 $execution->setPayerId($payerId);
 
 try {
 	// Execute the payment
 	$result = $payment->execute($execution, $apiContext);
+	$payment = Payment::get($paymentId, $apiContext);
 
-	try {
-		$payment = Payment::get($paymentId, $apiContext);
-	} catch (Exception $ex) {
-		$response["error"] = "exception: " . $ex->getMessage();
-		goto database_quit;
-	}
 } catch (Exception $ex) {
 	$response["error"] = "exception: " . $ex->getMessage();
 	goto database_quit;
 }
 
-use PayPal\Api\Transaction;
-use PayPal\Api\Transactions;
-use PayPal\Api\RelatedResources;
-use PayPal\Api\Sale;
 $transactions = $payment->getTransactions();
 $transaction = $transactions[0];
-$description = $transaction->getDescription();
 $relatedResources = $transaction->getRelatedResources();
 $relatedResource = $relatedResources[0];
 $sale = $relatedResource->getSale();
@@ -121,21 +142,35 @@ try {
 $saleId = $sale->getId();
 error_log("execute-payment.php: package $description is {$payment->getState()}, receipt is {$saleId}"); //GG
 
-/** put sale Id into the order **/
-$query = <<<"EOF"
-	UPDATE orders
-	       SET receiptId = "$saleId", status = "Purchased"
-	       WHERE customerId = $customerId
-	       AND packageId =
-		   (SELECT packageId FROM packages WHERE UCASE(name) = UCASE("$description"));
-EOF;
-if ($mysqli->query($query) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
+try {
+	/** put sale Id into the order **/
+	$sth = $dbh->prepare(
+		"UPDATE orders
+			SET receiptId = :saleId, status = 'Purchased', purchaseDate = STR_TO_DATE(:date, '%Y-%m-%dT%H:%i:%sZ')
+			WHERE customerId = :customerId
+			AND packageId =
+			    (SELECT packageId FROM packages WHERE UCASE(name) = UCASE(:description))"
+	);
+	$sth->execute(array(
+			":saleId" => $saleId,
+			":date" => $sale->getUpdateTime(), 
+			":customerId" => $customerId,
+			":description" => $description
+	));
+
+	/** decrement the number of available packages **/
+	if ($available > 0)
+		$available--;
+	$sth = $dbh->prepare(
+		"UPDATE packages
+			SET available = :available
+			WHERE UCASE(name) = UCASE(:description)"
+	);
+	$sth->execute(array(":available" => $available, ":description" => $description));
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
 }
-
-/** decrement the number of available packages **/
-//GG
 
 /** send a confirmation email **/
 //GG
@@ -143,7 +178,7 @@ if ($mysqli->query($query) === FALSE) {
 
 database_quit:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 quit:
 /* return the response */
@@ -155,7 +190,7 @@ return;
 
 auth_error_database:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 auth_error:
 $response["error"] = "authentication";
