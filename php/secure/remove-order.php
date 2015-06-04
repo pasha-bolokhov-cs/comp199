@@ -48,11 +48,27 @@ if (!($customerId = get_customerId_PDO($dbh, $token))) {
 }
 
 try {
+	/* silently drop the request if the order is not in "Unpaid" status */
+	$sth = $dbh->prepare(
+		"SELECT status FROM orders 
+			WHERE packageId = (SELECT packageId FROM packages
+						  WHERE UCASE(name) = UCASE(:package)) 
+			AND customerId = :customerId"
+	);
+	$sth->execute(array(":package" => $data->package, ":customerId" => $customerId));
+	if (!($row = $sth->fetch()) || !array_key_exists("status", $row)) {
+		$response["error"] = "could not get order status";
+		goto database_quit;
+	}
+	if ($row["status"] != "Unpaid") {
+		goto database_quit;		// drop the request
+	}
+
 	/* form the query to delete the order */
 	$sth = $dbh->prepare(
 		"DELETE FROM orders
 			WHERE packageId = (SELECT packageId FROM packages
-						  WHERE UCASE(name) = UCASE(:package)) 
+						  WHERE UCASE(name) = UCASE(:package))
 			AND customerId = :customerId"
 	);
         
