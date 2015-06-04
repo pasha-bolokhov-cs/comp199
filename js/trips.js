@@ -39,8 +39,12 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 			$scope.merchantId = data["merchant_id"];
 			/* create the list of button id's */
 			buttonList = [];
+			$scope.unpaidTrips = [];		// only track unpaid trips
 			for (k = 0; k < $scope.trips.length; k++) {
-				buttonList.push("trips-paypal-container-" + k.toString());
+				if ($scope.trips[k]["status"] == "Unpaid") {
+					buttonList.push("trips-paypal-container-" + k.toString());
+					$scope.unpaidTrips.push($scope.trips[k]["package"]);
+				}
 			}
 			/* defer initialization of paypal */
 			$scope.$applyAsync(function() {
@@ -74,7 +78,7 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 		paypal.checkout.initXO();
 
 		/* Send request to the server */
-		$scope.request = { package: $scope.trips[idx].package };
+		$scope.request = { package: $scope.unpaidTrips[idx] };
 		$rootScope.waiting = true;
 		$http.post("php/secure/create-payment.php", $scope.request)
 		.success(function(data) {
@@ -116,7 +120,7 @@ console.log("GG EC token = ", $scope.ecToken);
 	
 		$scope.paymentRequest = {};
 		$scope.paymentRequest.url = url;
-		$rootScope.waiting = false;
+		$rootScope.waiting = true;
 		$http.post("php/secure/execute-payment.php", $scope.paymentRequest)
 		.success(function(data) {
 			// process the response
