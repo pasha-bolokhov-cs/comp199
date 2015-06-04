@@ -62,6 +62,38 @@ function generate_jwt($name, $email) {
 /**
  * This function finds the 'customerId' based on the token (i.e. email address)
  *
+ * @params	$dbh		PDO object
+ *		$token		Customer's token
+ *
+ * @returns			A 'customerId' or NULL on failure
+ *				A NULL result should be reported as authentication error
+ *
+ */
+function get_customerId_PDO($dbh, $token) {
+
+	/* query the 'customerId' field */
+	try {
+		$sth = $dbh->prepare(
+			"SELECT customerId FROM customers WHERE LCASE(email) = LCASE(:email)"
+		);
+		$sth->execute(array(":email" => $token["email"]));
+
+		if (!($row = $sth->fetch()))
+			return NULL;
+
+		if (!array_key_exists("customerId", $row))
+			return NULL;
+
+		return $row["customerId"];
+	} catch (PDOException $e) {
+		return NULL;
+	}
+}
+
+
+/**
+ * This function finds the 'customerId' based on the token (i.e. email address)
+ *
  * @params	$mysqli		mysqli object
  *		$token		Customer's token
  *
