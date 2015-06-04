@@ -20,13 +20,42 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 	/*
 	 * Functions assigned to buttons
 	 */
-	$scope.reset = function() {
-		/* reset the data */
-		$scope.setup();
+	$scope.go = function() {
+		/* check that a packages was passed as a parameter */
+		if (!$stateParams.package) {
+			$rootScope.error = "Cannot add a package to the cart - package has not been chosen";
+			return;
+		}
+
+		/* switch to the 'Trips' page */
+		goToTrips = function() {
+			$state.go('user.trips', { package: $stateParams.package });
+		}
+		/* offer a login modal if not in user space */
+		if (!$state.current.name.match(/^user\./)) {
+			var modal = $modal.open({
+				animation: true,			// whether to use animation
+				templateUrl: 'partials/signin.html',	// what to show in the modal
+				size: 'sm',				// size
+				backdrop: 'static',			// clicking outside does not close the window
+				controller: 'SignInController'		// the controller of the opened page
+			});
+			/* on successful authentication - change the state to "trips" */
+			modal.result.then(goToTrips);
+			return;
+		}
+		goToTrips();
+	};
+
+
+	// Check that a packages was passed as a parameter
+	if (!$stateParams.package) {
+		$rootScope.error = "Cannot retrieve package details - package has not been chosen";
+		return;
 	}
+	$scope.request = { package: $stateParams.package };
 
 	// Indicate we are waiting for data
-	$scope.request = { package: $stateParams.package };
 	$rootScope.waiting = true;
 
 	// Send the request to the PHP script
@@ -47,26 +76,5 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 		// Indicate that we have an answer
 		$rootScope.waiting = false;
 	});
-
-	$scope.go = function() {
-		/* switch to the 'Trips' page */
-		goToTrips = function() {
-			$state.go('user.trips', { package: $stateParams.package });
-		}
-		/* offer a login modal if not in user space */
-		if (!$state.current.name.match(/^user\./)) {
-			var modal = $modal.open({
-				animation: true,			// whether to use animation
-				templateUrl: 'partials/signin.html',	// what to show in the modal
-				size: 'sm',				// size
-				backdrop: 'static',			// clicking outside does not close the window
-				controller: 'SignInController'		// the controller of the opened page
-			});
-			/* on successful authentication - change the state to "trips" */
-			modal.result.then(goToTrips);
-			return;
-		}
-		goToTrips();
-	};
 
 });

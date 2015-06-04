@@ -7,45 +7,33 @@
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
 
-/* connect to the database */
-require_once '../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+/* validate data */
+$response = array();
+if (!property_exists($data, "package")) {
+	$response["error"] = "package-required";
+	goto quit;
+}
+if (!validate($data->package)) {
+	$response["error"] = "package-wrong";
 	goto quit;
 }
 
-/* form the query for all existing regions */
-// GGGG not implemented yet
-$query = <<<"EOF"
-	SELECT * FROM packages;
-EOF;
-        
-/* do the query */
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto database_quit;
+/* connect to the database */
+require_once '../../../../comp199-www/mysqli_auth.php';
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
+	goto quit;
 }
 
-/* fetch the results and put into response */
-$response["details"] = array();
-while ($row = $result->fetch_assoc()) {
-	// append the row
-	$response["details"][] = $row;
-
-	// check how many lines we have
-	if (count($response["details"]) > MAX_RESPONSE_LINES) {
-		$response["details"] = NULL;
-		$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
-		goto database_quit;
-	}
-}
+/* GGGG - implement */
 
 
 database_quit:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 quit:
 /* return the response */
