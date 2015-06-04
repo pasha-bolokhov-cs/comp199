@@ -653,8 +653,8 @@ if (!Date.now) {
         /*
          * Adds click event listeners
          */
-        function _setTrigger(el, idx) {
-            addEvent(el, 'click', _clickHandler, this, idx);
+        function _setTrigger(el, idx) {				// PAB - add 'idx'
+            addEvent(el, 'click', _clickHandler, this, idx);	// PAB
         }
 
         /**
