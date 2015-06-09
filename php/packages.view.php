@@ -58,8 +58,22 @@ try {
 			"SELECT * FROM segments where segId = :segId"
 		);
 		$sth->execute(array(":segId" => $curr_seg));
+		if (!($row = $sth->fetch())) {
+			$response["error"] = "could not access package detail";
+			goto database_quit;
+		}
+		/* if transport => create an extra row */
+		if (!array_key_exists("transportId", $row)) {
+			$response["error"] = "could not access package detail";
+			goto database_quit;
+		}
+		if ($row["transportId"]) {
 
-		/* GGGG implement */
+			/* GGGG - implement */
+
+			$response["segments"][] = $seg;
+			$seg = array();
+		}
 
 		$curr_seg = $next_seg;
 	} while ($curr_seg);
