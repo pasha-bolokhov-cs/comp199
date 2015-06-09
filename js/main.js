@@ -163,7 +163,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 /**
  * Controls the app
  */
-app.controller('MainController', function ($scope, $rootScope, $http, $modal, $state, 
+app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal, $state, 
 					   jwtHelper, $localStorage /* also: $location */) {
 
 	/*
@@ -210,7 +210,7 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 
 	/* Mild authentication - just test the token */
 	$rootScope.mildAuthenticate = function() {
-		return new Promise(function(resolve, reject) {
+		return $q(function(resolve, reject) {
 			$http.post("php/secure/check-token.php")
 			.success(function(data) {
 				// process the response
