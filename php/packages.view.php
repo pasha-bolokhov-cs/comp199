@@ -119,54 +119,35 @@ try {
 	}
 
 	/** loop over segments **/
-	if (!array_key_exists("origin", $package_row)) {
-		$response["error"] = "could not access package detail";
-		goto database_quit;
-	}
-	$curr_location = $row["origin"];
-	if (!array_key_exists("segId", $package_row)) {
-		$response["error"] = "could not access package detail";
-		goto database_quit;
-	}
+	$curr_location = $package_row["origin"];
 	$curr_seg = $package_row["segId"];
 	$response["segments"] = array();
 	do {
-		$seg = array();
-		/* get segment details */
-		$sth = $dbh->prepare(
-			"SELECT * FROM segments where segId = :segId"
-		);
-		$sth->execute(array(":segId" => $curr_seg));
-		if (!($row = $sth->fetch())) {
+		/* check that there is segment data */
+		if (!array_key_exists($curr_seg, $segments)) {
 			$response["error"] = "could not access package detail";
 			goto database_quit;
 		}
-		/* if transport => create an extra row for transport solely */
-		if (!array_key_exists("transportId", $row)) {
-			$response["error"] = "could not access package detail";
-			goto database_quit;
-		}
-		if ($row["transportId"]) {
-			$sth = $dbh->prepare(
-				"SELECT * FROM transport WHERE transport_id = :transport_id"
-			);
-			$sth->execute(array(":transport_id" => $row["transportId"]));
-			if (!($transport_row = $sth->fetch())) {
-				$response["error"] = "could not access package detail";
-				goto database_quit;
-			}
-			if (!array_key_exists("type", $transport_row)) {
-				$response["error"] = "could not access package detail";
-				goto database_quit;
-			}
-			$seg["transport"] = $transport_row["type"];
 
+		$seg = array();
+
+		/* if transport => create an extra row for transport solely */
+		if ($segments[$curr_seg]["transportId"]) {
+			$seg["transport"] = $transport["type"];
+			/* GGGG - check existence of these fields */
+			$seg["flight"] = $flights[$segments[$curr_seg]["flightId"]]; 
+			$seg["origin"] = $locations[$curr_location];
+			$seg["destination"] = $locations[$segments[$curr_seg]["location"]];
 
 			$response["segments"][] = $seg;
 			$seg = array();
 		}
 
-		$curr_seg = $next_seg;
+		/*  GGGG - implement */
+
+		/* switch to the next segment */
+		$curr_location = $segments["curr_seg"]["location"];
+		$curr_seg = $segments[$curr_seg]["nextSeg"];
 	} while ($curr_seg);
 	
 	/* loop over segments */
