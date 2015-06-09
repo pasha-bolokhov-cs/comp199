@@ -292,3 +292,4 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 		);
 	}
 });
+

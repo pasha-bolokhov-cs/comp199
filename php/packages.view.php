@@ -28,8 +28,50 @@ try {
 	goto quit;
 }
 
-/* GGGG - implement */
+try {
+	/* get the package description */
+	$sth = $dbh->prepare(
+		"SELECT * FROM packages WHERE UCASE(name) = UCASE(:package) AND available > 0"
+	);
+	$sth->execute(array(":package" => $data->package));
+	if (!($package_row = $sth->fetch())) {
+		$response["error"] = "package-sold-out";
+		goto database_quit;
+	}
+	if (!array_key_exists("origin", $package_row)) {
+		$response["error"] = "could not access package detail";
+		goto database_quit;
+	}
+	$curr_location = row["origin"];
+	if (!array_key_exists("segId", $package_row)) {
+		$response["error"] = "could not access package detail";
+		goto database_quit;
+	}
+	$curr_seg = $package_row["segId"];
 
+	/* loop over segments */
+	$response["segments"] = array();
+	do {
+		$seg = array();
+		/* get segment details */
+		$sth = $dbh->prepare(
+			"SELECT * FROM segments where segId = :segId"
+		);
+		$sth->execute(array(":segId" => $curr_seg));
+
+		/* GGGG implement */
+
+		$curr_seg = $next_seg;
+	} while ($curr_seg);
+	
+	/* loop over segments */
+	do {
+	} while ($next);
+
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
+	goto database_quit;
+}
 
 database_quit:
 /* close the database */
