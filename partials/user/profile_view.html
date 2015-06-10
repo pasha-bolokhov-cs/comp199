@@ -22,13 +22,13 @@
           <!-- Name -->
           <label for="regName" class="col-xs-12 col-md-6 control-label">
             Name
-            <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly" required>
+            <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" ng-readonly="$state.includes('user.profile.view')" required>
           </label>
 
           <!-- Birth -->
           <label for="regBirth" class="col-xs-12 col-md-6 control-label" required>
             Birth date
-            <input type="type" id="regBirth" name="birth" ng-model="customer.birth" ng-readonly="readOnly" class="form-control">
+            <input type="type" id="regBirth" name="birth" ng-model="customer.birth" ng-readonly="$state.includes('user.profile.view')" class="form-control">
           </label>
         </fieldset>
         <br>
@@ -41,19 +41,19 @@
           <!-- Nationality -->
           <label for="regNationality" class="col-xs-12 col-md-4 control-label" required>
             Nationality
-            <input type="text" id="regNationality" name="nationality" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly">
+            <input type="text" id="regNationality" name="nationality" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control" ng-readonly="$state.includes('user.profile.view')">
           </label>
 
           <!-- Passport No -->
           <label for="regPassportNo" class="col-xs-12 col-md-3 control-label" required>
             Passport No
-            <input type="text" id="regPassportNo" name="passportNo" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control" ng-readonly="readOnly">
+            <input type="text" id="regPassportNo" name="passportNo" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control" ng-readonly="$state.includes('user.profile.view')">
           </label>
 
           <!-- Passport Expiry -->
           <label for="regPassportExp" class="col-xs-12 col-md-5 control-label" required>
             Expiration Date
-            <input type="text" id="regPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control" ng-readonly="readOnly">
+            <input type="text" id="regPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control" ng-readonly="$state.includes('user.profile.view')">
           </label>
         </fieldset>
         <br>
@@ -66,22 +66,22 @@
           <!-- Phone -->
           <label for="regPhone" class="col-xs-12 col-md-6 control-label">
             Phone
-            <input type="phone" id="regPhone" name="phone" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control" ng-readonly="readOnly">
+            <input type="phone" id="regPhone" name="phone" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control" ng-readonly="$state.includes('user.profile.view')">
           </label>
 
           <!-- Email -->
           <label for="regEmail" class="col-xs-12 col-md-6 control-label">
             Email Address
-            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly">
+            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control" ng-readonly="$state.includes('user.profile.view')">
           </label>
         </fieldset>
         <br>
       </div> <!-- /row -->
 
       <!-- ** Choose a password ** -->
-      <div class="row" ng-show="passwordStatus">
+      <div class="row" ng-show="!readOnly">
         <fieldset>
-          <p class="lead"><small>Enter a new password</small></p>
+          <p class="lead"><small>Set a password</small></p>
           <!-- Password -->
           <label for="regPassword" class="col-xs-12 col-md-6 control-label">
             Password
@@ -156,33 +156,25 @@
   <!---------------------->
   <div class="modal-footer">
     <!-- Modify Profile -->
-	<div ng-if="readOnly">
-    <button type="submit" class="btn btn-primary pull-left" ng-click="modify()">
+    <button type="submit" class="btn btn-primary pull-left" ng-click="modify()" ng-show="'user.profile.view' | includedByState">
       <span class="glyphicon glyphicon-text-background"></span>&nbsp;Modify Profile
     </button>
-	</div>
-	<div ng-if="!readOnly">
-	 <button type="submit" class="btn btn-primary pull-left" ng-click="confirm()"><a ui-sref="profile.modify">
-      <span class="glyphicon glyphicon-text-background"></span>&nbsp;Confirm
-    </button>
-	</div>
     
-    <!-- Change Password -->
-	<div ng-if="readOnly && !passwordStatus">
-    <button type="submit" class="btn btn-primary pull-left" ng-click="passwordChange()">
+    <!-- Modify Password -->
+    <button type="submit" class="btn btn-primary pull-left" ng-click="modifyPassword()" ng-show="'user.profile.view' | includedByState">
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;Change Password
     </button>
-	</div>  
+  
     <!-- Confirm -->
-	<div ng-if="passwordStatus">
-    <button type="submit" class="btn btn-warning pull-left" ng-click="passwordConfirm()">
+    <button class="btn btn-warning pull-left" ng-show="(blurPassword || blurPassword2) && customer.password === customer.password2" ng-click="confirm()">
       <span class="glyphicon"></span>&nbsp;Confirm
     </button>
-	</div>
   
     <!-- Cancel --
     <button class="btn btn-danger" ng-click="cancel()">
       <span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel
     </button> -->
   </div>
+
+
 </form>

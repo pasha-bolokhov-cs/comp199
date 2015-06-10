@@ -17,11 +17,8 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		
 		$scope.customer.email = $rootScope.storage.token.email;
 		$scope.customer.preemail = $scope.customer.email;
-		$scope.readOnly = true;		
-		
-		// Indicate password input fields are pristine
-		$scope.blurPassword = false;
-		$scope.blurPassword2 = false;
+		$scope.readOnly = true;
+		$scope.passwordStatus = false;	
 	}
 	$scope.setup();
 
@@ -86,8 +83,9 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	$scope.modify = function() {
 		$scope.customer.password = "";
 		$scope.customer.password2 = "";
-
-		$state.go("user.profile.modify");		
+        $scope.readOnly = false;
+		$scope.passwordStatus = false;
+		//$state.go("user.profile.modify");		
 	}
 	
 	$scope.confirm = function() {
@@ -168,23 +166,52 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 				$scope.customer.nationality = data2["nationality"];			
 				$scope.customer.passportNo = data2["passportNo"];
 				$scope.customer.passportExp = data2["passportExp"];
-				$scope.customer.phone = data2["phone"];
+				$scope.customer.phone = data2["phone"];			
+			}
+		})
+		.error(function(data2, status) {		
+			$rootScope.error = "Error accessing the server: " + status + ".";
+		})
+		.finally(function() { 
+			// Indicate that we have an answer
+			$rootScope.waiting = false;		
+		});
+	}
+	
+	$scope.passwordChange = function() {
+		$scope.customer.password = "";
+		$scope.customer.password2 = "";
+        $scope.readOnly = true;
+		$scope.passwordStatus = true;		
+	
+		// Indicate password input fields are pristine
+		$scope.blurPassword = false;
+		$scope.blurPassword2 = false;		
+	}
+	
+	$scope.passwordConfirm = function() {
+		$scope.readOnly = true;
 
-//// GG
-//// Profile page should not log the customer in
-//// or save new token
-////
-////				/* Fetch the token */				
-////				if (!data2["jwt"]) 
-////					return;
-////				$token = jwtHelper.decodeToken(data2["jwt"]);
-////
-////				/* Save the token */
-////				$localStorage.token = $token;
-////				$localStorage.jwt = data2["jwt"];
-////
-////				// Change to the 'signed in' state
-////				$rootScope.doSignIn();				
+		// Indicate we are waiting for data
+		$rootScope.waiting = true;		
+		
+		// Send the request to the PHP script
+		$http.post("php/secure/passConfirm.php", $scope.customer)
+		.success(function(data2) {
+			
+			// process the response
+			if (data2["error"]) {
+				switch(data2["error"]) {
+
+				case "password-required":
+					$scope.profileForm.password.$setValidity("required", false);
+					$scope.profileForm.password.$setDirty();
+					break;
+
+				default:
+					$rootScope.error = "Error: " + data2["error"];				
+				}
+			} else {
 			}
 		})
 		.error(function(data2, status) {		
