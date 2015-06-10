@@ -29,6 +29,7 @@ try {
 }
 
 try {
+
 	/** get the package description **/
 	$sth = $dbh->prepare(
 		"SELECT * FROM packages WHERE UCASE(name) = UCASE(:package) AND available > 0"
@@ -120,40 +121,76 @@ try {
 
 	/** loop over segments **/
 	$curr_location = $package_row["origin"];
-	$curr_seg = $package_row["segId"];
+	$curr_seg_id = $package_row["segId"];
 	$response["segments"] = array();
 	do {
 		/* check that there is segment data */
-		if (!array_key_exists($curr_seg, $segments)) {
+		if (!array_key_exists($curr_seg_id, $segments)) {
 			$response["error"] = "could not access package detail";
 			goto database_quit;
 		}
+		$curr_seg = $segments[$curr_seg_id];
 
+		/* reset user-friendly segment information */
 		$seg = array();
 
 		/* if transport => create an extra row for transport solely */
-		if ($segments[$curr_seg]["transportId"]) {
+		if ($curr_seg["transportId"]) {
 			$seg["transport"] = $transport["type"];
-			/* GGGG - check existence of these fields */
-			$seg["flight"] = $flights[$segments[$curr_seg]["flightId"]]; 
+			if (!array_key_exists($curr_seg["flightId"], $flights)) {
+				$response["error"] = "could not access package detail";
+				goto database_quit;
+			}
+			$seg["flight"] = $flights[$curr_seg["flightId"]];
+			if (!array_key_exists($curr_location, $locations)) {
+				$response["error"] = "could not access package detail";
+				goto database_quit;
+			}
 			$seg["origin"] = $locations[$curr_location];
-			$seg["destination"] = $locations[$segments[$curr_seg]["location"]];
+			if (!array_key_exists($curr_seg["location"], $locations)) {
+				$response["error"] = "could not access package detail";
+				goto database_quit;
+			}
+			$seg["destination"] = $locations[$curr_seg["location"]];
 
 			$response["segments"][] = $seg;
 			$seg = array();
 		}
 
-		/*  GGGG - implement */
+		/* get hotel information */
+		if ($curr_seg["hotelId"]) {
+			if (!array_key_exists($curr_seg["hotelId"], $hotels)) {
+				$response["error"] = "could not access package detail";
+				goto database_quit;
+			}
+			$seg["hotel"] = $curr_seg["hotelId"];
+			$seg["hotel_description"] = $hotel[$curr_seg["hotelId"]]["description"];
+		} else {
+			$seg["hotel"] = NULL;
+		}
+
+		/* get activity information */
+		if ($curr_seg["activityId"]) {
+			if (!array_key_exists($curr_seg["activityId"], $activities)) {
+				$response["error"] = "could not access package detail";
+				goto database_quit;
+			}
+			$seg["acvitity"] = $activities[$curr_seg["activityId"]];
+		} else {
+			$seg["activity"] = NULL;
+		}
+
+		/* get duration */
+		$seg["duration"] = $curr_seg["duration"];
+
+		/* append segment information to the response */
+		$response["segments"][] = $seg;
 
 		/* switch to the next segment */
 		$curr_location = $segments["curr_seg"]["location"];
-		$curr_seg = $segments[$curr_seg]["nextSeg"];
-	} while ($curr_seg);
+		$curr_seg_id = $curr_seg["nextSeg"];
+	} while ($curr_seg_id);
 	
-	/* loop over segments */
-	do {
-	} while ($next);
-
 } catch (PDOException $e) {
 	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
