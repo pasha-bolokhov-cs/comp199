@@ -196,7 +196,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		$rootScope.waiting = true;		
 		
 		// Send the request to the PHP script
-		$http.post("php/secure/passConfirm.php", $scope.customer)
+		$http.post("php/secure/passwordConfirm.php", $scope.customer)
 		.success(function(data2) {
 			
 			// process the response
@@ -212,6 +212,9 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 					$rootScope.error = "Error: " + data2["error"];				
 				}
 			} else {
+			    $scope.readOnly = true;
+		        $scope.passwordStatus = false;	
+			    $state.go("guest.home");		
 			}
 		})
 		.error(function(data2, status) {		
@@ -221,6 +224,6 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 			// Indicate that we have an answer
 			$rootScope.waiting = false;		
 		});
-		//$scope.setup();
+		
 	}
 });
