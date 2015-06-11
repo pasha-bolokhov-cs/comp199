@@ -36,8 +36,10 @@ $data->email = strtolower($data->email);
 /* hash the password */
 $salt = file_get_contents("/dev/urandom", false, null, 0, 16);
 $password = crypt($data->password, $salt);
+$password2 = crypt($data->password2, $salt);
 $salt = base64_encode($salt);
 $password = base64_encode($password);
+$password2 = base64_encode($newpassword);
 
 /* connect to the database */
 /* require_once '../../../../comp199-www/mysqli_auth.php';
@@ -47,6 +49,22 @@ if ($mysqli->connect_error) {
 			     . $mysqli->connect_error;
 	goto quit;
 }
+
+/* get current password */
+$query = <<<"EOF"
+    SELECT password 
+	FROM customers
+	WHERE customerId = $customerId;
+EOF;
+
+$oldpassword = $mysqli->query($query)
+if ($password != $oldpassword){
+    $response["error"] = 'Current Passwords are different' . $mysqli->error;
+    goto quit;
+}else{
+    $password = $password2;
+}
+ 	
 /* form the query */
 
 $query = <<<"EOF"

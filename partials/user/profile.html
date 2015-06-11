@@ -162,7 +162,7 @@
     </button>
 	</div>
 	<div ng-if="!readOnly">
-	 <button type="submit" class="btn btn-primary pull-left" ng-click="confirm()"><a ui-sref="profile.modify">
+	 <button type="submit" class="btn btn-primary pull-left" ng-click="confirm()">
       <span class="glyphicon glyphicon-text-background"></span>&nbsp;Confirm
     </button>
 	</div>
@@ -172,14 +172,7 @@
     <button type="submit" class="btn btn-primary pull-left" ng-click="passwordChange()">
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;Change Password
     </button>
-	</div>  
-    <!-- Confirm -->
-	<div ng-if="passwordStatus">
-    <button type="submit" class="btn btn-warning pull-left" ng-click="passwordConfirm()">
-      <span class="glyphicon"></span>&nbsp;Confirm
-    </button>
-	</div>
-  
+	</div>     
     <!-- Cancel --
     <button class="btn btn-danger" ng-click="cancel()">
       <span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel

@@ -14,6 +14,8 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	$scope.setup = function() {
 		// Initialization
 		$scope.customer = {};
+		$scope.customer.password = "";
+		$scope.customer.password2 = "";
 		
 		$scope.customer.email = $rootScope.storage.token.email;
 		$scope.customer.preemail = $scope.customer.email;
@@ -178,23 +180,21 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		});
 	}
 	
-	$scope.passwordChange = function() {
-		$scope.customer.password = "";
-		$scope.customer.password2 = "";
+	$scope.passwordChange = function() {	
         $scope.readOnly = true;
-		$scope.passwordStatus = true;		
-	
-		// Indicate password input fields are pristine
-		$scope.blurPassword = false;
-		$scope.blurPassword2 = false;		
+		$scope.passwordStatus = true;
+		
+		$state.go("user.profile.password");	
 	}
 	
 	$scope.passwordConfirm = function() {
 		$scope.readOnly = true;
 
 		// Indicate we are waiting for data
-		$rootScope.waiting = true;		
-		
+		$rootScope.waiting = true;
+        		
+		$scope.customer.password = $scope.modify.currentpassword;
+		$scope.csutomer.password2 = $scope.modify.newpassword;
 		// Send the request to the PHP script
 		$http.post("php/secure/passwordConfirm.php", $scope.customer)
 		.success(function(data2) {
@@ -211,6 +211,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 				default:
 					$rootScope.error = "Error: " + data2["error"];				
 				}
+				$state.go("user.profile.password");
 			} else {
 			    $scope.readOnly = true;
 		        $scope.passwordStatus = false;	

@@ -11,7 +11,9 @@
 
 		* the brand link should discrete between user and guest states
 
-		* "signed in as" remains after the data clear-up
+		* "signed in as" label remains after cache wipe-out
+
+		* change "new Promise()" into "$q"
 
 
 	*  packages page
@@ -27,7 +29,11 @@
 
 	*  Paypal page
 
-		*  send the confirmation to customer after payment
+		* change the "available" field of a package when ordered
+
+		* put purchase date into the order
+
+		* check if the package still exists and is available before payment execution
 
 
         *  modal for sign up
@@ -45,3 +51,4 @@
 
 		* Php validation errors don't clear out when user starts typing
 
+	*  send the confirmation to customer after payment

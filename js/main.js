@@ -128,6 +128,15 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		.state("user.profile.view", {
 			url: ""
 		})
+		.state("user.profile.password",{
+		    url: "password",
+			views: {
+			    "@": {
+								templateUrl: "partials/user/profile.modify.password.html",
+								controller: "ProfileController"
+							}
+						}	
+        })
 		.state("user.profile.modify", {
                         url: "/modify",
 						views: {
@@ -169,7 +178,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 /**
  * Controls the app
  */
-app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal, $state, 
+app.controller('MainController', function ($scope, $rootScope, $http, $modal, $state, 
 					   jwtHelper, $localStorage /* also: $location */) {
 
 	/*
@@ -216,7 +225,7 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 
 	/* Mild authentication - just test the token */
 	$rootScope.mildAuthenticate = function() {
-		return $q(function(resolve, reject) {
+		return new Promise(function(resolve, reject) {
 			$http.post("php/secure/check-token.php")
 			.success(function(data) {
 				// process the response
@@ -298,4 +307,3 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 		);
 	}
 });
-
