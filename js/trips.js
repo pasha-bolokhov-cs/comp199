@@ -132,6 +132,8 @@ console.log("GG EC token = ", $scope.ecToken);
 
 			// success - refresh the list of trips
 			$scope.getOrders();
+			// send confirmation email to customer
+			$scope.sendEmail();
 		})
 		.error(function(data, status) {
 			console.log(data);
@@ -141,6 +143,17 @@ console.log("GG EC token = ", $scope.ecToken);
 			$rootScope.waiting = false;
 		});			
 	};
+
+	/* send email function */
+	$scope.sendEmail = function(){
+		$scope.conformEmail.email = $scope.customer.email;
+		$scope.conformEmail.merchantId = $scope.merchantId;
+		if ($scope.merchantId){
+			$http.post("php/secure/sendEmial.php", $scope.conformEmail);
+		}
+	}
+
+
 
 	/* order rejected or other failure */
 	$scope.rejected = function(url) {
