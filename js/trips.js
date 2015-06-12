@@ -148,8 +148,9 @@ console.log("GG EC token = ", $scope.ecToken);
 	$scope.sendEmail = function(){
 		//$scope.conformEmail.email = $scope.customer.email;
 		//$scope.conformEmail.merchantId = $scope.merchantId;
-		$rootScope.conformEmail.email = "lelaywang@gmail.com";
-		$rootScope.conformEmail.merchantId = "hgeugbfvkfsiut3hr";
+		$scope.conformEmail = {};
+		$scope.conformEmail.email = "lelaywang@gmail.com";
+		$scope.conformEmail.merchantId = "hgeugbfvkfsiut3hr";
 		if ($scope.merchantId){
 			$http.post("php/secure/sendEmial.php", $scope.conformEmail);
 		}
