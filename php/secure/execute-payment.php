@@ -174,7 +174,8 @@ try {
 
 /** send a confirmation email **/
 $msg = "You have succeeded to purchase the trip. /n Below is your purchase receipt: ".$saleId.".";
-if (mail("lelaywang@gmail.com","Your Purchase Record", $msg)){
+$email = $token["email"];
+if (mail($email,"Your Purchase Record", $msg)){
   	error_log("Email sent");
  } else {
   	error_log("failed");
