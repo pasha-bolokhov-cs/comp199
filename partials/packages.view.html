@@ -1,6 +1,42 @@
-<div class="container-fluid">
-  <div class="row">
+<div class="container-fluid"
+     style='background: url(images/{{ fileName }}) no-repeat center center;
+            background-size: cover;
+            margin-bottom: 0;'>
 
+  <div class="row">
+    <div class="col-xs-12">
+        <div class="well well-lg" style="background: rgba(100, 100, 100, 0.4);">
+            <h2 class="text-center" style="color: white;">{{ packageName }}</h2>
+        </div>
+    </div>  
+  </div>        
+
+  <div lass="row">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th>Segment No.</th>
+            <th>Location</th>
+            <th>Transportion</th>
+            <th>Hotel</th>
+            <th>Activity</th>
+            <th>Duration</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="s in segments">
+            <td>{{ s.name }}</td>
+            <td>{{ s.location }}</td>
+            <td>{{ s.transport }}</td>  
+            <td>{{ s.hotel }}</td>
+            <td>{{ s.activity }}</td>
+            <td>{{ s.duration }}</td>
+          </tr>
+        </tbody> 
+      </table>
+  </div>
+
+  <div class="row">
       <div class="col-xs-3">
         <button class="btn btn-lg btn-success" ng-click='go()'>
           &nbsp;
@@ -10,6 +46,7 @@
           &nbsp;&nbsp;&nbsp;&nbsp;
         </button>
       </div>
-
   </div>
+
+
 </div>
