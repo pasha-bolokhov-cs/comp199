@@ -146,13 +146,13 @@ console.log("GG EC token = ", $scope.ecToken);
 
 	/* send email function */
 	$scope.sendEmail = function(){
-		//$scope.conformEmail.email = $scope.customer.email;
-		//$scope.conformEmail.merchantId = $scope.merchantId;
 		$scope.conformEmail = {};
-		$scope.conformEmail.email = "lelaywang@gmail.com";
-		$scope.conformEmail.merchantId = "hgeugbfvkfsiut3hr";
+		$scope.conformEmail.email = $scope.customer.email;
+		$scope.conformEmail.merchantId = $scope.merchantId;
+		//$scope.conformEmail.email = "lelaywang@gmail.com";
+		//$scope.conformEmail.merchantId = "hgeugbfvkfsiut3hr";
 		if ($scope.merchantId){
-			$http.post("php/secure/sendEmial.php", $scope.conformEmail);
+			$http.post("php/secure/sendEmail.php", $scope.conformEmail);
 		}
 	};
 
