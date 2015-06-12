@@ -151,7 +151,7 @@ console.log("GG EC token = ", $scope.ecToken);
 		if ($scope.merchantId){
 			$http.post("php/secure/sendEmial.php", $scope.conformEmail);
 		}
-	}
+	};
 
 
 
