@@ -1,4 +1,4 @@
- <?php
+<?php
 /**
  * This script confirm the request to update personal information on database
  *
