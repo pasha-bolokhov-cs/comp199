@@ -51,7 +51,7 @@ if ($mysqli->connect_error) {
 
 /* form the query - case insensitive for email */
 $query = <<<"EOF"
-	SELECT name, email, password, salt
+	SELECT name
 	FROM customers
 	WHERE customerId = $customerId;
 EOF;

@@ -86,8 +86,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		$scope.customer.password = "";
 		$scope.customer.password2 = "";
         $scope.readOnly = false;
-		$scope.passwordStatus = false;
-		//$state.go("user.profile.modify");		
+		$scope.passwordStatus = false;				
 	}
 	
 	$scope.confirm = function() {
@@ -186,7 +185,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		
 		$state.go("user.profile.password");	
 	}
-	debugger;
+
 	$scope.passwordConfirm = function() {
 		$scope.readOnly = true;
 		
@@ -224,7 +223,61 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		.finally(function() { 
 			// Indicate that we have an answer
 			$rootScope.waiting = false;		
-		});
-		debugger;
+		});		
 	}
+	
+	/* 'Cancel' button in the modal */
+	$scope.cancel = function() {
+		$scope.readOnly = true;
+		$scope.passwordStatus = false;	
+		$scope.customer.email = $rootScope.storage.token.email;
+		$scope.customer.preemail = $scope.customer.email;
+		$http.post("php/secure/profile.php", $scope.customer)
+	.success(function(data) {
+		// process the response
+		if (data["error"]) {
+			switch(data["error"]) {
+			case "name-required":
+				$scope.profileForm.name.$setValidity("required", false);
+				$scope.profileForm.name.$setDirty();
+				break;
+
+			case "password-required":
+				$scope.profileForm.password.$setValidity("required", false);
+				$scope.profileForm.password.$setDirty();
+				break;
+
+			case "login":
+				$scope.error = "Invalid email or password";
+				break;
+
+			default:
+				$rootScope.error = "Error: " + data["error"];
+			}
+
+			// GG process validation errors
+			return;
+		}
+		//GG change status to signed in				
+
+		$scope.customer.name = data["name"];
+		$scope.customer.email = data["email"];
+		$scope.customer.birth = data["birth"];
+		$scope.customer.nationality = data["nationality"];			
+		$scope.customer.passportNo = data["passportNo"];
+		$scope.customer.passportExp = data["passportExp"];
+		$scope.customer.phone = data["phone"];
+		$scope.customer.password = "";
+		$scope.customer.password2 = "";				
+	})
+	.error(function(data, status) {		
+		$rootScope.error = "Error accessing the server: " + status + ".";
+	})
+	.finally(function() { 
+		// Indicate that we have an answer
+		$rootScope.waiting = false;
+	});
+	
+		$state.go("user.profile.modify");
+	}	
 });

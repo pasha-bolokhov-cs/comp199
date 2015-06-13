@@ -17,6 +17,50 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validate data */
+if (!property_exists($data, "name")) {
+	$response["error"] = "name-required";
+	goto quit;
+}
+if (!validate($data->name)) {
+	$response["error"] = "name-wrong";
+	goto quit;
+}
+if (!property_exists($data, "birth")) {
+	$response["error"] = "birth-required";
+	goto quit;
+}
+$birth_arr = date_parse($data->birth);
+$birth = $birth_arr["year"] . '-' . $birth_arr["month"] . '-' . $birth_arr["day"];
+if (!property_exists($data, "nationality")) {
+	$response["error"] = "nationality-required";
+	goto quit;
+}
+if (!validate($data->nationality)) {
+	$response["error"] = "nationality-wrong";
+	goto quit;
+}
+if (!property_exists($data, "passportNo")) {
+	$response["error"] = "passportNo-required";
+	goto quit;
+}
+if (!preg_match("/^([0-9]|[a-z])*$/i", $data->passportNo)) {
+	$response["error"] = "passportNo-wrong";
+	goto quit;
+}
+if (!property_exists($data, "passportExp")) {
+	$response["error"] = "passportExp-required";
+	goto quit;
+}
+$passportExp_arr = date_parse($data->passportExp);
+$passportExp = $passportExp_arr["year"] . '-' . $passportExp_arr["month"] . '-' . $passportExp_arr["day"];
+if (!property_exists($data, "email")) {
+	$response["error"] = "email-required";
+	goto quit;
+}
+if (!validate($data->email)) {
+	$response["error"] = "email-wrong";
+	goto quit;
+}
 if (!property_exists($data, "password")) {
 	$response["error"] = "password-required";
 	goto quit;
@@ -30,15 +74,14 @@ if (!($customerId = get_customerId($mysqli, $token))) {
 	goto auth_error_database;
 }
 
-/* hash the password 
+/* convert 'email' to lower case */
+$data->email = strtolower($data->email);
+
+/* hash the password */
 $salt = file_get_contents("/dev/urandom", false, null, 0, 16);
 $password = crypt($data->password, $salt);
-$password2 = crypt($data->password2, $salt);
 $salt = base64_encode($salt);
 $password = base64_encode($password);
-$password2 = base64_encode($password2);
-*/
-
 
 /* connect to the database */
 /* require_once '../../../../comp199-www/mysqli_auth.php';
@@ -48,65 +91,13 @@ if ($mysqli->connect_error) {
 			     . $mysqli->connect_error;
 	goto quit;
 }
-
-/* form the query - case insensitive for email */
-$query = <<<"EOF"
-	SELECT name, email, password, salt
-	FROM customers
-	WHERE customerId = $customerId;
-EOF;
-
-/* do the query */
-$response = array();
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto auth_error_database;
-}
-if (($resultArray = $result->fetch_assoc()) == NULL) {
-	$response["error"] = "login";
-	goto auth_error_database;
-}
-$name = $resultArray['name'];
-$email = $resultArray['email'];
-$password = $resultArray['password'];
-$salt = $resultArray['salt'];
-    
-/* hash the password */
-$salt = base64_decode($salt);
-$passwordInput = crypt($data->password, $salt);
-$passwordNew = crypt($data->password2, $salt);
-$passwordInput = base64_encode($passwordInput);
-$passwordNew = base64_encode($passwordNew);
-
-/* check the password */
-if ($passwordInput != $password){
-	$response["error"] =  'Current Passwords are different' . $mysqli->error;
-	goto auth_error_database;
-}
-
-
-
-
-/* get current password 
-$query = <<<"EOF"
-    SELECT password 
-	FROM customers
-	WHERE customerId = $customerId;
-EOF;
-
-$oldpassword = $mysqli->query($query);
-if ($password != $oldpassword){
-    $response["error"] = 'Current Passwords are different' . $mysqli->error;
-    goto quit;
-}else{
-    $password = $password2;
-}
-*/ 	
 /* form the query */
-
+// currently remove , password = "$password", salt = "$salt"
 $query = <<<"EOF"
 	UPDATE customers
-	SET password = $passwordNew
+	SET name = "{$data->name}", birth = STR_TO_DATE("$data->birth", "%Y-%m-%d"), nationality = "{$data->nationality}",
+	    passportNo = "{$data->passportNo}", passportExp = STR_TO_DATE("$data->passportExp", "%Y-%m-%d"),
+	    email = "{$data->email}", phone = "{$data->phone}"  
 	WHERE customerId = $customerId;
 EOF;
 
@@ -116,11 +107,30 @@ if (($result = $mysqli->query($query)) === FALSE) {
 	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto quit;
 }
+/*
+if (($resultArray = $result->fetch_assoc()) == NULL) {
+	$response["error"] = "login";
+	goto quit;
+}
+*/
+$response['name'] = $data->name;
+$response['birth'] = $data->birth;
+$response['nationality'] = $data->nationality;
+$response['passportNo'] = $data->passportNo;
+$response['passportExp'] = $data->passportExp;
+$response['email'] = $data->email;
+$response['phone'] = $data->phone;
 
 /* hash the password */
 $salt = base64_decode($salt);
 $passwordInput = crypt($data->password, $salt);
 $passwordInput = base64_encode($passwordInput);
+
+/* check the password */
+if ($passwordInput != $password){
+	$response["error"] = "login";
+	goto quit;
+}
 
 /* generate a token */
 $response["jwt"] = generate_jwt($data->name, $data->email);
