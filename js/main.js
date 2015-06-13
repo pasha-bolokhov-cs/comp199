@@ -120,20 +120,19 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			abstract: true,
 			views: {
 				"@": {
-					templateUrl: "partials/user/profile.html",
-					controller: "ProfileController"
+					templateUrl: "partials/user/profile.html"
 				}
 			}			
 		})
 		.state("user.profile.view", {
-			url: ""
+			url: "",
+			controller: "ProfileController"
 		})
 		.state("user.profile.password",{
 			url: "password",
 			views: {
 				"@": {
-					templateUrl: "partials/user/profile.modify.password.html",
-					controller: "ProfileController"
+					templateUrl: "partials/user/profile.modify.password.html"
 				}
 			}	
 		})
@@ -141,8 +140,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
                         url: "/modify",
 			views: {
 				"@": {
-					templateUrl: "partials/user/profile.html",
-					controller: "ProfileController"
+// should not have the same file in different (but related) states	templateUrl: "partials/user/profile.html"
 				}
 			}	
 		})
