@@ -16,7 +16,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		$scope.customer = {};
 		$scope.customer.password = "";
 		$scope.customer.password2 = "";
-			
+
 		$scope.customer.email = $rootScope.storage.token.email;
 		$scope.customer.preemail = $scope.customer.email;
 		$scope.readOnly = true;
@@ -180,7 +180,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	}
 	
 	$scope.passwordChange = function() {	
-        $scope.readOnly = true;
+		$scope.readOnly = true;
 		$scope.passwordStatus = true;
 		
 		$state.go("user.profile.password");	
@@ -188,7 +188,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 
 	$scope.passwordConfirm = function() {
 		$scope.readOnly = true;
-		
+
 		// Indicate we are waiting for data
 		$rootScope.waiting = true;
         		
@@ -212,9 +212,9 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 				}
 				$state.go("user.profile.password");
 			} else {
-			    $scope.readOnly = true;
-		        $scope.passwordStatus = false;	
-			    $state.go("guest.home");		
+				$scope.readOnly = true;
+				$scope.passwordStatus = false;	
+				$state.go("guest.home");		
 			}
 		})
 		.error(function(data2, status) {		

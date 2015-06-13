@@ -173,13 +173,20 @@ try {
 }
 
 /** send a confirmation email **/
-$msg = "You have succeeded to purchase the trip. /n Below is your purchase receipt: ".$saleId.".";
-$email = $token["email"];
-if (mail($email,"Your Purchase Record", $msg)){
-  	error_log("Email sent");
- } else {
-  	error_log("failed");
- }
+$msg = <<<EOF_MSG
+          This email is the receipt of the purchase of your trip "${description}"
+          Here is your receipt number: {$saleId}, please use it in communications
+          regarding this trip
+-------------------------------------------------------------------------------------------
+          Thank you for using Albatross Travel(R)
+          Hope to see you again soon!
+EOF_MSG;
+
+if (mail($token["email"], "Your Purchase Record", $msg)) {
+	error_log("Email sent");
+} else {
+	error_log("Email sending failed");
+}
 
 
 

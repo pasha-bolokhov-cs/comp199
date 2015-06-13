@@ -120,32 +120,30 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			abstract: true,
 			views: {
 				"@": {
-					templateUrl: "partials/user/profile.html",
-					controller: "ProfileController"
+					templateUrl: "partials/user/profile.html"
 				}
 			}			
 		})
 		.state("user.profile.view", {
-			url: ""
+			url: "",
+			controller: "ProfileController"
 		})
 		.state("user.profile.password",{
-		    url: "password",
+			url: "password",
 			views: {
-			    "@": {
-								templateUrl: "partials/user/profile.modify.password.html",
-								controller: "ProfileController"
-							}
-						}	
-        })
+				"@": {
+					templateUrl: "partials/user/profile.modify.password.html"
+				}
+			}	
+		})
 		.state("user.profile.modify", {
                         url: "/modify",
-						views: {
-							"@": {
-								templateUrl: "partials/user/profile.html",
-								controller: "ProfileController"
-							}
-						}	
-        })
+			views: {
+				"@": {
+// should not have the same file in different (but related) states	templateUrl: "partials/user/profile.html"
+				}
+			}	
+		})
 		.state("user.trips", {
 			url: "/trips",
 			params: {
@@ -178,7 +176,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 /**
  * Controls the app
  */
-app.controller('MainController', function ($scope, $rootScope, $http, $modal, $state, 
+app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal, $state, 
 					   jwtHelper, $localStorage /* also: $location */) {
 
 	/*
@@ -225,7 +223,7 @@ app.controller('MainController', function ($scope, $rootScope, $http, $modal, $s
 
 	/* Mild authentication - just test the token */
 	$rootScope.mildAuthenticate = function() {
-		return new Promise(function(resolve, reject) {
+		return $q(function(resolve, reject) {
 			$http.post("php/secure/check-token.php")
 			.success(function(data) {
 				// process the response
