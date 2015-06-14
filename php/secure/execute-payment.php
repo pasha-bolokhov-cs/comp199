@@ -182,7 +182,7 @@ $message = <<<EOF_MSG
           Thank you for using Albatross Travel(R)
           Hope to see you again soon!
 EOF_MSG;
-$header = "From: noreply@albatross-travel.com";
+$header = 'From: "Albatross Travel" <noreply@albatross-travel.com>';
 if (!mail($token["email"], $subject, $message, $header)) {
 	error_log("could not send email to " . print_r($token["email"], true));
 	$response["error"] = "failed to send email to " . print_r($token["email"], true);
@@ -210,3 +210,4 @@ auth_error:
 $response["error"] = "authentication";
 echo json_encode($response);
 ?>
+
