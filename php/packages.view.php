@@ -3,9 +3,13 @@
  * This file fetches the details of a package
  *
  */
+require_once 'validate.php';
 
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
+
+$jsonData = file_get_contents("php://input");
+$data = json_decode($jsonData);
 
 /* validate data */
 $response = array();
@@ -19,7 +23,7 @@ if (!validate($data->package)) {
 }
 
 /* connect to the database */
-require_once '../../../../comp199-www/mysqli_auth.php';
+require_once '../../../comp199-www/mysqli_auth.php';
 try {
 	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -43,9 +47,28 @@ try {
 	foreach (array("packageId", "segId", "name", "region", "origin", "price",
 		       "description", "available", "imageName") as $field)
 		if (!array_key_exists($field, $package_row)) {
+			error_log('packages.view.php: field $field does not exist in package {$data->package}');
 			$response["error"] = "could not access package detail";
 			goto database_quit;
 		}
+
+	/* get image data */
+	$sth = $dbh->prepare(
+		"SELECT * FROM images WHERE imageName = :imageName"
+	);
+	$sth->execute(array(":imageName" => $package_row["imageName"]));
+	if (!($image_row = $sth->fetch())) {
+		error_log('packages.view.php: table "images" has no entries');
+		$response["error"] = "could not access package detail";
+		goto database_quit;
+	}
+	foreach (array("imageName", "fileName", "type") as $field)
+		if (!array_key_exists($field, $image_row)) {
+			error_log('packages.view.php: field $field does not exist for image {$package_row["imageName"]}');
+			$response["error"] = "could not access package detail";
+			goto database_quit;
+		}
+	$package_row["image"] = $image_row;
 
 	/* add package data to the response */
 	$response["package"] = $package_row;
@@ -58,6 +81,7 @@ try {
 		foreach (array("segId", "location", "transportId", "flightId", "hotelId", "activityId",
 			       "duration", "nextSeg") as $field)
 			if (!array_key_exists($field, $row)) {
+				error_log('packages.view.php: field $field does not exist in table "segments"');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -69,6 +93,7 @@ try {
 	foreach ($dbh->query("SELECT * FROM locations") as $row) {
 		foreach (array("city", "region", "country") as $field)
 			if (!array_key_exists($field, $row)) {
+				error_log('packages.view.php: field $field does not exist in table "locations"');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -80,6 +105,7 @@ try {
 	foreach ($dbh->query("SELECT * FROM transport") as $row) {
 		foreach (array("transportId", "type") as $field)
 			if (!array_key_exists($field, $row)) {
+				error_log('packages.view.php: field $field does not exist in table "transport"');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -91,6 +117,7 @@ try {
 	foreach ($dbh->query("SELECT * FROM flights") as $row) {
 		foreach (array("flightId", "flightNo", "origin", "departDate", "destination", "arriveDate") as $field)
 			if (!array_key_exists($field, $row)) {
+				error_log('packages.view.php: field $field does not exist in table "flights"');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -102,6 +129,7 @@ try {
 	foreach ($dbh->query("SELECT * FROM hotels") as $row) {
 		foreach (array("hotelId", "rank", "imageName", "description") as $field)
 			if (!array_key_exists($field, $row)) {
+				error_log('packages.view.php: field $field does not exist in table "hotels"');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -113,6 +141,7 @@ try {
 	foreach ($dbh->query("SELECT * FROM activities") as $row) {
 		foreach (array("activityId", "name") as $field)
 			if (!array_key_exists($field, $row)) {
+				error_log('packages.view.php: field $field does not exist in table "activities"');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -126,6 +155,7 @@ try {
 	do {
 		/* check that there is segment data */
 		if (!array_key_exists($curr_seg_id, $segments)) {
+			error_log('packages.view.php: segId $curr_seg_id is invalid');
 			$response["error"] = "could not access package detail";
 			goto database_quit;
 		}
@@ -136,18 +166,34 @@ try {
 
 		/* if transport => create an extra row for transport solely */
 		if ($curr_seg["transportId"]) {
-			$seg["transport"] = $transport["type"];
-			if (!array_key_exists($curr_seg["flightId"], $flights)) {
+			if (!array_key_exists($curr_seg["transportId"], $transport)) {
+				error_log('packages.view.php: segment $curr_seg_id has ' .
+					  'an invalid transportId = {$curr_seg["transportId"]}');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
-			$seg["flight"] = $flights[$curr_seg["flightId"]];
+			$seg["transport"] = $transport[$curr_seg["transportId"]]["type"];
+
+			if ($curr_seg["flightId"]) {
+				if (!array_key_exists($curr_seg["flightId"], $flights)) {
+					error_log('packages.view.php: segment $curr_seg_id has ' .
+						  'an invalid flightId = {$curr_seg["flightId"]}');
+					$response["error"] = "could not access package detail";
+					goto database_quit;
+				}
+				$seg["flight"] = $flights[$curr_seg["flightId"]];
+			} else {
+				$seg["flight"] = "n/a";
+			}
 			if (!array_key_exists($curr_location, $locations)) {
+				error_log('packages.view.php: location $curr_location is invalid');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
 			$seg["origin"] = $locations[$curr_location];
 			if (!array_key_exists($curr_seg["location"], $locations)) {
+				error_log('packages.view.php: segment $curr_seg_id has "'.
+					  'an invalid location = {$curr_seg["location"]}');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -160,6 +206,8 @@ try {
 		/* get hotel information */
 		if ($curr_seg["hotelId"]) {
 			if (!array_key_exists($curr_seg["hotelId"], $hotels)) {
+				error_log('packages.view.php: segment $curr_seg_id has ' .
+					  'an invalid hotelId = {$curr_seg["hotelId"]}');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -172,6 +220,8 @@ try {
 		/* get activity information */
 		if ($curr_seg["activityId"]) {
 			if (!array_key_exists($curr_seg["activityId"], $activities)) {
+				error_log('packages.view.php: segment $curr_seg_id has ' .
+					  'an invalid activityId = {$curr_seg["activityId"]}');
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
@@ -187,7 +237,7 @@ try {
 		$response["segments"][] = $seg;
 
 		/* switch to the next segment */
-		$curr_location = $segments["curr_seg"]["location"];
+		$curr_location = $curr_seg["location"];
 		$curr_seg_id = $curr_seg["nextSeg"];
 	} while ($curr_seg_id);
 	
