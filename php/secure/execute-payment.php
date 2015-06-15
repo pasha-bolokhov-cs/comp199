@@ -140,7 +140,6 @@ try {
 	goto database_quit;
 }
 $saleId = $sale->getId();
-error_log("execute-payment.php: package $description is {$payment->getState()}, receipt is {$saleId}"); //GG
 
 try {
 	/** put sale Id into the order **/
@@ -212,4 +211,3 @@ auth_error:
 $response["error"] = "authentication";
 echo json_encode($response);
 ?>
-
