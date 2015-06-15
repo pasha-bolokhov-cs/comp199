@@ -173,19 +173,21 @@ try {
 }
 
 /** send a confirmation email **/
+$address = $token["email"];
 $subject = "Your receipt for your trip";
 $message = <<<EOF_MSG
           This email is the receipt of the purchase of your trip "${description}"
-          Here is your receipt number: {$saleId}, please use it in communications
-          regarding this trip
+          Here is your receipt number: {$saleId}
+          Please use this number in further communications regarding this trip
 -------------------------------------------------------------------------------------------
           Thank you for using Albatross Travel(R)
           Hope to see you again soon!
 EOF_MSG;
 $header = 'From: "Albatross Travel" <noreply@albatross-travel.com>';
-if (!mail($token["email"], $subject, $message, $header)) {
-	error_log("could not send email to " . print_r($token["email"], true));
-	$response["error"] = "failed to send email to " . print_r($token["email"], true);
+if (!mail($address, $subject, $message, $header)) {
+	// this is not a fatal error as the transaction has succeeded and been recorded
+	error_log("could not send email to " . print_r($address, true));
+	$response["error"] = "email-failed";
 }
 
 

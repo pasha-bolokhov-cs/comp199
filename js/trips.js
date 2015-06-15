@@ -121,14 +121,21 @@ console.log("GG EC token = ", $scope.ecToken);
 		$http.post("php/secure/execute-payment.php", $scope.paymentRequest)
 		.success(function(data) {
 			// process the response
-			if (data["error"]) {
-				if (data["error"] == "authentication")
+			if (data["error"])
+				switch (data["error"]) {
+				case "email-failed":
+					$rootScope.error = "payment went through but ";
+					$rootScope.error += "couldn't send email to " + $rootScope.storage.token.email;
+					break;		// consider it a success still
+	
+				case "authentication":
 					$rootScope.doSignOut();
-				else
+					return;
+	
+				default:
 					$rootScope.error = "Error: " + data["error"];
-
-				return;
-			}
+					return;
+				}
 
 			// success - refresh the list of trips
 			$scope.getOrders();
