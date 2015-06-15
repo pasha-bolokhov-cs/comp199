@@ -225,7 +225,7 @@ try {
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
-			$seg["acvitity"] = $activities[$curr_seg["activityId"]];
+			$seg["activity"] = $activities[$curr_seg["activityId"]];
 		} else {
 			$seg["activity"] = NULL;
 		}
