@@ -149,10 +149,10 @@ try {
 	}
 
 	/** loop over segments **/
-	$curr_location = $package_row["origin"];
-	$curr_seg_id = $package_row["segId"];
 	$response["segments"] = array();
-	do {
+	for ($curr_location = $package_row["origin"], $curr_seg_id = $package_row["segId"];
+	     $curr_seg_id;
+	     $curr_location = $curr_seg["location"], $curr_seg_id = $curr_seg["nextSeg"]) { /* switch to the next segment */
 		/* check that there is segment data */
 		if (!array_key_exists($curr_seg_id, $segments)) {
 			error_log('packages.view.php: segId $curr_seg_id is invalid');
@@ -230,16 +230,16 @@ try {
 			$seg["activity"] = NULL;
 		}
 
+		/* pass on, if not hotel or activity information (just transportation, perhaps) */
+		if (!($curr_seg["hotelId"] || $curr_seg["activityId"])) 
+			continue;		// drop this segment and continue
+
 		/* get duration */
 		$seg["duration"] = $curr_seg["duration"];
 
 		/* append segment information to the response */
 		$response["segments"][] = $seg;
-
-		/* switch to the next segment */
-		$curr_location = $curr_seg["location"];
-		$curr_seg_id = $curr_seg["nextSeg"];
-	} while ($curr_seg_id);
+	} /* for-loop over segments */
 	
 } catch (PDOException $e) {
 	$response["error"] = 'Query Error - ' . $e->getMessage();
