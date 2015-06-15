@@ -82,7 +82,7 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Istanbul', NULL, 'vechicle_l', 'Shangri-La', 'sightseeing', 12, LAST_INSERT_ID());
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
-       VALUES ('Tronto', 'flight', 'Air Canada - Summer 2015-I2', NULL, NULL, 0, LAST_INSERT_ID());
+       VALUES ('Toronto', 'flight', 'Air Canada - Summer 2015-I2', NULL, NULL, 0, LAST_INSERT_ID());
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Vancouver', 'flight', 'Air Canada - Summer 2015-I1', NULL, NULL, 0, LAST_INSERT_ID());	   
 INSERT INTO packages (segId, name, region, origin, price, description, available, imageName)
