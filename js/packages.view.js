@@ -74,8 +74,6 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 		}
 		$scope.package = data.package;
 		$scope.details = data.segments;
-console.log("GG package = ", $scope.package);
-console.log("GG details = ", $scope.details);
 	})
 	.error(function(data, status) {
 		console.log(data);
@@ -86,4 +84,18 @@ console.log("GG details = ", $scope.details);
 		$rootScope.waiting = false;
 	});
 
+	// extract a heading from a segment
+	$scope.getHeading = function(seg) {
+		if (!seg)
+			return null;
+
+		if (seg.transport)
+			return seg.transport;
+
+		if (seg.activity)
+			return seg.activity.name;
+
+		if (seg.hotel)
+			return "Staying at " + seg.hotel;
+	}
 });
