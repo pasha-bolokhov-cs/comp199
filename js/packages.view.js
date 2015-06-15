@@ -64,9 +64,18 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 		// process the response
 		if (data["error"]) {
 			$rootScope.error = "Error: " + data["error"];
-		} else {
-			$rootScope.details = data["data"];
+			return;
 		}
+
+		// total success
+		if (!("package" in data) || !("segments" in data)) {
+			$rootScope.error = "Error: incomplete response from server";
+			return;
+		}
+		$scope.package = data.package;
+		$scope.details = data.segments;
+console.log("GG package = ", $scope.package);
+console.log("GG details = ", $scope.details);
 	})
 	.error(function(data, status) {
 		console.log(data);
