@@ -58,7 +58,7 @@ INSERT INTO segments (location, transportId, flightId, hotelId, activityId, dura
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Santarem', 'flight', 'TAM Airlines - Fall 2015-5', NULL, NULL, 0, LAST_INSERT_ID());
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
-       VALUES ('Santarem', 'vehicle_v', NULL, 'Local Lodge', 'Fishing', 10, LAST_INSERT_ID());	   
+       VALUES ('Santarem', 'vehicle_v', NULL, 'Local Lodge', 'fishing', 10, LAST_INSERT_ID());	   
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
        VALUES ('Brasilia', 'flight', 'TAM Airlines - Fall 2015-4', NULL, NULL, 0, LAST_INSERT_ID());
 INSERT INTO segments (location, transportId, flightId, hotelId, activityId, duration, nextSeg)
