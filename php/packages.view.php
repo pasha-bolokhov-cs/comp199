@@ -245,6 +245,7 @@ try {
 	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
 }
+error_log("packages.view.php: response = " . print_r($response['segments'], true));//GG
 
 database_quit:
 /* close the database */
