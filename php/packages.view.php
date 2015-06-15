@@ -212,7 +212,7 @@ try {
 				goto database_quit;
 			}
 			$seg["hotel"] = $curr_seg["hotelId"];
-			$seg["hotel_description"] = $hotel[$curr_seg["hotelId"]]["description"];
+			$seg["hotel_description"] = $hotels[$curr_seg["hotelId"]]["description"];
 		} else {
 			$seg["hotel"] = NULL;
 		}
