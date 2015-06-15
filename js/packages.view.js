@@ -90,7 +90,7 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 			return null;
 
 		if (seg.transport)
-			return seg.transport;
+			return seg.transport + ":  " + seg.origin.city + " to " + seg.destination.city;
 
 		if (seg.activity)
 			return seg.activity.name;
