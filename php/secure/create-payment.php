@@ -119,7 +119,7 @@ $transaction->setAmount($amount)
 $baseUrl = getBaseUrl();
 $redirectUrls = new RedirectUrls();
 $redirectUrls->setReturnUrl("$baseUrl/execute-payment.php?success=true")
-		->setCancelUrl("$baseUrl/execute-payment.php?success=false");     //GG
+		->setCancelUrl("$baseUrl/execute-payment.php?success=false");
 
 
 /** Add payment details and set intent as 'sale' **/
