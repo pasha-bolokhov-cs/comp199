@@ -230,7 +230,7 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 				if (data["error"]) {
 					switch(data["error"]) {
 					case "authentication":
-						console.log("authentication error"); // GG - clear token on failure
+						// silently quit
 						break;
 
 					default:

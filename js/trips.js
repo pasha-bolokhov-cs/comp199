@@ -97,7 +97,6 @@ app.controller('TripsController', function($scope, $rootScope, $http, $state, $s
 				return;
 			}
 			$scope.ecToken = data["ec_token"];
-console.log("GG EC token = ", $scope.ecToken);
 
 			paypal.checkout.startFlow($scope.ecToken);
 		})
@@ -113,8 +112,6 @@ console.log("GG EC token = ", $scope.ecToken);
 
 	/* order accepted */
 	$scope.accepted = function(url) {
-		console.log("GG order has been accepted with url = ", url);
-	
 		$scope.paymentRequest = {};
 		$scope.paymentRequest.url = url;
 		$rootScope.waiting = true;
@@ -151,7 +148,6 @@ console.log("GG EC token = ", $scope.ecToken);
 
 	/* order rejected or other failure */
 	$scope.rejected = function(url) {
-		console.log("GG order has been rejected with url = ", url);
 	};
 
 	/* remove an order */
