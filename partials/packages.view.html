@@ -7,6 +7,7 @@
             margin-bottom: 0;'>
 
 
+  <!--** Extra top space **-->
   <div class="row">
     <div class="col-xs-6">
       <br><br>
@@ -14,6 +15,7 @@
   </div>
 
 
+  <!--** Package name **-->
   <div class="row">
     <div class="col-xs-12">
         <div class="well well-lg" style="background: rgba(100, 100, 100, 0.4);">
@@ -24,6 +26,7 @@
   </div>        
 
 
+  <!--** Package description and price **-->
   <div class="row">
     <div class="col-xs-10 col-xs-offset-1">
       <h3 class="text-center" style="color: white;">{{ package.description }}</h3>
@@ -38,11 +41,14 @@
 </div> <!-- /container-fluid -->
 
 
+
 <!--------------------->
 <!-- Package details -->
 <!--------------------->
 <div class="container-fluid">
 
+
+  <!--** "Trip details" **-->
   <div class="row">
     <div class="col-xs-12 text-center">
       <br><br>
@@ -50,16 +56,78 @@
     </div>
   </div>
 
+  <!--** Accordion **-->
   <div class="row">
     <div class="col-xs-12 col-md-8 col-md-offset-2">
-      <accordion>
-        <accordion-group ng-repeat="s in details" text-center heading="{{ getHeading(s) }}">
+      <accordion close-others="false">
+        <accordion-group ng-repeat="s in details">
+          <!-- Accordion heading -->
+          <accordion-heading>
+            {{ s.heading }}
+          </accordion-heading>
+
+          <!-- Transport information -->
+          <div class="row" ng-show="!(s.flight && s.flight !== 'n/a')">
+            <div class="col-xs-12">
+              <span ng-show="s.origin && s.origin.city">
+                From: {{ s.origin.city }}<span ng-show="s.origin.country">, {{ s.origin.country }}</span>
+                <br>
+              </span>
+              <span ng-show="s.destination && s.destination.city">
+                To: {{ s.destination.city }}<span ng-show="s.destination.country">, {{ s.destination.country }}</span>
+              </span>              
+            </div>
+          </div> <!-- /transport information -->
+
+          <!-- Flight information -->
+          <div class="row" ng-show="s.flight && s.flight !== 'n/a'">
+            <div class="col-xs-12">
+              <span ng-show="s.flight.flightNo">
+                Flight: {{ s.flight.flightNo }}
+                <br>
+              </span>
+              <span ng-show="s.origin && s.origin.city">
+                Departs: {{ s.origin.city }}<span ng-show="s.origin.country">, {{ s.origin.country }}</span>
+                <span ng-show="s.flight.departDate"> at {{ s.flight.departDate }}</span>
+                <br>
+              </span>
+              <span ng-show="s.destination && s.destination.city">
+                Arrives: {{ s.destination.city }}<span ng-show="s.destination.country">, {{ s.destination.country }}</span>
+                <span ng-show="s.flight.arriveDate"> at {{ s.flight.arriveDate }}</span>
+              </span>
+            </div>
+          </div> <!-- /flight information -->
+
+          <!-- Activity and Hotel information -->
+          <div class="row" ng-show="!s.transport && s.hotel || s.activity">
+            <div class="col-xs-12">
+              <span ng-show="s.activity && s.activity.name">
+                {{ s.activity.name }}
+                <span ng-show="s.location && s.location.city">in {{ s.location.city }}</span>
+                <span ng-show="s.duration && !(s.hotel && s.hotel.hotelId)">for {{ s.duration }} days</span>
+                <br>
+              </span>
+              <span ng-show="s.hotel && s.hotel.hotelId" ng-init="hotelCollapsed = true">
+                Staying in
+                <a ng-click="hotelCollapsed = !hotelCollapsed" href="">{{ s.hotel.hotelId }} Hotel</a>
+                <span ng-show="s.hotel.stars">
+                  <span ng-repeat="j in s.hotel.stars track by $index" class="glyphicon glyphicon-star-empty"></span>
+                </span>
+                <span ng-show="s.duration">for {{ s.duration }} days</span>
+                <br>
+                <div ng-show="s.hotel.description" collapse="hotelCollapsed">
+                  {{ s.hotel.description }}
+                </div>
+              </span>
+            </div>
+          </div> <!-- /activity and hotel information -->
         </accordion-group>
       </accordion>
     </div>
-  </div>
+  </div> <!-- /row with accordion -->
 
 
+  <!--** "Go" button **-->
   <div class="row">
     <div class="col-xs-12 col-md-4 col-md-offset-4 text-center">
       <button class="btn btn-lg btn-success" ng-click='go()'>
@@ -73,6 +141,7 @@
   </div>
 
 
+  <!--** Extra bottom space **-->
   <div class="row">
     <div class="col-xs-12">
       <br><br>

@@ -74,6 +74,21 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 		}
 		$scope.package = data.package;
 		$scope.details = data.segments;
+
+		/* perform segment pre-processing */
+		for (j = 0; j < $scope.details.length; j++) {
+			/* extract headings from segments */
+			$scope.details[j].heading = getHeading($scope.details[j]);
+
+			/* prepare stars array for the hotel */
+			if ($scope.details[j].hotel && $scope.details[j].hotel.rank) {
+				$scope.details[j].hotel.rank = parseInt($scope.details[j].hotel.rank);
+				// sanity check on stars
+				if (!isNaN($scope.details[j].hotel.rank) && $scope.details[j].hotel.rank < 1000) {
+					$scope.details[j].hotel.stars = new Array($scope.details[j].hotel.rank);
+				}
+			}
+		}
 	})
 	.error(function(data, status) {
 		console.log(data);
@@ -85,17 +100,21 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 	});
 
 	// extract a heading from a segment
-	$scope.getHeading = function(seg) {
+	getHeading = function(seg) {
 		if (!seg)
 			return null;
 
 		if (seg.transport)
 			return seg.transport + ":  " + seg.origin.city + " to " + seg.destination.city;
 
-		if (seg.activity)
-			return seg.activity.name;
+		if (seg.activity && seg.activity.name) {
+			heading = seg.activity.name;
+			(seg.location && seg.location.city) ? heading += " in " + seg.location.city : "";
+			seg.duration ? heading += " for " + seg.duration + " days" : "";
+			return heading;
+		}
 
-		if (seg.hotel)
-			return "Staying at " + seg.hotel;
+		if (seg.hotel && seg.hotel.hotelId)
+			return "Staying at " + seg.hotel.hotelId;
 	}
 });
