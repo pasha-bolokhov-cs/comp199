@@ -6,7 +6,6 @@
 require_once 'validate.php';
 require_once 'secure/auth.php';
 
-sleep(4); //GG
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
 
