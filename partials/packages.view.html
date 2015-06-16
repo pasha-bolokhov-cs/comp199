@@ -67,57 +67,57 @@
           </accordion-heading>
 
           <!-- Transport information -->
-          <div class="row" ng-show="!(s.flight && s.flight !== 'n/a')">
+          <div class="row" ng-if="!(s.flight && s.flight !== 'n/a')">
             <div class="col-xs-12">
-              <span ng-show="s.origin && s.origin.city">
-                From: {{ s.origin.city }}<span ng-show="s.origin.country">, {{ s.origin.country }}</span>
+              <span ng-if="s.origin && s.origin.city">
+                From: {{ s.origin.city }}<span ng-if="s.origin.country">, {{ s.origin.country }}</span>
                 <br>
               </span>
-              <span ng-show="s.destination && s.destination.city">
-                To: {{ s.destination.city }}<span ng-show="s.destination.country">, {{ s.destination.country }}</span>
+              <span ng-if="s.destination && s.destination.city">
+                To: {{ s.destination.city }}<span ng-if="s.destination.country">, {{ s.destination.country }}</span>
               </span>              
             </div>
           </div> <!-- /transport information -->
 
           <!-- Flight information -->
-          <div class="row" ng-show="s.flight && s.flight !== 'n/a'">
+          <div class="row" ng-if="s.flight && s.flight !== 'n/a'">
             <div class="col-xs-12">
-              <span ng-show="s.flight.flightNo">
+              <span ng-if="s.flight.flightNo">
                 Flight: {{ s.flight.flightNo }}
                 <br>
               </span>
-              <span ng-show="s.origin && s.origin.city">
-                Departs: {{ s.origin.city }}<span ng-show="s.origin.country">, {{ s.origin.country }}</span>
-                <span ng-show="s.flight.departDate"> at {{ s.flight.departDate }}</span>
+              <span ng-if="s.origin && s.origin.city">
+                Departs: {{ s.origin.city }}<span ng-if="s.origin.country">, {{ s.origin.country }}</span>
+                <span ng-if="s.flight.departDate"> at {{ s.flight.departDate }}</span>
                 <br>
               </span>
-              <span ng-show="s.destination && s.destination.city">
-                Arrives: {{ s.destination.city }}<span ng-show="s.destination.country">, {{ s.destination.country }}</span>
-                <span ng-show="s.flight.arriveDate"> at {{ s.flight.arriveDate }}</span>
+              <span ng-if="s.destination && s.destination.city">
+                Arrives: {{ s.destination.city }}<span ng-if="s.destination.country">, {{ s.destination.country }}</span>
+                <span ng-if="s.flight.arriveDate"> at {{ s.flight.arriveDate }}</span>
               </span>
             </div>
           </div> <!-- /flight information -->
 
           <!-- Activity and Hotel information -->
-          <div class="row" ng-show="!s.transport && s.hotel || s.activity">
+          <div class="row" ng-if="!s.transport && s.hotel || s.activity">
             <div class="col-xs-12">
-              <span ng-show="s.activity && s.activity.name">
+              <span ng-if="s.activity && s.activity.name">
                 {{ s.activity.name }}
-                <span ng-show="s.location && s.location.city">in {{ s.location.city }}</span>
-                <span ng-show="s.duration && !(s.hotel && s.hotel.hotelId)">for {{ s.duration }} days</span>
+                <span ng-if="s.location && s.location.city">in {{ s.location.city }}</span>
+                <span ng-if="s.duration && !(s.hotel && s.hotel.hotelId)">for {{ s.duration }} days</span>
                 <br>
               </span>
-              <span ng-show="s.hotel && s.hotel.hotelId" ng-init="s.hotel.hotelCollapsed = true">
+              <span ng-if="s.hotel && s.hotel.hotelId" ng-init="s.hotel.hotelCollapsed = true">
                 Staying in
                 <a ng-click="s.hotel.hotelCollapsed = !s.hotel.hotelCollapsed" href="">{{ s.hotel.hotelId }} Hotel</a>
                 <span class="glyphicon"
                       ng-class="{ 'glyphicon-chevron-down': s.hotel.hotelCollapsed,
                                   'glyphicon-chevron-right': !s.hotel.hotelCollapsed }">
                 </span>
-                <span ng-show="s.duration">for {{ s.duration }} days</span>
+                <span ng-if="s.duration">for {{ s.duration }} days</span>
                 <br>
-                <div ng-show="s.hotel.description" collapse="s.hotel.hotelCollapsed">
-                  <span ng-show="s.hotel.stars">
+                <div ng-if="s.hotel.description" collapse="s.hotel.hotelCollapsed">
+                  <span ng-if="s.hotel.stars">
                    <span ng-repeat="j in s.hotel.stars track by $index" class="glyphicon glyphicon-star-empty"></span>
                   </span>
                   {{ s.hotel.description }}
