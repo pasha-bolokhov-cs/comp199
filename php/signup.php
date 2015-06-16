@@ -71,49 +71,51 @@ $password = base64_encode($password);
 
 /* connect to the database */
 require_once '../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
 
-/* test if email already exists */
-$query = <<<"EOF_SELECT"
-	SELECT email FROM customers
-	       WHERE LCASE(email) = LCASE("{$data->email}");
-EOF_SELECT;
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
+try {
+
+	/* test if email already exists */
+	$sth = $dbh->prepare(
+		"SELECT email FROM customers
+			WHERE LCASE(email) = LCASE(:email)"
+	);
+	$sth->execute(array(":email" => $data->email));
+	if ($sth->fetch(PDO::FETCH_ASSOC)) {
+		$response["error"] = "email-exists";
+		goto database_quit;
+	}
+
+	/* perform the query to insert a new customer */
+	$sth = $dbh->prepare(
+		"INSERT INTO customers (name, birth, nationality, passportNo, passportExp, email, phone, password, salt)
+	        	VALUES (:name, STR_TO_DATE(:birth, '%Y-%m-%d'), :nationality,
+				:passportNo, STR_TO_DATE(:passportExp, '%Y-%m-%d'),
+				:email, :phone,
+				:password, :salt)"
+	);
+	$sth->execute(array(":name" => $data->name, ":birth" => $birth, ":nationality" => $data->nationality,
+			    ":passportNo" => $data->passportNo, ":passportExp" => $passportExp,
+			    ":email" => $data->email, ":phone" => $data->phone,
+			    ":password" => $password, ":salt" => $salt));
+
+	/* generate a token */
+	$response["jwt"] = generate_jwt($data->name, $data->email);
+
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
 }
-if ($result->fetch_assoc()) {
-	$response["error"] = "email-exists";
-	goto database_quit;
-}
-
-/* form the query */
-$query = <<<"EOF_INSERT"
-	INSERT INTO customers (name, birth, nationality, passportNo, passportExp, email, phone, password, salt)
-               VALUES ("{$data->name}", STR_TO_DATE("$birth", "%Y-%m-%d"), "{$data->nationality}",
-                       "{$data->passportNo}", STR_TO_DATE("$passportExp", "%Y-%m-%d"),
-                       "{$data->email}", "{$data->phone}",
-		       "$password", "$salt");
-EOF_INSERT;
-
-/* do the query */
-$response = array();
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto database_quit;
-}
-
-/* generate a token */
-$response["jwt"] = generate_jwt($data->name, $data->email);
 
 database_quit:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 quit:
 /* return the response */
