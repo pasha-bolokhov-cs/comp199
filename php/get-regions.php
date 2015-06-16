@@ -8,70 +8,56 @@ require_once 'validate.php';
 
 /* connect to the database */
 require_once '../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
 
-/* form the query for all existing regions */
-$query = <<<"EOF"
-	SELECT * FROM regions;
+/* make a query for all existing regions */
+try {
+	$response["regions"] = array();
+	foreach ($dbh->query("SELECT * FROM regions", PDO::FETCH_ASSOC) as $row) {
+		// append the row
+		$response["regions"][] = $row;
+	
+		// check how many lines we have
+		if (count($response["regions"]) > MAX_RESPONSE_LINES) {
+			$response["regions"] = NULL;
+			$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
+			goto database_quit;
+		}
+	}
+
+	/* find out which regions have available packages associated with them */
+	$query = <<<"EOF"
+		SELECT region FROM packages
+		       WHERE available > 0;
 EOF;
-        
-/* do the query */
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
+	$avail_regions = array();
+	foreach ($dbh->query($query, PDO::FETCH_ASSOC) as $row) {
+		// append the region
+		if (!array_key_exists("region", $row)) {
+			$response["error"] = 'Internal Error - row does not exist';
+			goto database_quit;
+		}
+		$avail_regions[] = $row["region"];
+	}
+
+	/* now mark the available regions in the response */
+	foreach ($response["regions"] as $r => $v) {
+		$response["regions"][$r]["available"] = in_array($response["regions"][$r]["region"], $avail_regions);
+	}
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
 }
-
-/* fetch the results and put into response */
-$response["regions"] = array();
-while ($row = $result->fetch_assoc()) {
-	// append the row
-	$response["regions"][] = $row;
-
-	// check how many lines we have
-	if (count($response["regions"]) > MAX_RESPONSE_LINES) {
-		$response["regions"] = NULL;
-		$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
-		goto database_quit;
-	}
-}
-
-/* find out which regions have available packages associated with them */
-$query = <<<"EOF"
-	SELECT region FROM packages
-	       WHERE available > 0;
-EOF;
-
-/* do the query */
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto database_quit;
-}
-
-/* fetch the results */
-$avail_regions = array();
-while ($row = $result->fetch_assoc()) {
-	// append the region
-	if (!array_key_exists("region", $row)) {
-		$response["error"] = 'Internal Error - row does not exist';
-		goto database_quit;
-	}
-	$avail_regions[] = $row["region"];
-}
-
-/* now mark the available regions in the response */
-foreach ($response["regions"] as $r => $v) {
-	$response["regions"][$r]["available"] = in_array($response["regions"][$r]["region"], $avail_regions);
-}
-
 
 database_quit:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 quit:
 /* return the response */
