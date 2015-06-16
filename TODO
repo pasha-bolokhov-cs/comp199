@@ -13,8 +13,6 @@
 
 		* make menu items responsive
 
-		* make all PDO fetches/queries associative (PDO::FETCH_ASSOC)
-
 
 	*  packages page
 

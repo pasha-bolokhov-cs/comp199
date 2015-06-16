@@ -78,7 +78,7 @@ function get_customerId_PDO($dbh, $token) {
 		);
 		$sth->execute(array(":email" => $token["email"]));
 
-		if (!($row = $sth->fetch()))
+		if (!($row = $sth->fetch(PDO::FETCH_ASSOC)))
 			return NULL;
 
 		if (!array_key_exists("customerId", $row))

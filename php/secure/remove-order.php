@@ -53,7 +53,7 @@ try {
 			AND customerId = :customerId"
 	);
 	$sth->execute(array(":package" => $data->package, ":customerId" => $customerId));
-	if (!($row = $sth->fetch()) || !array_key_exists("status", $row)) {
+	if (!($row = $sth->fetch(PDO::FETCH_ASSOC)) || !array_key_exists("status", $row)) {
 		$response["error"] = "could not get order status";
 		goto database_quit;
 	}

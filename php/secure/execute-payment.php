@@ -96,7 +96,7 @@ try {
 		"SELECT available FROM packages WHERE UCASE(name) = UCASE(:description) AND available > 0"
 	);
 	$sth->execute(array(":description" => $description));
-	if (!($row = $sth->fetch())) {
+	if (!($row = $sth->fetch(PDO::FETCH_ASSOC))) {
 		$response["error"] = "package-sold-out";
 		goto database_quit;
 	}

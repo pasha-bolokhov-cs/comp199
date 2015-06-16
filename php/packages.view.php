@@ -36,7 +36,7 @@ try {
 		"SELECT * FROM packages WHERE UCASE(name) = UCASE(:package) AND available > 0"
 	);
 	$sth->execute(array(":package" => $data->package));
-	if (!($package_row = $sth->fetch())) {
+	if (!($package_row = $sth->fetch(PDO::FETCH_ASSOC))) {
 		$response["error"] = "package-sold-out";
 		goto database_quit;
 	}
@@ -54,7 +54,7 @@ try {
 		"SELECT * FROM images WHERE imageName = :imageName"
 	);
 	$sth->execute(array(":imageName" => $package_row["imageName"]));
-	if (!($image_row = $sth->fetch())) {
+	if (!($image_row = $sth->fetch(PDO::FETCH_ASSOC))) {
 		error_log("packages.view.php: table \"images\" has no entries");
 		$response["error"] = "could not access package detail";
 		goto database_quit;
@@ -74,7 +74,7 @@ try {
 	/** load data from segments, locations, transport, flights, hotels and activities **/
 	/* load all from segments */
 	$segments = array();
-	foreach ($dbh->query("SELECT * FROM segments") as $row) {
+	foreach ($dbh->query("SELECT * FROM segments", PDO::FETCH_ASSOC) as $row) {
 		foreach (array("segId", "location", "transportId", "flightId", "hotelId", "activityId",
 			       "duration", "nextSeg") as $field)
 			if (!array_key_exists($field, $row)) {
@@ -87,7 +87,7 @@ try {
 
 	/* load all from locations */
 	$locations = array();
-	foreach ($dbh->query("SELECT * FROM locations") as $row) {
+	foreach ($dbh->query("SELECT * FROM locations", PDO::FETCH_ASSOC) as $row) {
 		foreach (array("city", "region", "country") as $field)
 			if (!array_key_exists($field, $row)) {
 				error_log("packages.view.php: field $field does not exist in table \"locations\"");
@@ -99,7 +99,7 @@ try {
 
 	/* load all from transport */
 	$transport = array();
-	foreach ($dbh->query("SELECT * FROM transport") as $row) {
+	foreach ($dbh->query("SELECT * FROM transport", PDO::FETCH_ASSOC) as $row) {
 		foreach (array("transportId", "type") as $field)
 			if (!array_key_exists($field, $row)) {
 				error_log("packages.view.php: field $field does not exist in table \"transport\"");
@@ -111,7 +111,7 @@ try {
 
 	/* load all from flights */
 	$flights = array();
-	foreach ($dbh->query("SELECT * FROM flights") as $row) {
+	foreach ($dbh->query("SELECT * FROM flights", PDO::FETCH_ASSOC) as $row) {
 		foreach (array("flightId", "flightNo", "origin", "departDate", "destination", "arriveDate") as $field)
 			if (!array_key_exists($field, $row)) {
 				error_log("packages.view.php: field $field does not exist in table \"flights\"");
@@ -123,7 +123,7 @@ try {
 
 	/* load all from hotels */
 	$hotels = array();
-	foreach ($dbh->query("SELECT * FROM hotels") as $row) {
+	foreach ($dbh->query("SELECT * FROM hotels", PDO::FETCH_ASSOC) as $row) {
 		foreach (array("hotelId", "rank", "imageName", "description") as $field)
 			if (!array_key_exists($field, $row)) {
 				error_log("packages.view.php: field $field does not exist in table \"hotels\"");
@@ -135,7 +135,7 @@ try {
 
 	/* load all from activities */
 	$activities = array();
-	foreach ($dbh->query("SELECT * FROM activities") as $row) {
+	foreach ($dbh->query("SELECT * FROM activities", PDO::FETCH_ASSOC) as $row) {
 		foreach (array("activityId", "name") as $field)
 			if (!array_key_exists($field, $row)) {
 				error_log("packages.view.php: field $field does not exist in table \"activities\"");

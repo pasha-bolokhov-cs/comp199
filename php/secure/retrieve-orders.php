@@ -58,7 +58,7 @@ try {
 		$sth->execute(array(":package" => $data->package));
 
 		/* store the new order if there was a package with this name */
-		if (($row = $sth->fetch()) && 
+		if (($row = $sth->fetch(PDO::FETCH_ASSOC)) && 
 		    (!array_key_exists("available", $row) || $row["available"] > 0)) {
 			$packageId = $row["packageId"];
 
@@ -74,7 +74,7 @@ try {
 			$sth->execute(array(":customerId" => $customerId, ":packageId" => $packageId));
 
 			/* only proceed with the insert request if there is no record with this package name yet */
-			if (!$sth->fetch()) {
+			if (!$sth->fetch(PDO::FETCH_ASSOC)) {
 				$sth = $dbh->prepare(
 					"INSERT INTO orders (customerId, packageId, status)
 					       VALUES (
@@ -106,7 +106,7 @@ try {
 
 	/* fetch the results and put into response */
 	$response["data"] = array();
-	while ($row = $sth->fetch()) {
+	while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
 		// append the row
 		$response["data"][] = $row;
 		

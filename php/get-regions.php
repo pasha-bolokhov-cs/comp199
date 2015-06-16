@@ -21,7 +21,7 @@ try {
 	$response["regions"] = array();
 	$sth = $dbh->prepare("SELECT * FROM regions");
 	$sth->execute();
-	$response["regions"] = $sth->fetchAll();
+	$response["regions"] = $sth->fetchAll(PDO::FETCH_ASSOC);
 	
 	// check how many lines we have
 	if (count($response["regions"]) > MAX_RESPONSE_LINES) {
@@ -31,11 +31,11 @@ try {
 	}
 
 	/* find out which regions have available packages associated with them */
+	$avail_regions = array();
 	$query = <<<"EOF"
 		SELECT region FROM packages
 		       WHERE available > 0;
 EOF;
-	$avail_regions = array();
 	foreach ($dbh->query($query, PDO::FETCH_ASSOC) as $row) {
 		// append the region
 		if (!array_key_exists("region", $row)) {
