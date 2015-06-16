@@ -200,6 +200,17 @@ try {
 			$seg = array();
 		}
 
+		/* get location information */
+		if ($curr_seg["location"]) {
+			if (!array_key_exists($curr_seg["location"], $locations)) {
+				error_log("packages.view.php: segment $curr_seg_id has " .
+					  "an invalid location = {$curr_seg['location']}");
+				$response["error"] = "could not access package detail";
+				goto database_quit;
+			}
+			$seg["location"] = $locations[$curr_seg["location"]];
+		}
+
 		/* get hotel information */
 		if ($curr_seg["hotelId"]) {
 			if (!array_key_exists($curr_seg["hotelId"], $hotels)) {
