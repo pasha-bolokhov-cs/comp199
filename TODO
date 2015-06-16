@@ -30,8 +30,6 @@
 
         *  modal for sign up
 
-		* disable "Sign up" if the form is invalid
-
 		* Php validation errors don't clear out when user starts typing
 
 

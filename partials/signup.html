@@ -163,7 +163,7 @@
   <!---------------------------->
   <div class="modal-footer">
     <!-- Register -->
-    <button type="submit" class="btn btn-primary pull-left" ng-disabled="false" ng-click="signUp()">
+    <button type="submit" class="btn btn-primary pull-left" ng-disabled="signUpForm.$invalid" ng-click="signUp()">
       <span class="glyphicon glyphicon-pencil"></span>&nbsp;Sign up
     </button>
   
