@@ -16,19 +16,18 @@ try {
 	goto quit;
 }
 
-/* make a query for all existing regions */
 try {
+	/* make a query for all existing regions */
 	$response["regions"] = array();
-	foreach ($dbh->query("SELECT * FROM regions", PDO::FETCH_ASSOC) as $row) {
-		// append the row
-		$response["regions"][] = $row;
+	$sth = $dbh->prepare("SELECT * FROM regions");
+	$sth->execute();
+	$response["regions"] = $sth->fetchAll();
 	
-		// check how many lines we have
-		if (count($response["regions"]) > MAX_RESPONSE_LINES) {
-			$response["regions"] = NULL;
-			$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
-			goto database_quit;
-		}
+	// check how many lines we have
+	if (count($response["regions"]) > MAX_RESPONSE_LINES) {
+		$response["regions"] = NULL;
+		$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
+		goto database_quit;
 	}
 
 	/* find out which regions have available packages associated with them */
