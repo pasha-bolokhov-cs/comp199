@@ -110,12 +110,16 @@
               <span ng-show="s.hotel && s.hotel.hotelId" ng-init="hotelCollapsed = true">
                 Staying in
                 <a ng-click="hotelCollapsed = !hotelCollapsed" href="">{{ s.hotel.hotelId }} Hotel</a>
-                <span ng-show="s.hotel.stars">
-                  <span ng-repeat="j in s.hotel.stars track by $index" class="glyphicon glyphicon-star-empty"></span>
+                <span class="glyphicon"
+                      ng-class="{ 'glyphicon-chevron-down': hotelCollapsed,
+                                  'glyphicon-chevron-right': !hotelCollapsed }">
                 </span>
                 <span ng-show="s.duration">for {{ s.duration }} days</span>
                 <br>
                 <div ng-show="s.hotel.description" collapse="hotelCollapsed">
+                  <span ng-show="s.hotel.stars">
+                   <span ng-repeat="j in s.hotel.stars track by $index" class="glyphicon glyphicon-star-empty"></span>
+                  </span>
                   {{ s.hotel.description }}
                 </div>
               </span>
