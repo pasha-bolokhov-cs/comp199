@@ -5,9 +5,6 @@
  */
 require_once 'validate.php';
 
-/* Cancel very long responses */
-define("MAX_RESPONSE_LINES", 1000);
-
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
@@ -239,6 +236,13 @@ try {
 
 		/* append segment information to the response */
 		$response["segments"][] = $seg;
+
+		/* check how many lines we have */
+		if (count($response["segments"]) > MAX_RESPONSE_LINES) {
+			$response["segments"] = NULL;
+			$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
+			goto database_quit;
+		}
 	} /* for-loop over segments */
 	
 } catch (PDOException $e) {
