@@ -26,52 +26,53 @@ if (!property_exists($data, "password")) {
 
 /* connect to the database */
 require_once '../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
 
-/* form the query - case insensitive for email */
-$query = <<<"EOF"
-	SELECT name, email, password, salt
-	       FROM customers
-	       WHERE LCASE(email) = LCASE("{$data->email}");
-EOF;
-
-/* do the query */
-$response = array();
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto database_quit;
-}
-if (($resultArray = $result->fetch_assoc()) == NULL) {
-	$response["error"] = "login";
-	goto database_quit;
-}
-$name = $resultArray['name'];
-$email = $resultArray['email'];
-$password = $resultArray['password'];
-$salt = $resultArray['salt'];
+try {
+	/* make a query - case insensitive for email */
+	$response = array();
+	$sth = $dbh->prepare(
+		"SELECT name, email, password, salt
+			FROM customers
+			WHERE LCASE(email) = LCASE(:email)"
+	);
+	$sth->execute(array(":email" => $data->email));
+	if (!($record = $sth->fetch(PDO::FETCH_ASSOC))) {
+		$response["error"] = "login";
+		goto database_quit;
+	}
+	$name = $record['name'];
+	$email = $record['email'];
+	$password = $record['password'];
+	$salt = $record['salt'];
     
-/* hash the password */
-$salt = base64_decode($salt);
-$passwordInput = crypt($data->password, $salt);
-$passwordInput = base64_encode($passwordInput);
+	/* hash the password */
+	$salt = base64_decode($salt);
+	$passwordInput = crypt($data->password, $salt);
+	$passwordInput = base64_encode($passwordInput);
 
-/* check the password */
-if ($passwordInput != $password){
-	$response["error"] = "login";
+	/* check the password */
+	if ($passwordInput != $password){
+		$response["error"] = "login";
+		goto database_quit;
+	}
+
+	/* generate a token */
+	$response["jwt"] = generate_jwt($name, $email);
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
 }
-
-/* generate a token */
-$response["jwt"] = generate_jwt($name, $email);
 
 database_quit:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 quit:
 /* return the response */
