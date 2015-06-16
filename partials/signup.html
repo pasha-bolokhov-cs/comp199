@@ -101,49 +101,48 @@
       <!-- ** Error messages and diagnostics ** -->
       <div class="row">
         <div class="col-xs-12">
-          <br ng-show="signUpForm.$invalid && signUpForm.$dirty">
-          <alert type="danger" ng-messages="signUpForm.name.$error"
-                 ng-show="signUpForm.name.$dirty && signUpForm.name.$invalid">
-            <div class="error" ng-message="pattern">Wrong character in the name</div>
-            <div class="error" ng-message="required">Name is required</div>
-          </alert>
-          <alert type="danger" ng-messages="signUpForm.birth.$error"
-                 ng-show="signUpForm.birth.$dirty && signUpForm.birth.$invalid">
-            <div class="error" ng-message="date">Incorrect birth date</div>
-            <div class="error" ng-message="required">Birth date is required</div>
-          </alert>
-          <alert type="danger" ng-messages="signUpForm.nationality.$error"
-                 ng-show="signUpForm.nationality.$dirty && signUpForm.nationality.$invalid">
-            <div class="error" ng-message="pattern">Wrong character in the nationality</div>
-            <div class="error" ng-message="required">Nationality is required</div>
-          </alert>
-          <alert type="danger" ng-messages="signUpForm.passportNo.$error"
-                 ng-show="signUpForm.passportNo.$dirty && signUpForm.passportNo.$invalid">
-            <div class="error" ng-message="pattern">Wrong character in the passport number</div>
-            <div class="error" ng-message="required">Passport number is required</div>
-          </alert>
-          <alert type="danger" ng-messages="signUpForm.passportExp.$error"
-                 ng-show="signUpForm.passportExp.$dirty && signUpForm.passportExp.$invalid">
-            <div class="error" ng-message="date">Incorrect passport expiry date</div>
-            <div class="error" ng-message="required">Passport expiration date is required</div>
-          </alert>
-          <alert type="danger" ng-messages="signUpForm.phone.$error"
-                 ng-show="signUpForm.phone.$dirty && signUpForm.phone.$invalid">
-            <div class="error" ng-message="pattern">Wrong character in the phone number</div>
-          </alert>
-          <alert type="danger" ng-messages="signUpForm.email.$error"
-                 ng-show="signUpForm.email.$dirty && signUpForm.email.$invalid">
-            <div class="error" ng-message="pattern">Incorrect email address</div>
-            <div class="error" ng-message="required">Email address is required</div>
-            <div class="error" ng-message="exists">Email address is already used</div>
-          </alert>
-          <alert type="danger" ng-show="(blurPassword || blurPassword2) && customer.password !== customer.password2">
-            <div class="error">Passwords do not match</div>
-          </alert>
+          <div ng-messages="signUpForm.name.$error"
+               ng-show="signUpForm.name.$dirty && signUpForm.name.$invalid">
+            <div class="error" ng-message="pattern"><br><alert type="danger">Wrong character in the name</alert></div>
+            <div class="error" ng-message="required"><br><alert type="danger">Name is required</alert></div>
+          </div>
+          <div ng-messages="signUpForm.birth.$error"
+               ng-show="signUpForm.birth.$dirty && signUpForm.birth.$invalid">
+            <div class="error" ng-message="date"><br><alert type="danger">Incorrect birth date</alert></div>
+            <div class="error" ng-message="required"><br><alert type="danger">Birth date is required</alert></div>
+          </div>
+          <div ng-messages="signUpForm.nationality.$error"
+               ng-show="signUpForm.nationality.$dirty && signUpForm.nationality.$invalid">
+            <div class="error" ng-message="pattern"><br><alert type="danger">Wrong character in the nationality</alert></div>
+            <div class="error" ng-message="required"><br><alert type="danger">Nationality is required</alert></div>
+          </div>
+          <div ng-messages="signUpForm.passportNo.$error"
+               ng-show="signUpForm.passportNo.$dirty && signUpForm.passportNo.$invalid">
+            <div class="error" ng-message="pattern"><br><alert type="danger">Wrong character in the passport number</alert></div>
+            <div class="error" ng-message="required"><br><alert type="danger">Passport number is required</alert></div>
+          </div>
+          <div ng-messages="signUpForm.passportExp.$error"
+               ng-show="signUpForm.passportExp.$dirty && signUpForm.passportExp.$invalid">
+            <div class="error" ng-message="date"><br><alert type="danger">Incorrect passport expiry date</alert></div>
+            <div class="error" ng-message="required"><br><alert type="danger">Passport expiration date is required</alert></div>
+          </div>
+          <div ng-messages="signUpForm.phone.$error"
+               ng-show="signUpForm.phone.$dirty && signUpForm.phone.$invalid">
+            <div class="error" ng-message="pattern"><br><alert type="danger">Wrong character in the phone number</alert></div>
+          </div>
+          <div ng-messages="signUpForm.email.$error"
+               ng-show="signUpForm.email.$dirty && signUpForm.email.$invalid">
+            <div class="error" ng-message="pattern"><br><alert type="danger">Incorrect email address</alert></div>
+            <div class="error" ng-message="required"><br><alert type="danger">Email address is required</alert></div>
+            <div class="error" ng-message="exists"><br><alert type="danger">Email address is already used</alert></div>
+          </div>
+          <div ng-show="(blurPassword || blurPassword2) && customer.password !== customer.password2">
+            <div class="error"><br><alert type="danger">Passwords do not match</alert></div>
+          </div>
 
-          <alert type="danger" ng-show="error" close="error = false">
-            {{ error }}
-          </alert>
+          <div ng-show="error" close="error = false">
+            <br><alert type="danger">{{ error }}</alert>
+          </div>
         </div>
       </div>
 

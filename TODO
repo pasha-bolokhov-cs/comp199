@@ -30,8 +30,6 @@
 
 		* disable "Sign up" if the form is invalid
 
-		* correct space fluctuations in 'sing in' and 'sign up' windows
-
 		* Php validation errors don't clear out when user starts typing
 
 
