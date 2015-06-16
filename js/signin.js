@@ -35,14 +35,18 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 			// process the response
 			if (data["error"]) {
 				switch(data["error"]) {
-				case "name-required":
-					$scope.signInForm.name.$setValidity("required", false);
-					$scope.signInForm.name.$setDirty();
+				case "email-required":
+					$scope.signInForm.email.$setValidity("required", false);
+					$scope.signInForm.email.$setDirty();
+					break;
+				case "email-wrong":
+					$scope.signInForm.email.$setValidity("pattern", false);
+					$scope.signInForm.email.$setDirty();
 					break;
 
 				case "password-required":
-					$scope.signUpForm.password.$setValidity("required", false);
-					$scope.signUpForm.password.$setDirty();
+					$scope.signInForm.password.$setValidity("required", false);
+					$scope.signInForm.password.$setDirty();
 					break;
 
 				case "login":

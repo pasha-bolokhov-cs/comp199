@@ -1,6 +1,6 @@
 <?php
 /**
- * This script save a customer's "sign in" status
+ * Sign the user in
  *
  */
 require_once 'validate.php';
@@ -11,9 +11,12 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validate data */
-//GGGG validate and test existence !!!
 if (!property_exists($data, "email")) {
 	$response["error"] = "email-required";
+	goto quit;
+}
+if (!validate($data->email)) {
+	$response["error"] = "email-wrong";
 	goto quit;
 }
 if (!property_exists($data, "password")) {

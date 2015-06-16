@@ -18,9 +18,9 @@
       <!-- ** ID ** -->
       <div class="row">
         <!-- Email -->
-          <label for="regEmail" class="col-xs-12 control-label">
+          <label for="logEmail" class="col-xs-12 control-label">
             Email
-            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control" required>
+            <input type="type" id="logEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control" required>
           </label>
       </div> <!-- /row -->
       
@@ -29,9 +29,9 @@
       <!-- ** Password ** -->
       <div class="row">
           <!-- Password -->
-          <label for="regPassword" class="col-xs-12 control-label">
+          <label for="logPassword" class="col-xs-12 control-label">
             Password
-            <input type="password" id="regPassword" name="password" ng-model="customer.password" class="form-control" required>
+            <input type="password" id="logPassword" name="password" ng-model="customer.password" class="form-control" required>
           </label>
       </div> <!-- row -->
 
@@ -42,6 +42,10 @@
                ng-show="signInForm.email.$dirty && signInForm.email.$invalid">
             <div class="error" ng-message="pattern"><br><alert type="danger">Incorrect email address</alert></div>
             <div class="error" ng-message="required"><br><alert type="danger">Email address is required</alert></div>
+          </div>
+          <div ng-messages="signInForm.password.$error"
+               ng-show="signInForm.password.$dirty && signInForm.password.$invalid">
+            <div class="error" ng-message="required"><br><alert type="danger">Password is required</alert></div>
           </div>
 
           <!-- other error -->
