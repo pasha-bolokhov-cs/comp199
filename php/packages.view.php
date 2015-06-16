@@ -219,8 +219,7 @@ try {
 				$response["error"] = "could not access package detail";
 				goto database_quit;
 			}
-			$seg["hotel"] = $curr_seg["hotelId"];
-			$seg["hotel_description"] = $hotels[$curr_seg["hotelId"]]["description"];
+			$seg["hotel"] = $hotels[$curr_seg["hotelId"]];
 		} else {
 			$seg["hotel"] = NULL;
 		}
