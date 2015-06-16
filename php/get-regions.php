@@ -4,9 +4,7 @@
  * sends it to the website
  *
  */
-
-/* Cancel very long responses */
-define("MAX_RESPONSE_LINES", 1000);
+require_once 'validate.php';
 
 /* connect to the database */
 require_once '../../../comp199-www/mysqli_auth.php';

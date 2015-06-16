@@ -6,9 +6,6 @@
  */
 require_once 'validate.php';
 
-/* Cancel very long responses */
-define("MAX_RESPONSE_LINES", 1000);
-
 /* get the query from JSON data */
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);

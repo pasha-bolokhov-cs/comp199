@@ -29,9 +29,6 @@ if (property_exists($data, "package") && !validate($data->package)) {
 	goto quit;
 }
 
-/* Cancel very long responses */
-define("MAX_RESPONSE_LINES", 1000);
-
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
 try {

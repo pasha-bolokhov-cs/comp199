@@ -9,6 +9,9 @@
  *
  */
 
+/* Cancel very long responses */
+define("MAX_RESPONSE_LINES", 1000);
+
 function validate($string)
 {
 	return preg_match('/^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i', $string);
