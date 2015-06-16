@@ -25,6 +25,8 @@
 
 		* errors occuring after the transaction should not be considered "critical"
 
+		* allow Paypal to redirect to a certain state (go with unmodified version)
+
 
         *  modal for sign up
 
