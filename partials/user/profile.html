@@ -20,15 +20,15 @@
         <fieldset>
           <p class="lead"><small>Personal details</small></p>
           <!-- Name -->
-          <label for="regName" class="col-xs-12 col-md-6 control-label">
+          <label for="profName" class="col-xs-12 col-md-6 control-label">
             Name
-            <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly" required>
+            <input type="text" id="profName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly" required>
           </label>
 
           <!-- Birth -->
-          <label for="regBirth" class="col-xs-12 col-md-6 control-label" required>
+          <label for="profBirth" class="col-xs-12 col-md-6 control-label" required>
             Birth date
-            <input type="type" id="regBirth" name="birth" ng-model="customer.birth" ng-readonly="readOnly" class="form-control">
+            <input type="type" id="profBirth" name="birth" ng-model="customer.birth" ng-readonly="readOnly" class="form-control">
           </label>
         </fieldset>
         <br>
@@ -39,21 +39,21 @@
         <fieldset>
           <p class="lead"><small>Passport</small></p>
           <!-- Nationality -->
-          <label for="regNationality" class="col-xs-12 col-md-4 control-label" required>
+          <label for="profNationality" class="col-xs-12 col-md-4 control-label" required>
             Nationality
-            <input type="text" id="regNationality" name="nationality" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly">
+            <input type="text" id="profNationality" name="nationality" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly">
           </label>
 
           <!-- Passport No -->
-          <label for="regPassportNo" class="col-xs-12 col-md-3 control-label" required>
+          <label for="profPassportNo" class="col-xs-12 col-md-3 control-label" required>
             Passport No
-            <input type="text" id="regPassportNo" name="passportNo" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control" ng-readonly="readOnly">
+            <input type="text" id="profPassportNo" name="passportNo" ng-model="customer.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control" ng-readonly="readOnly">
           </label>
 
           <!-- Passport Expiry -->
-          <label for="regPassportExp" class="col-xs-12 col-md-5 control-label" required>
+          <label for="profPassportExp" class="col-xs-12 col-md-5 control-label" required>
             Expiration Date
-            <input type="text" id="regPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control" ng-readonly="readOnly">
+            <input type="text" id="profPassportExp" name="passportExp" ng-model="customer.passportExp" class="form-control" ng-readonly="readOnly">
           </label>
         </fieldset>
         <br>
@@ -64,15 +64,15 @@
         <fieldset>
           <p class="lead"><small>Contact information</small></p>
           <!-- Phone -->
-          <label for="regPhone" class="col-xs-12 col-md-6 control-label">
+          <label for="profPhone" class="col-xs-12 col-md-6 control-label">
             Phone
-            <input type="phone" id="regPhone" name="phone" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control" ng-readonly="readOnly">
+            <input type="phone" id="profPhone" name="phone" ng-model="customer.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control" ng-readonly="readOnly">
           </label>
 
           <!-- Email -->
-          <label for="regEmail" class="col-xs-12 col-md-6 control-label">
+          <label for="profEmail" class="col-xs-12 col-md-6 control-label">
             Email Address
-            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly">
+            <input type="type" id="profEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control" ng-readonly="readOnly">
           </label>
         </fieldset>
         <br>
@@ -83,16 +83,16 @@
         <fieldset>
           <p class="lead"><small>Enter a new password</small></p>
           <!-- Password -->
-          <label for="regPassword" class="col-xs-12 col-md-6 control-label">
+          <label for="profPassword" class="col-xs-12 col-md-6 control-label">
             Password
-            <input type="password" id="regPassword" name="password" ng-model="customer.password"
+            <input type="password" id="profPassword" name="password" ng-model="customer.password"
                    ng-focus="blurPassword=false" ng-blur="blurPassword=true" class="form-control" required>
           </label>
 
           <!-- Re-enter password -->
-          <label for="regPassword2" class="col-xs-12 col-md-6 control-label">
+          <label for="profPassword2" class="col-xs-12 col-md-6 control-label">
             Re-enter password
-            <input type="password" id="regPassword2" name="password2" ng-model="customer.password2"
+            <input type="password" id="profPassword2" name="password2" ng-model="customer.password2"
                    ng-focus="blurPassword2=false" ng-blur="blurPassword2=true" class="form-control" required>
           </label>
         </fieldset>
