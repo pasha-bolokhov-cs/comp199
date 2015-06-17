@@ -9,10 +9,6 @@ require_once '../validate.php';
 if (!($token = authenticate()))
 	goto auth_error;
 
-/* get the query from JSON data */
-$jsonData = file_get_contents("php://input");
-$data = json_decode($jsonData);
-
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
 $mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
