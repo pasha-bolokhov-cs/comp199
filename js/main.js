@@ -118,29 +118,28 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		.state("user.profile",{
 			url: "/profile",
 			abstract: true,
-			views: {
-				"@": {
-					templateUrl: "partials/user/profile.html"
-				}
-			}			
 		})
 		.state("user.profile.view", {
 			url: "",
-			controller: "ProfileController"
-		})
-		.state("user.profile.password", {
-			url: "password",
 			views: {
 				"@": {
-					templateUrl: "partials/user/profile.modify.password.html"
+					templateUrl: "partials/user/profile.view.html",
+					controller: "ProfileController"
 				}
-			}	
+			}			
 		})
 		.state("user.profile.modify", {
                         url: "/modify",
 			views: {
 				"@": {
-// should not have the same file in different (but related) states	templateUrl: "partials/user/profile.html"
+				}
+			}	
+		})
+		.state("user.profile.password", {
+			url: "/password",
+			views: {
+				"@": {
+					templateUrl: "partials/user/profile.modify.password.html"
 				}
 			}	
 		})

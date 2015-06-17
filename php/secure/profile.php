@@ -43,15 +43,14 @@ if (($resultArray = $result->fetch_assoc()) == NULL) {
 	$response["error"] = "login";
 	goto database_quit;
 }
-$response['name'] = $resultArray['name'];
-$response['birth'] = $resultArray['birth'];
-$response['nationality'] = $resultArray['nationality'];
-$response['passportNo'] = $resultArray['passportNo'];
-$response['passportExp'] = $resultArray['passportExp'];
-$response['email'] = $resultArray['email'];
-$response['phone'] = $resultArray['phone'];
-$name = $resultArray['name'];
-$email = $resultArray['email'];
+$response["customer"] = array();
+$response["customer"]['name'] = $resultArray['name'];
+$response["customer"]['birth'] = $resultArray['birth'];
+$response["customer"]['nationality'] = $resultArray['nationality'];
+$response["customer"]['passportNo'] = $resultArray['passportNo'];
+$response["customer"]['passportExp'] = $resultArray['passportExp'];
+$response["customer"]['email'] = $resultArray['email'];
+$response["customer"]['phone'] = $resultArray['phone'];
 
 database_quit:
 /* close the database */

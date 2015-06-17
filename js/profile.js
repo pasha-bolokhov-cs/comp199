@@ -57,17 +57,8 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 			// GG process validation errors
 			return;
 		}
-		//GG change status to signed in				
 
-		$scope.customer.name = data["name"];
-		$scope.customer.email = data["email"];
-		$scope.customer.birth = data["birth"];
-		$scope.customer.nationality = data["nationality"];			
-		$scope.customer.passportNo = data["passportNo"];
-		$scope.customer.passportExp = data["passportExp"];
-		$scope.customer.phone = data["phone"];
-		$scope.customer.password = "";
-		$scope.customer.password2 = "";				
+		$scope.customer = data["customer"];
 	})
 	.error(function(data, status) {		
 		$rootScope.error = "Error accessing the server: " + status + ".";
@@ -226,7 +217,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		});		
 	}
 	
-	/* 'Cancel' button in the modal */
+	/* 'Cancel' button */
 	$scope.cancel = function() {
 		$scope.readOnly = true;
 		$scope.passwordStatus = false;	
