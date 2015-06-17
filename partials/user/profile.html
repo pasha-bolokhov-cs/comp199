@@ -78,26 +78,6 @@
         <br>
       </div> <!-- /row -->
 
-      <!-- ** Choose a password ** -->
-      <div class="row" ng-show="!readOnly">
-        <fieldset>
-          <p class="lead"><small>Set a password</small></p>
-          <!-- Password -->
-          <label for="regPassword" class="col-xs-12 col-md-6 control-label">
-            Password
-            <input type="password" id="regPassword" name="password" ng-model="$root.profile.password"
-                   ng-focus="blurPassword=false" ng-blur="blurPassword=true" class="form-control" required>
-          </label>
-
-          <!-- Re-enter password -->
-          <label for="regPassword2" class="col-xs-12 col-md-6 control-label">
-            Re-enter password
-            <input type="password" id="regPassword2" name="password2" ng-model="$root.profile.password2"
-                   ng-focus="blurPassword2=false" ng-blur="blurPassword2=true" class="form-control" required>
-          </label>
-        </fieldset>
-      </div> <!-- row -->
-
       <!-- ** Error messages and diagnostics ** -->
       <div class="row">
         <div class="col-xs-12">

@@ -1,6 +1,6 @@
  <?php
 /**
- * This script confirm the request to update personal information on database
+ * This script updates personal information in the database
  *
  */
 require_once '../validate.php';
@@ -58,10 +58,6 @@ if (!validate($data->email)) {
 	$response["error"] = "email-wrong";
 	goto quit;
 }
-if (!property_exists($data, "password")) {
-	$response["error"] = "password-required";
-	goto quit;
-}
 
 /* get customerId */
 require_once '../../../../comp199-www/mysqli_auth.php';
@@ -104,33 +100,20 @@ if (($result = $mysqli->query($query)) === FALSE) {
 	$response["error"] = 'Query Error - ' . $mysqli->error;
 	goto quit;
 }
-/*
-if (($resultArray = $result->fetch_assoc()) == NULL) {
-	$response["error"] = "login";
-	goto quit;
-}
-*/
-$response['name'] = $data->name;
-$response['birth'] = $data->birth;
-$response['nationality'] = $data->nationality;
-$response['passportNo'] = $data->passportNo;
-$response['passportExp'] = $data->passportExp;
-$response['email'] = $data->email;
-$response['phone'] = $data->phone;
 
-/* hash the password */
-$salt = base64_decode($salt);
-$passwordInput = crypt($data->password, $salt);
-$passwordInput = base64_encode($passwordInput);
-
-/* check the password */
-if ($passwordInput != $password){
-	$response["error"] = "login";
-	goto quit;
-}
+// GG do a query to the database
+$response["customer"] = array();
+$response["customer"]['name'] = $data->name;
+$response["customer"]['birth'] = $data->birth;
+$response["customer"]['nationality'] = $data->nationality;
+$response["customer"]['passportNo'] = $data->passportNo;
+$response["customer"]['passportExp'] = $data->passportExp;
+$response["customer"]['email'] = $data->email;
+$response["customer"]['phone'] = $data->phone;
 
 /* generate a token */
-$response["jwt"] = generate_jwt($data->name, $data->email);
+/* GGGG generate a token if email or name have changed */
+// $response["jwt"] = generate_jwt($data->name, $data->email);
 
 quit:
 /* return the response */

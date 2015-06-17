@@ -1,19 +1,9 @@
 <!-- Modify Profile -->
-<button type="submit" class="btn btn-primary pull-left" ng-click="modify()" ng-show="'user.profile.view' | includedByState">
+<button type="submit" class="btn btn-primary pull-left" ng-click="modify()">
   <span class="glyphicon glyphicon-text-background"></span>&nbsp;Modify Profile
 </button>
 
-<!-- Modify Password -->
-<button type="submit" class="btn btn-primary pull-left" ng-click="modifyPassword()" ng-show="'user.profile.view' | includedByState">
+<!-- Change Password -->
+<button type="submit" class="btn btn-primary pull-right" ng-click="modifyPassword()">
   <span class="glyphicon glyphicon-pencil"></span>&nbsp;Change Password
-</button>
-
-<!-- Confirm -->
-<button class="btn btn-warning pull-left" ng-show="(blurPassword || blurPassword2) && customer.password === customer.password2" ng-click="confirm()">
-  <span class="glyphicon"></span>&nbsp;Confirm
-</button>
-
-<!-- Cancel -->
-<button class="btn btn-danger" ng-click="cancel()">
-  <span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel
 </button>
