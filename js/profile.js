@@ -13,12 +13,10 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	 */
 	$scope.setup = function() {
 		// Initialization
-		$scope.customer = {};
-		$scope.customer.password = "";
-		$scope.customer.password2 = "";
+		$rootScope.profile = {};
 
-		$scope.customer.email = $rootScope.storage.token.email;
-		$scope.customer.preemail = $scope.customer.email;
+		$rootScope.profile.email = $rootScope.storage.token.email;
+		$rootScope.profile.preemail = $rootScope.profile.email;
 		$scope.readOnly = true;
 		$scope.passwordStatus = false;	
 	}
@@ -31,23 +29,26 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	$rootScope.waiting = true;		
 	
 	// Send the request to the PHP script
-	$http.post("php/secure/profile.php", $scope.customer)
+	$http.post("php/secure/profile.php", $rootScope.profile)
 	.success(function(data) {
 		// process the response
 		if (data["error"]) {
 			switch(data["error"]) {
 			case "name-required":
+				/* GG this won't work with the parent-state form */
 				$scope.profileForm.name.$setValidity("required", false);
 				$scope.profileForm.name.$setDirty();
 				break;
 
 			case "password-required":
+				/* GG this won't work with the parent-state form */
 				$scope.profileForm.password.$setValidity("required", false);
 				$scope.profileForm.password.$setDirty();
 				break;
 
 			case "login":
-				$scope.error = "Invalid email or password";
+				/* No user record - logout */
+				doSignOut();
 				break;
 
 			default:
@@ -58,7 +59,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 			return;
 		}
 
-		$scope.customer = data["customer"];
+		$rootScope.profile = data["customer"];
 	})
 	.error(function(data, status) {		
 		$rootScope.error = "Error accessing the server: " + status + ".";
@@ -74,8 +75,8 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	 */
 	/* Modify */	
 	$scope.modify = function() {
-		$scope.customer.password = "";
-		$scope.customer.password2 = "";
+		$rootScope.profile.password = "";
+		$rootScope.profile.password2 = "";
         $scope.readOnly = false;
 		$scope.passwordStatus = false;				
 	}
@@ -87,7 +88,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		$rootScope.waiting = true;		
 		
 		// Send the request to the PHP script
-		$http.post("php/secure/confirm.php", $scope.customer)
+		$http.post("php/secure/confirm.php", $rootScope.profile)
 		.success(function(data2) {
 			
 			// process the response
@@ -152,13 +153,13 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 					$rootScope.error = "Error: " + data2["error"];				
 				}
 			} else {
-				$scope.customer.name = data2["name"];
-				$scope.customer.email = data2["email"];
-				$scope.customer.birth = data2["birth"];
-				$scope.customer.nationality = data2["nationality"];			
-				$scope.customer.passportNo = data2["passportNo"];
-				$scope.customer.passportExp = data2["passportExp"];
-				$scope.customer.phone = data2["phone"];			
+				$rootScope.profile.name = data2["name"];
+				$rootScope.profile.email = data2["email"];
+				$rootScope.profile.birth = data2["birth"];
+				$rootScope.profile.nationality = data2["nationality"];			
+				$rootScope.profile.passportNo = data2["passportNo"];
+				$rootScope.profile.passportExp = data2["passportExp"];
+				$rootScope.profile.phone = data2["phone"];			
 			}
 		})
 		.error(function(data2, status) {		
@@ -183,10 +184,10 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		// Indicate we are waiting for data
 		$rootScope.waiting = true;
         		
-		$scope.customer.password = $scope.modify.currentpassword;
-		$scope.customer.password2 = $scope.modify.newpassword;
+		$rootScope.profile.password = $scope.modify.currentpassword;
+		$rootScope.profile.password2 = $scope.modify.newpassword;
 		// Send the request to the PHP script
-		$http.post("php/secure/passwordConfirm.php", $scope.customer)
+		$http.post("php/secure/passwordConfirm.php", $rootScope.profile)
 		.success(function(data2) {
 			
 			// process the response
@@ -219,56 +220,5 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	
 	/* 'Cancel' button */
 	$scope.cancel = function() {
-		$scope.readOnly = true;
-		$scope.passwordStatus = false;	
-		$scope.customer.email = $rootScope.storage.token.email;
-		$scope.customer.preemail = $scope.customer.email;
-		$http.post("php/secure/profile.php", $scope.customer)
-	.success(function(data) {
-		// process the response
-		if (data["error"]) {
-			switch(data["error"]) {
-			case "name-required":
-				$scope.profileForm.name.$setValidity("required", false);
-				$scope.profileForm.name.$setDirty();
-				break;
-
-			case "password-required":
-				$scope.profileForm.password.$setValidity("required", false);
-				$scope.profileForm.password.$setDirty();
-				break;
-
-			case "login":
-				$scope.error = "Invalid email or password";
-				break;
-
-			default:
-				$rootScope.error = "Error: " + data["error"];
-			}
-
-			// GG process validation errors
-			return;
-		}
-		//GG change status to signed in				
-
-		$scope.customer.name = data["name"];
-		$scope.customer.email = data["email"];
-		$scope.customer.birth = data["birth"];
-		$scope.customer.nationality = data["nationality"];			
-		$scope.customer.passportNo = data["passportNo"];
-		$scope.customer.passportExp = data["passportExp"];
-		$scope.customer.phone = data["phone"];
-		$scope.customer.password = "";
-		$scope.customer.password2 = "";				
-	})
-	.error(function(data, status) {		
-		$rootScope.error = "Error accessing the server: " + status + ".";
-	})
-	.finally(function() { 
-		// Indicate that we have an answer
-		$rootScope.waiting = false;
-	});
-	
-		$state.go("user.profile.modify");
 	}	
 });
