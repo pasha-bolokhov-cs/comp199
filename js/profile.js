@@ -88,16 +88,20 @@ app.controller('ProfileViewController', function($scope, $state) {
  * Controls the modification section of the 'Profile' page
  */
 app.controller('ProfileModifyController', function($scope, $rootScope, $state, $http) {
-
 	/*
 	 * Permanent initialization
 	 */
+
 
 	/*
 	 * Resettable data initialization
 	 */
 
-	$scope.confirm = function() {
+
+	/*
+	 * Functions assigned to buttons
+	 */
+	$scope.update = function() {
 		// Indicate we are waiting for data
 		$rootScope.waiting = true;		
 		
@@ -108,7 +112,6 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 			// process the response
 			if (data["error"]) {
 				switch(data["error"]) {
-				// This won't work because the profileForm is in the parent state
 				case "name-required":
 					$scope.profileForm.name.$setValidity("required", false);
 					$scope.profileForm.name.$setDirty();

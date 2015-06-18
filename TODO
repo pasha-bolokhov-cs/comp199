@@ -40,3 +40,15 @@
 		* make the modal transparent?
 
 		* Php validation errors don't clear out when user starts typing
+
+
+	* Profile page
+
+		* correct form validation and errors
+
+		* disable "Update" button
+
+		* "update-profile.php" should return the actual updated data from the database
+
+		* update the token if the name or email have changed
+
