@@ -30,8 +30,8 @@ try {
 	/* form the query */
 	$sth = $dbh->prepare(
 		"SELECT name, birth, nationality, passportNo, passportExp, email, phone
-		FROM customers
-		WHERE customerId = :customerId"
+			FROM customers
+			WHERE customerId = :customerId"
 	);
 
 	/* do the query */

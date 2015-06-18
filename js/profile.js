@@ -28,6 +28,11 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 		// process the response
 		if (data["error"]) {
 			switch(data["error"]) {
+			case "authentication":
+			case "login":		/* No user record - logout */
+				doSignOut();
+				return;
+
 			case "name-required":
 				$scope.profileForm.name.$setValidity("required", false);
 				$scope.profileForm.name.$setDirty();
@@ -36,11 +41,6 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 			case "password-required":
 				$scope.profileForm.password.$setValidity("required", false);
 				$scope.profileForm.password.$setDirty();
-				break;
-
-			case "login":
-				/* No user record - logout */
-				doSignOut();
 				break;
 
 			default:
@@ -112,6 +112,11 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 			// process the response
 			if (data["error"]) {
 				switch(data["error"]) {
+				case "authentication":
+				case "login":		/* No user record - logout */
+					$rootScope.doSignOut();
+					return;
+
 				case "name-required":
 					$scope.profileForm.name.$setValidity("required", false);
 					$scope.profileForm.name.$setDirty();

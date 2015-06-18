@@ -6,6 +6,7 @@
 require_once '../validate.php';
 require_once 'auth.php';
 
+$response = array();
 if (!($token = authenticate()))
 	goto auth_error;
 
@@ -61,56 +62,72 @@ if (!validate($data->email)) {
 
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
 
 /* get customerId */
-if (!($customerId = get_customerId($mysqli, $token))) {
+if (!($customerId = get_customerId_PDO($dbh, $token))) {
 	goto auth_error_database;
 }
 
-/* convert 'email' to lower case */
-$data->email = strtolower($data->email);
+try {
 
-/* hash the password */
-$salt = file_get_contents("/dev/urandom", false, null, 0, 16);
-$password = crypt($data->password, $salt);
-$salt = base64_encode($salt);
-$password = base64_encode($password);
+	/* convert 'email' to lower case */
+	$data->email = strtolower($data->email);
 
-/* form the query */
-$query = <<<"EOF"
-	UPDATE customers
-	SET name = "{$data->name}", birth = STR_TO_DATE("$data->birth", "%Y-%m-%d"), nationality = "{$data->nationality}",
-	    passportNo = "{$data->passportNo}", passportExp = STR_TO_DATE("$data->passportExp", "%Y-%m-%d"),
-	    email = "{$data->email}", phone = "{$data->phone}"  
-	WHERE customerId = $customerId;
-EOF;
+	/* execute the update statement */
+	$sth = $dbh->prepare(
+		"UPDATE customers
+			SET name = :name, birth = STR_TO_DATE(:birth, '%Y-%m-%d'), nationality = :nationality,
+		    	passportNo = :passportNo, passportExp = STR_TO_DATE(:passportExp, '%Y-%m-%d'),
+		    	email = :email, phone = :phone
+			WHERE customerId = :customerId"
+	);
+	$sth->execute(array(":name" => $data->name, ":birth" => $birth, ":nationality" => $data->nationality,
+			    ":passportNo" => $data->passportNo, ":passportExp" => $passportExp,
+			    ":email" => $data->email, ":phone" => $data->phone,
+			    ":customerId" => $customerId));
 
-/* do the query */
-$response = array();
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto quit;
+	/* re-fetch data */
+	$sth = $dbh->prepare(
+		"SELECT name, birth, nationality,
+			passportNo, passportExp,
+			email, phone
+			FROM customers
+			WHERE customerId = :customerId"
+	);
+	if (!($sth->execute(array(":customerId" => $customerId))) ||	// failure in this request
+	    !($refetch = $sth->fetch(PDO::FETCH_ASSOC))) {		// is a "login" failure
+		$response["error"] = "login";
+		goto database_quit;
+	}
+	$response["customer"] = array(
+		'name' => $refetch["name"],
+		'birth' => $refetch["birth"],
+		'nationality' => $refetch["nationality"],
+		'passportNo' => $refetch["passportNo"],
+		'passportExp' => $refetch["passportExp"],
+		'email' => $refetch["email"],
+		'phone' => $refetch["phone"]
+	);
+
+	/* generate a token */
+	/* GGGG generate a token if email or name have changed */
+	// $response["jwt"] = generate_jwt($data->name, $data->email);
+
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
+	goto database_quit;
 }
 
-// GG do a query to the database
-$response["customer"] = array();
-$response["customer"]['name'] = $data->name;
-$response["customer"]['birth'] = $data->birth;
-$response["customer"]['nationality'] = $data->nationality;
-$response["customer"]['passportNo'] = $data->passportNo;
-$response["customer"]['passportExp'] = $data->passportExp;
-$response["customer"]['email'] = $data->email;
-$response["customer"]['phone'] = $data->phone;
-
-/* generate a token */
-/* GGGG generate a token if email or name have changed */
-// $response["jwt"] = generate_jwt($data->name, $data->email);
+database_quit:
+/* close the database */
+$dbh = null;
 
 quit:
 /* return the response */
@@ -122,7 +139,7 @@ return;
 
 auth_error_database:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 auth_error:
 $response["error"] = "authentication";
