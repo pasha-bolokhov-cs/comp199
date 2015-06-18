@@ -22,13 +22,13 @@
           <!-- Name -->
           <label for="regName" class="col-xs-12 col-md-6 control-label">
             Name
-            <input type="text" id="regName" name="name" ng-model="$root.profile.name" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)" required>
+            <input type="text" id="regName" name="name" ng-model="profile.name" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)" required>
           </label>
 
           <!-- Birth -->
           <label for="regBirth" class="col-xs-12 col-md-6 control-label" required>
             Birth date
-            <input type="type" id="regBirth" name="birth" ng-model="$root.profile.birth" ng-readonly="!('user.profile.modify' | includedByState)" class="form-control">
+            <input type="type" id="regBirth" name="birth" ng-model="profile.birth" ng-readonly="!('user.profile.modify' | includedByState)" class="form-control">
           </label>
         </fieldset>
         <br>
@@ -41,19 +41,19 @@
           <!-- Nationality -->
           <label for="regNationality" class="col-xs-12 col-md-4 control-label" required>
             Nationality
-            <input type="text" id="regNationality" name="nationality" ng-model="$root.profile.nationality" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
+            <input type="text" id="regNationality" name="nationality" ng-model="profile.nationality" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
           </label>
 
           <!-- Passport No -->
           <label for="regPassportNo" class="col-xs-12 col-md-3 control-label" required>
             Passport No
-            <input type="text" id="regPassportNo" name="passportNo" ng-model="$root.profile.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
+            <input type="text" id="regPassportNo" name="passportNo" ng-model="profile.passportNo" ng-pattern="/^([0-9]|[a-z])*$/i" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
           </label>
 
           <!-- Passport Expiry -->
           <label for="regPassportExp" class="col-xs-12 col-md-5 control-label" required>
             Expiration Date
-            <input type="text" id="regPassportExp" name="passportExp" ng-model="$root.profile.passportExp" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
+            <input type="text" id="regPassportExp" name="passportExp" ng-model="profile.passportExp" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
           </label>
         </fieldset>
         <br>
@@ -66,13 +66,13 @@
           <!-- Phone -->
           <label for="regPhone" class="col-xs-12 col-md-6 control-label">
             Phone
-            <input type="phone" id="regPhone" name="phone" ng-model="$root.profile.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
+            <input type="phone" id="regPhone" name="phone" ng-model="profile.phone" ng-pattern="/^([0-9]|[\+\-]|\s)*$/i" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
           </label>
 
           <!-- Email -->
           <label for="regEmail" class="col-xs-12 col-md-6 control-label">
             Email Address
-            <input type="type" id="regEmail" name="email" ng-model="$root.profile.email" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
+            <input type="type" id="regEmail" name="email" ng-model="profile.email" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
           </label>
         </fieldset>
         <br>
@@ -117,7 +117,7 @@
             <div class="error" ng-message="required">Email address is required</div>
             <div class="error" ng-message="exists">Email address is already used</div>
           </alert>
-          <alert type="danger" ng-show="(blurPassword || blurPassword2) && $root.profile.password !== $root.profile.password2">
+          <alert type="danger" ng-show="(blurPassword || blurPassword2) && profile.password !== profile.password2">
             <div class="error">Passwords do not match</div>
           </alert>
 	
