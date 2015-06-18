@@ -6,51 +6,58 @@
 require_once 'auth.php';
 require_once '../validate.php';
 
+$response = array();
 if (!($token = authenticate()))
 	goto auth_error;
 
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
 
 /* get customerId */
-if (!($customerId = get_customerId($mysqli, $token))) {
+if (!($customerId = get_customerId_PDO($dbh, $token))) {
 	goto auth_error_database;
 }
 
-/* form the query */
-$query = <<<"EOF"
-	SELECT name, birth, nationality, passportNo, passportExp, email, phone
-	FROM customers
-	WHERE customerId = $customerId;
-EOF;
-/* do the query */
-$response = array();
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
+try {
+
+	/* form the query */
+	$sth = $dbh->prepare(
+		"SELECT name, birth, nationality, passportNo, passportExp, email, phone
+		FROM customers
+		WHERE customerId = :customerId"
+	);
+
+	/* do the query */
+	$sth->execute(array(":customerId" => $customerId));
+	if (!($resultArray = $sth->fetch(PDO::FETCH_ASSOC))) {
+		$response["error"] = "login";
+		goto database_quit;
+	}
+	$response["customer"] = array(
+		'name' => $resultArray['name'],
+		'birth' => $resultArray['birth'],
+		'nationality' => $resultArray['nationality'],
+		'passportNo' => $resultArray['passportNo'],
+		'passportExp' => $resultArray['passportExp'],
+		'email' => $resultArray['email'],
+		'phone' => $resultArray['phone']
+	);
+
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
 }
-if (($resultArray = $result->fetch_assoc()) == NULL) {
-	$response["error"] = "login";
-	goto database_quit;
-}
-$response["customer"] = array();
-$response["customer"]['name'] = $resultArray['name'];
-$response["customer"]['birth'] = $resultArray['birth'];
-$response["customer"]['nationality'] = $resultArray['nationality'];
-$response["customer"]['passportNo'] = $resultArray['passportNo'];
-$response["customer"]['passportExp'] = $resultArray['passportExp'];
-$response["customer"]['email'] = $resultArray['email'];
-$response["customer"]['phone'] = $resultArray['phone'];
 
 database_quit:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 quit:
 /* return the response */
@@ -62,7 +69,7 @@ return;
 
 auth_error_database:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 auth_error:
 $response["error"] = "authentication";
