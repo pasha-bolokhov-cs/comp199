@@ -199,23 +199,25 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 		$scope.profile.password2 = $scope.modify.newpassword;
 		// Send the request to the PHP script
 		$http.post("php/secure/passwordConfirm.php", $scope.profile)
-		.success(function(data2) {
+		.success(function(data) {
 			
 			// process the response
-			if (data2["error"]) {
-				switch(data2["error"]) {
+			if (data["error"]) {
+				switch(data["error"]) {
 				case "password-required":
 					$scope.profileForm.password.$setValidity("required", false);
 					$scope.profileForm.password.$setDirty();
 					break;
 
 				default:
-					$rootScope.error = "Error: " + data2["error"];				
+					$rootScope.error = "Error: " + data["error"];				
 				}
-				$state.go("user.profile.password");
-			} else {
-				$state.go("guest.home");		
+				$state.go("user.profile.view");
+				return;
 			}
+
+			// success - either way go to "view" state
+			$state.go("user.profile.view");
 		})
 		.error(function(data2, status) {		
 			$rootScope.error = "Error accessing the server: " + status + ".";
