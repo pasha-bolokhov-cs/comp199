@@ -48,7 +48,5 @@
 
 		* correct form validation and errors
 
-		* disable "Update" button
-
 		* update the token if the name or email have changed
 
