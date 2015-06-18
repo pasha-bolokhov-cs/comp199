@@ -59,10 +59,16 @@ if (!validate($data->email)) {
 	goto quit;
 }
 
-/* get customerId */
+/* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
+if ($mysqli->connect_error) {
+	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
+			     . $mysqli->connect_error;
+	goto quit;
+}
 $mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
 
+/* get customerId */
 if (!($customerId = get_customerId($mysqli, $token))) {
 	goto auth_error_database;
 }
@@ -76,16 +82,7 @@ $password = crypt($data->password, $salt);
 $salt = base64_encode($salt);
 $password = base64_encode($password);
 
-/* connect to the database */
-/* require_once '../../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB); */
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
-	goto quit;
-}
 /* form the query */
-// currently remove , password = "$password", salt = "$salt"
 $query = <<<"EOF"
 	UPDATE customers
 	SET name = "{$data->name}", birth = STR_TO_DATE("$data->birth", "%Y-%m-%d"), nationality = "{$data->nationality}",
