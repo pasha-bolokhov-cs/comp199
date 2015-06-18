@@ -50,7 +50,5 @@
 
 		* disable "Update" button
 
-		* "update-profile.php" should return the actual updated data from the database
-
 		* update the token if the name or email have changed
 

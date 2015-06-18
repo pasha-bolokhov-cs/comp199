@@ -91,6 +91,11 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 	/*
 	 * Permanent initialization
 	 */
+	$scope.setup = function() {
+		// Save the profile
+		$scope.untouchedProfile = JSON.parse(JSON.stringify($scope.profile));
+	}
+	$scope.setup();
 
 
 	/*
@@ -193,6 +198,16 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 
 	/* 'Cancel' button */
 	$scope.cancel = function() {
+		// revert the profile
+		$scope.profile.name = $scope.untouchedProfile.name;
+		$scope.profile.birth = $scope.untouchedProfile.birth;
+		$scope.profile.nationality = $scope.untouchedProfile.nationality;
+		$scope.profile.passportNo = $scope.untouchedProfile.passportNo;
+		$scope.profile.passportExp = $scope.untouchedProfile.passportExp;
+		$scope.profile.email = $scope.untouchedProfile.email;
+		$scope.profile.phone = $scope.untouchedProfile.phone;
+
+		// return to "view" state 
 		$state.go("user.profile.view");
 	}
 	
