@@ -145,8 +145,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		.state("user.profile.password", {
 			url: "/password",
 			views: {
-				"@": {
-					templateUrl: "partials/user/profile.modify.password.html"
+				"password@user.profile": {
+					templateUrl: "partials/user/profile.password.html",
+					controller: "ProfilePasswordController"
 				}
 			}	
 		})

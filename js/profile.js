@@ -75,12 +75,12 @@ app.controller('ProfileViewController', function($scope, $state) {
 	/* Modify Profile */	
 	$scope.modify = function() {
 		$state.go("user.profile.modify");
-	}	
+	};	
 
 	/* Change Password */
 	$scope.changePassword = function() {	
 		$state.go("user.profile.password");	
-	}
+	};
 });
 
 
@@ -94,7 +94,7 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 	$scope.setup = function() {
 		// Save the profile
 		$scope.untouchedProfile = JSON.parse(JSON.stringify($scope.profile));
-	}
+	};
 	$scope.setup();
 
 
@@ -194,7 +194,7 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 			// Indicate that we have an answer
 			$rootScope.waiting = false;		
 		});
-	}
+	};
 
 	/* 'Cancel' button */
 	$scope.cancel = function() {
@@ -209,24 +209,48 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 
 		// return to "view" state 
 		$state.go("user.profile.view");
+	};
+});
+
+
+/**
+ * Controls the password change section of the 'Profile' page
+ */
+app.controller('ProfilePasswordController', function($scope, $rootScope, $state, $http) {
+	/*
+	 * Permanent initialization
+	 */
+
+
+	/*
+	 * Resettable data initialization
+	 */
+	$scope.reset = function() {
+		$scope.chg = {};
 	}
-	
-	$scope.passwordConfirm = function() {
+
+
+	/*
+	 * Functions assigned to buttons
+	 */
+	$scope.passwordSubmit = function() {
 		// Indicate we are waiting for data
 		$rootScope.waiting = true;
         		
-		$scope.profile.password = $scope.modify.currentpassword;
-		$scope.profile.password2 = $scope.modify.newpassword;
+		$scope.request.currPassword = $scope.chg.currPassword;
+		$scope.request.newPassword = $scope.chg.newPassword;
+		$scope.request.rePassword = $scope.chg.rePassword;
 		// Send the request to the PHP script
-		$http.post("php/secure/passwordConfirm.php", $scope.profile)
+		$http.post("php/secure/change-password.php", $scope.password)
 		.success(function(data) {
 			
 			// process the response
 			if (data["error"]) {
 				switch(data["error"]) {
+				// GG implement validation errors
 				case "password-required":
-					$scope.profileForm.password.$setValidity("required", false);
-					$scope.profileForm.password.$setDirty();
+					$scope.passwordForm.password.$setValidity("required", false);
+					$scope.passwordForm.password.$setDirty();
 					break;
 
 				default:
@@ -239,12 +263,20 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 			// success - either way go to "view" state
 			$state.go("user.profile.view");
 		})
-		.error(function(data2, status) {		
+		.error(function(data, status) {		
 			$rootScope.error = "Error accessing the server: " + status + ".";
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
 			$rootScope.waiting = false;		
 		});		
-	}
+	};
+
+	/* 'Cancel' button */
+	$scope.cancel = function() {
+		$scope.reset();
+
+		// return to "view" state 
+		$state.go("user.profile.view");
+	};	
 });
