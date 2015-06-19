@@ -19,88 +19,103 @@ if (!property_exists($data, "currPassword")) {
 	$response["error"] = "curr-password-required";
 	goto quit;
 }
+if ($data->currPassword == "") {
+	$response["error"] = "curr-password-empty";
+	goto quit;
+}
 if (!property_exists($data, "newPassword")) {
 	$response["error"] = "new-password-required";
+	goto quit;
+}
+if ($data->newPassword == "") {
+	$response["error"] = "new-password-empty";
 	goto quit;
 }
 if (!property_exists($data, "rePassword")) {
 	$response["error"] = "re-password-required";
 	goto quit;
 }
+if ($data->rePassword == "") {
+	$response["error"] = "re-password-empty";
+	goto quit;
+}
+if ($data->newPassword != $data->rePassword) {
+	$response["error"] = "new-passwords-do-not-match";
+	goto quit;
+}
+
 
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') '
-			     . $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
 
 /* get customerId */
-if (!($customerId = get_customerId($mysqli, $token))) {
+if (!($customerId = get_customerId_PDO($dbh, $token))) {
 	goto auth_error_database;
 }
 
-/* form the query - case insensitive for email */
-$query = <<<"EOF"
-	SELECT name, email, password, salt
-	FROM customers
-	WHERE customerId = $customerId;
-EOF;
+try {
+	/* get user data */
+	$sth = $dbh->prepare(
+		"SELECT name, email, password, salt
+			FROM customers
+			WHERE customerId = :customerId"
+	);
+	$sth->execute(array(":customerId" => $customerId));
 
-/* do the query */
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto auth_error_database;
-}
-if (($resultArray = $result->fetch_assoc()) == NULL) {
-	$response["error"] = "login";
-	goto auth_error_database;
-}
-$name = $resultArray['name'];
-$email = $resultArray['email'];
-$password = $resultArray['password'];
-$salt = $resultArray['salt'];
+	if (!($record = $sth->fetch(PDO::FETCH_ASSOC))) {
+		$response["error"] = "login";
+		goto database_quit;
+	}
+	$name = $record['name'];
+	$email = $record['email'];
+	$password = $record['password'];
+	$salt = $record['salt'];
     
-/* hash the password */
-$salt = base64_decode($salt);
-$passwordInput = crypt($data->currPassword, $salt);
-$passwordInput = base64_encode($passwordInput);
+	/* hash the password */
+	$salt = base64_decode($salt);
+	$passwordInput = crypt($data->currPassword, $salt);
+	$passwordInput = base64_encode($passwordInput);
 
-/* check the password */
-if ($passwordInput != $password){
-	$response["error"] =  "password-wrong";
+	/* check the password */
+	if ($passwordInput != $password){
+		$response["error"] =  "password-wrong";
+		goto database_quit;
+	}
+
+
+	/* has the new password */
+	$new_salt = file_get_contents("/dev/urandom", false, null, 0, 16);
+	$new_password = crypt($data->newPassword, $new_salt);
+	$new_salt = base64_encode($new_salt);
+	$new_password = base64_encode($new_password);
+
+	/* form the query */
+	$sth = $dbh->prepare(
+		"UPDATE customers
+			SET password = :new_password, salt = :new_salt
+			WHERE customerId = :customerId"
+	);
+	$sth->execute(array(":new_password" => $new_password, ":new_salt" => $new_salt,
+			    ":customerId" => $customerId));
+
+	/* GG re-create a token */
+	//$response["jwt"] = generate_jwt($name, $email);
+
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;
 }
 
-
-/* has the new password */
-$new_salt = file_get_contents("/dev/urandom", false, null, 0, 16);
-$new_password = crypt($data->newPassword, $new_salt);
-$new_salt = base64_encode($new_salt);
-$new_password = base64_encode($new_password);
-
-/* form the query */
-$query = <<<"EOF"
-	UPDATE customers
-	SET password = "$new_password", salt = "$new_salt"
-	WHERE customerId = $customerId;
-EOF;
-
-/* do the query */
-$response = array();
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto quit;
-}
-
-/* generate a token */
-$response["jwt"] = generate_jwt($name, $email);
-
 database_quit:
 /* close the database */
-$mysqli->close();
+$dh = null;
 
 quit:
 /* return the response */
@@ -112,7 +127,7 @@ return;
 
 auth_error_database:
 /* close the database */
-$mysqli->close();
+$dbh = null;
 
 auth_error:
 $response["error"] = "authentication";

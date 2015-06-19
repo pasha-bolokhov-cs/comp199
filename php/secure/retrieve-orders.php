@@ -48,6 +48,7 @@ if (!($customerId = get_customerId_PDO($dbh, $token))) {
  * If a package name is supplied, we must attempt to add a new order first
  */
 try {
+
 	if (property_exists($data, "package")) {
 	/* form the query for getting the packageId */
 		$sth = $dbh->prepare(
@@ -123,6 +124,7 @@ try {
 		require_once '../../../../comp199-www/paypal-credentials.php';
 		$response["merchant_id"] = PayPal_MerchantID;
 	}
+
 } catch (PDOException $e) {
 	$response["error"] = 'Query Error - ' . $e->getMessage();
 	goto database_quit;

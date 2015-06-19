@@ -35,7 +35,7 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 		.success(function(data) {
 			// process the response
 			if (data["error"]) {
-				switch(data["error"]) {
+				switch (data["error"]) {
 				case "name-required":
 					$scope.signUpForm.name.$setValidity("required", false);
 					$scope.signUpForm.name.$setDirty();

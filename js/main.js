@@ -238,7 +238,7 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 			.success(function(data) {
 				// process the response
 				if (data["error"]) {
-					switch(data["error"]) {
+					switch (data["error"]) {
 					case "authentication":
 						// silently quit
 						break;

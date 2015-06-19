@@ -28,7 +28,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	.success(function(data) {
 		// process the response
 		if (data["error"]) {
-			switch(data["error"]) {
+			switch (data["error"]) {
 			case "authentication":
 			case "login":		/* No user record - logout */
 				doSignOut();
@@ -117,7 +117,7 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 			
 			// process the response
 			if (data["error"]) {
-				switch(data["error"]) {
+				switch (data["error"]) {
 				case "authentication":
 				case "login":		/* No user record - logout */
 					$rootScope.doSignOut();
@@ -251,7 +251,12 @@ app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $
 			
 			// process the response
 			if (data["error"]) {
-				switch(data["error"]) {
+				switch (data["error"]) {
+				case "authentication":
+				case "login":		/* No user record - logout */
+					$rootScope.doSignOut();
+					return;
+
 				case "password-wrong":
 					$scope.chg.error = "Incorrect password";
 					break;
@@ -269,6 +274,7 @@ app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $
 			}
 
 			// success
+			// GG accept the new token if supplied
 			$state.go("user.profile.view");
 		})
 		.error(function(data, status) {		
