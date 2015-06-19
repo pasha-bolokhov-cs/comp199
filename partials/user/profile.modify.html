@@ -1,17 +1,9 @@
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12">
+<!-- Confirm -->
+<button class="btn btn-warning pull-left" ng-disabled="profileForm.$invalid || profileForm.$pristine" ng-click="update()">
+  <span class="glyphicon glyphicon-check"></span>&nbsp;Update
+</button>
 
-      <!-- Confirm -->
-      <button class="btn btn-warning pull-left" ng-disabled="profileForm.$invalid || profileForm.$pristine" ng-click="update()">
-        <span class="glyphicon glyphicon-check"></span>&nbsp;Update
-      </button>
-
-      <!-- Cancel -->
-      <button class="btn btn-danger" ng-click="cancel()">
-        <span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel
-      </button>
-
-    </div> <!-- /col -->
-  </div> <!-- /row -->
-</div> <!-- /container -->
+<!-- Cancel -->
+<button class="btn btn-danger" ng-click="cancel()">
+  <span class="glyphicon glyphicon-remove"></span>&nbsp;Cancel
+</button>

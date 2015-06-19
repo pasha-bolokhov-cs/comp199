@@ -52,5 +52,7 @@
 
 		* disable the password submit button if the form is invalid
 
+		* would be good to have a separate view for validation messages
+
 		* update the token if the name or email have changed
 

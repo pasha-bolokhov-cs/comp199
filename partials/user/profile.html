@@ -79,13 +79,17 @@
 
     </form>
 
+  </div> <!-- /container-fluid -->
+
 
     <!-- ** Change Password  **-->
-    <div class="row">
+    <div class="container-fluid">
       <div ui-view="password">
       </div>
-    </div>
+    </div> <!-- /container-fluid -->
 
+
+  <div class="container">
 
     <!-- ** Error messages and diagnostics ** -->
     <div class="row">
@@ -144,9 +148,15 @@
 <!-- Footer - Buttons -->
 <!---------------------->
 <div class="modal-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12">
 
-  <div ui-view="controls">
-    <!-- Child state buttons go here -->
-  </div>
+        <div ui-view="controls">
+          <!-- Child state buttons go here -->
+        </div>
 
-</div>
+      </div> <!-- /col -->
+    </div> <!-- /row -->
+  </div> <!-- /container -->
+</div> <!-- /modal-footer -->
