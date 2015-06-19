@@ -21,13 +21,14 @@ use PayPal\Auth\OAuthTokenCredential;
 
 require_once 'auth.php';
 require_once '../validate.php';
+
+$response = array();
 if (!($token = authenticate()))
 	goto auth_error;
 	
 /* get the query from JSON data */
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
-$response = array();
 
 /* validate data */
 if (!array_key_exists("email", $token)) {

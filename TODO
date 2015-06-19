@@ -15,8 +15,6 @@
 
 		* lock the tables whenever necessary
 
-		* in Php scripts "response" should be initialized before any authentication
-
 
 	*  packages page
 

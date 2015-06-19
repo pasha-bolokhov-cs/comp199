@@ -11,6 +11,7 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validate data */
+$response = array();
 if (!property_exists($data, "email")) {
 	$response["error"] = "email-required";
 	goto quit;
@@ -36,7 +37,6 @@ try {
 
 try {
 	/* make a query - case insensitive for email */
-	$response = array();
 	$sth = $dbh->prepare(
 		"SELECT name, email, password, salt
 			FROM customers
