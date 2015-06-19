@@ -7,6 +7,7 @@
 require_once 'auth.php';
 require_once '../validate.php';
 
+$response = array();
 if (!($token = authenticate()))
 	goto auth_error;
 
@@ -15,7 +16,6 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validate data */
-$response = array();
 if (!array_key_exists("email", $token)) {
 	$response["error"] = "email-required";
 	goto quit;

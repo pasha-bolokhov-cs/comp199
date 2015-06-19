@@ -252,6 +252,10 @@ app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $
 			// process the response
 			if (data["error"]) {
 				switch(data["error"]) {
+				case "password-wrong":
+					$scope.chg.error = "Incorrect password";
+					break;
+
 				// GG implement validation errors - all fields
 				case "password-required":
 					$scope.passwordForm.currPassword.$setValidity("required", false);

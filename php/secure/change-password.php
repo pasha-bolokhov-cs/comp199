@@ -7,8 +7,6 @@ require_once '../validate.php';
 require_once 'auth.php';
 
 $response = array();
-$response["error"] = "change of password is not implemented";
-goto quit;
 if (!($token = authenticate()))
 	goto auth_error;
 
@@ -68,9 +66,7 @@ $salt = $resultArray['salt'];
 /* hash the password */
 $salt = base64_decode($salt);
 $passwordInput = crypt($data->currPassword, $salt);
-$passwordNew = crypt($data->newPassword, $salt);
 $passwordInput = base64_encode($passwordInput);
-$passwordNew = base64_encode($passwordNew);
 
 /* check the password */
 if ($passwordInput != $password){
@@ -78,11 +74,17 @@ if ($passwordInput != $password){
 	goto database_quit;
 }
 
-/* form the query */
 
+/* has the new password */
+$new_salt = file_get_contents("/dev/urandom", false, null, 0, 16);
+$new_password = crypt($data->newPassword, $new_salt);
+$new_salt = base64_encode($new_salt);
+$new_password = base64_encode($new_password);
+
+/* form the query */
 $query = <<<"EOF"
 	UPDATE customers
-	SET password = $passwordNew
+	SET password = "$new_password", salt = "$new_salt"
 	WHERE customerId = $customerId;
 EOF;
 
@@ -93,13 +95,8 @@ if (($result = $mysqli->query($query)) === FALSE) {
 	goto quit;
 }
 
-/* hash the password */
-$salt = base64_decode($salt);
-$passwordInput = crypt($data->password, $salt);
-$passwordInput = base64_encode($passwordInput);
-
 /* generate a token */
-$response["jwt"] = generate_jwt($data->name, $data->email);
+$response["jwt"] = generate_jwt($name, $email);
 
 database_quit:
 /* close the database */
