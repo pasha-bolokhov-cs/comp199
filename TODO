@@ -36,6 +36,8 @@
 
 		* Php validation errors don't clear out when user starts typing
 
+		* Disable "Submit" button if the passwords do not match
+
 
 	*  modal for sign in
 
@@ -47,6 +49,8 @@
 	* Profile page
 
 		* correct form validation and errors
+
+		* disable the password submit button if the form is invalid
 
 		* update the token if the name or email have changed
 

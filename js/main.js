@@ -146,8 +146,11 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			url: "/password",
 			views: {
 				"password@user.profile": {
-					templateUrl: "partials/user/profile.password.html",
-					controller: "ProfilePasswordController"
+					templateUrl: "partials/user/profile.password-form.html"
+				},
+				"controls@user.profile": {
+					templateUrl: "partials/user/profile.password-controls.html",
+					controller: "ProfilePasswordSubmitController"
 				}
 			}	
 		})

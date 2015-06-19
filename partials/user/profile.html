@@ -1,19 +1,18 @@
-<form name="profileForm" ng-submit="" class="container" novalidate>
-
-
-  <!------------>
-  <!-- Header -->
-  <!------------>
-  <div class="modal-header text-center">
-    <span class="lead">Personal Information</span>
-  </div>
+<!------------>
+<!-- Header -->
+<!------------>
+<div class="modal-header text-center">
+  <span class="lead">Personal Information</span>
+</div>
 
   
-  <!---------->
-  <!-- Body -->
-  <!---------->
-  <div class="modal-body">
-    <div class="container-fluid">
+<!---------->
+<!-- Body -->
+<!---------->
+<div class="modal-body">
+  <div class="container-fluid">
+
+    <form name="profileForm" ng-submit="" class="container" novalidate>
 
       <!-- ** Personal details ** -->
       <div class="row">
@@ -78,75 +77,76 @@
         <br>
       </div> <!-- /row -->
 
-      <!-- ** Change Password  **-->
-      <div class="row">
-        <div ui-view="password">
-        </div>
+    </form>
+
+
+    <!-- ** Change Password  **-->
+    <div class="row">
+      <div ui-view="password">
       </div>
-
-      <!-- ** Error messages and diagnostics ** -->
-      <div class="row">
-        <div class="col-xs-12">
-          <br ng-show="profileForm.$invalid && profileForm.$dirty">
-          <alert type="danger" ng-messages="profileForm.name.$error"
-                 ng-show="profileForm.name.$dirty && profileForm.name.$invalid">
-            <div class="error" ng-message="pattern">Wrong character in the name</div>
-            <div class="error" ng-message="required">Name is required</div>
-          </alert>
-          <alert type="danger" ng-messages="profileForm.birth.$error"
-                 ng-show="pfofileForm.birth.$dirty && profileForm.birth.$invalid">
-            <div class="error" ng-message="date">Incorrect birth date</div>
-            <div class="error" ng-message="required">Birth date is required</div>
-          </alert>
-          <alert type="danger" ng-messages="profileForm.nationality.$error"
-                 ng-show="profileForm.nationality.$dirty && profileForm.nationality.$invalid">
-            <div class="error" ng-message="pattern">Wrong character in the nationality</div>
-            <div class="error" ng-message="required">Nationality is required</div>
-          </alert>
-          <alert type="danger" ng-messages="profileForm.passportNo.$error"
-                 ng-show="profileForm.passportNo.$dirty && profileForm.passportNo.$invalid">
-            <div class="error" ng-message="pattern">Wrong character in the passport number</div>
-            <div class="error" ng-message="required">Passport number is required</div>
-          </alert>
-          <alert type="danger" ng-messages="profileForm.passportExp.$error"
-                 ng-show="profileForm.passportExp.$dirty && profile.passportExp.$invalid">
-            <div class="error" ng-message="date">Incorrect passport expiry date</div>
-            <div class="error" ng-message="required">Passport expiration date is required</div>
-          </alert>
-          <alert type="danger" ng-messages="profileForm.phone.$error"
-                 ng-show="profileForm.phone.$dirty && profileForm.phone.$invalid">
-            <div class="error" ng-message="pattern">Wrong character in the phone number</div>
-          </alert>
-          <alert type="danger" ng-messages="profileForm.email.$error"
-                 ng-show="profileForm.email.$dirty && profileForm.email.$invalid">
-            <div class="error" ng-message="pattern">Incorrect email address</div>
-            <div class="error" ng-message="required">Email address is required</div>
-            <div class="error" ng-message="exists">Email address is already used</div>
-          </alert>
-          <alert type="danger" ng-show="(blurPassword || blurPassword2) && profile.password !== profile.password2">
-            <div class="error">Passwords do not match</div>
-          </alert>
-	
-          <alert type="danger" ng-show="error" close="error=false">
-            {{ error }}
-          </alert>
-        </div>
-      </div>
-
-    </div> <!-- /container-fluid -->
-  </div> <!-- /modal-body -->
-
-
-  <!---------------------->
-  <!-- Footer - Buttons -->
-  <!---------------------->
-  <div class="modal-footer">
-
-    <div ui-view="controls">
-      <!-- Child state buttons go here -->
     </div>
 
+
+    <!-- ** Error messages and diagnostics ** -->
+    <div class="row">
+      <div class="col-xs-12">
+        <br ng-show="profileForm.$invalid && profileForm.$dirty">
+        <alert type="danger" ng-messages="profileForm.name.$error"
+               ng-show="profileForm.name.$dirty && profileForm.name.$invalid">
+          <div class="error" ng-message="pattern">Wrong character in the name</div>
+          <div class="error" ng-message="required">Name is required</div>
+        </alert>
+        <alert type="danger" ng-messages="profileForm.birth.$error"
+               ng-show="pfofileForm.birth.$dirty && profileForm.birth.$invalid">
+          <div class="error" ng-message="date">Incorrect birth date</div>
+          <div class="error" ng-message="required">Birth date is required</div>
+        </alert>
+        <alert type="danger" ng-messages="profileForm.nationality.$error"
+               ng-show="profileForm.nationality.$dirty && profileForm.nationality.$invalid">
+          <div class="error" ng-message="pattern">Wrong character in the nationality</div>
+          <div class="error" ng-message="required">Nationality is required</div>
+        </alert>
+        <alert type="danger" ng-messages="profileForm.passportNo.$error"
+               ng-show="profileForm.passportNo.$dirty && profileForm.passportNo.$invalid">
+          <div class="error" ng-message="pattern">Wrong character in the passport number</div>
+          <div class="error" ng-message="required">Passport number is required</div>
+        </alert>
+        <alert type="danger" ng-messages="profileForm.passportExp.$error"
+               ng-show="profileForm.passportExp.$dirty && profile.passportExp.$invalid">
+          <div class="error" ng-message="date">Incorrect passport expiry date</div>
+          <div class="error" ng-message="required">Passport expiration date is required</div>
+        </alert>
+        <alert type="danger" ng-messages="profileForm.phone.$error"
+               ng-show="profileForm.phone.$dirty && profileForm.phone.$invalid">
+          <div class="error" ng-message="pattern">Wrong character in the phone number</div>
+        </alert>
+        <alert type="danger" ng-messages="profileForm.email.$error"
+               ng-show="profileForm.email.$dirty && profileForm.email.$invalid">
+          <div class="error" ng-message="pattern">Incorrect email address</div>
+          <div class="error" ng-message="required">Email address is required</div>
+          <div class="error" ng-message="exists">Email address is already used</div>
+        </alert>
+        <alert type="danger" ng-show="(blurPassword || blurPassword2) && profile.password !== profile.password2">
+          <div class="error">Passwords do not match</div>
+        </alert>
+	
+        <alert type="danger" ng-show="error" close="error=false">
+          {{ error }}
+        </alert>
+      </div> <!-- /col -->
+    </div> <!-- /row with Error messages and diagnostics -->
+
+  </div> <!-- /container-fluid -->
+</div> <!-- /modal-body -->
+
+
+<!---------------------->
+<!-- Footer - Buttons -->
+<!---------------------->
+<div class="modal-footer">
+
+  <div ui-view="controls">
+    <!-- Child state buttons go here -->
   </div>
 
-
-</form>
+</div>

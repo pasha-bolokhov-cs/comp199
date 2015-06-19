@@ -13,6 +13,7 @@ app.controller('ProfileController', function($scope, $rootScope, $state, $http, 
 	$scope.setup = function() {
 		// Initialization
 		$scope.profile = {};
+		$scope.chg = {};		// password change form
 	}
 	$scope.setup();
 
@@ -214,9 +215,9 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 
 
 /**
- * Controls the password change section of the 'Profile' page
+ * Controls the button section of the password change section of the 'Profile' page
  */
-app.controller('ProfilePasswordController', function($scope, $rootScope, $state, $http) {
+app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $state, $http) {
 	/*
 	 * Permanent initialization
 	 */
@@ -226,8 +227,11 @@ app.controller('ProfilePasswordController', function($scope, $rootScope, $state,
 	 * Resettable data initialization
 	 */
 	$scope.reset = function() {
-		$scope.chg = {};
+		$scope.chg.currPassword = "";
+		$scope.chg.newPassword = "";
+		$scope.chg.rePassword = "";
 	}
+	$scope.reset();
 
 
 	/*
@@ -275,7 +279,6 @@ app.controller('ProfilePasswordController', function($scope, $rootScope, $state,
 	/* 'Cancel' button */
 	$scope.cancel = function() {
 		$scope.reset();
-
 		// return to "view" state 
 		$state.go("user.profile.view");
 	};	
