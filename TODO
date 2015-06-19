@@ -56,7 +56,5 @@
 
 		* update the token if the name or email have changed
 
-		* check that the password is in fact new
-
 		* re-create the token when the password is changed (requires per-user secret)
 

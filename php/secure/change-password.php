@@ -31,6 +31,10 @@ if ($data->newPassword == "") {
 	$response["error"] = "new-password-empty";
 	goto quit;
 }
+if ($data->newPassword == $data->currPassword) {
+	$response["error"] = "new-password-not-different";
+	goto quit;
+}
 if (!property_exists($data, "rePassword")) {
 	$response["error"] = "re-password-required";
 	goto quit;
@@ -43,7 +47,6 @@ if ($data->newPassword != $data->rePassword) {
 	$response["error"] = "new-passwords-do-not-match";
 	goto quit;
 }
-
 
 /* connect to the database */
 require_once '../../../../comp199-www/mysqli_auth.php';
