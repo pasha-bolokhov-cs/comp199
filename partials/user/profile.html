@@ -134,8 +134,8 @@
           <div class="error">Passwords do not match</div>
         </alert>
 	
-        <alert type="danger" ng-show="error" close="error=false">
-          {{ error }}
+        <alert type="danger" ng-show="profile.error" close="profile.error = false">
+          {{ profile.error }}
         </alert>
       </div> <!-- /col -->
     </div> <!-- /row with Error messages and diagnostics -->

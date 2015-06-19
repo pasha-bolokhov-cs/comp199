@@ -240,31 +240,31 @@ app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $
 	$scope.passwordSubmit = function() {
 		// Indicate we are waiting for data
 		$rootScope.waiting = true;
-        		
+
+		$scope.request = {};        		
 		$scope.request.currPassword = $scope.chg.currPassword;
 		$scope.request.newPassword = $scope.chg.newPassword;
 		$scope.request.rePassword = $scope.chg.rePassword;
 		// Send the request to the PHP script
-		$http.post("php/secure/change-password.php", $scope.password)
+		$http.post("php/secure/change-password.php", $scope.request)
 		.success(function(data) {
 			
 			// process the response
 			if (data["error"]) {
 				switch(data["error"]) {
-				// GG implement validation errors
+				// GG implement validation errors - all fields
 				case "password-required":
-					$scope.passwordForm.password.$setValidity("required", false);
-					$scope.passwordForm.password.$setDirty();
+					$scope.passwordForm.currPassword.$setValidity("required", false);
+					$scope.passwordForm.currPassword.$setDirty();
 					break;
 
 				default:
 					$rootScope.error = "Error: " + data["error"];				
 				}
-				$state.go("user.profile.view");
 				return;
 			}
 
-			// success - either way go to "view" state
+			// success
 			$state.go("user.profile.view");
 		})
 		.error(function(data, status) {		
