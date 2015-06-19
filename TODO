@@ -5,6 +5,8 @@
 
 	*  main application
 
+		* convert database access to PDO
+
 		* decrease numerous "console_log()"
 
 		* the brand link should discrete between user and guest states
