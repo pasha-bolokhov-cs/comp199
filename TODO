@@ -5,8 +5,6 @@
 
 	*  main application
 
-		* decrease numerous "console_log()"
-
 		* the brand link should discrete between user and guest states
 
 		* "signed in as" label remains after cache wipe-out
@@ -48,7 +46,9 @@
 
 		* correct form validation and errors
 
-		* disable the password submit button if the form is invalid
+		* pass "passwordForm.$invalid" for disabling the "Confirm" button for password
+
+		* show error and disable "Confirm" if the new password equals the old password
 
 		* would be good to have a separate view for validation messages
 
