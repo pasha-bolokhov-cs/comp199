@@ -11,6 +11,7 @@ $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);
 
 /* validation */
+$response["data"] = array();
 if (!validate($data->region)) {
 	$response["error"] = "Validation error";
 	goto quit;
@@ -18,57 +19,60 @@ if (!validate($data->region)) {
 
 /* connect to the database */
 require_once '../../../comp199-www/mysqli_auth.php';
-$mysqli = @new mysqli(MYSQL_HOST, MYSQL_USER, MYSQL_PASS, MYSQL_DB);
-if ($mysqli->connect_error) {
-	$response["error"] = 'Connect Error (' . $mysqli->connect_errno . ') ' .
-			     $mysqli->connect_error;
+try {
+	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+	$response["error"] = 'Connect Error: ' . $e->getMessage();
 	goto quit;
 }
 
-/* form the query */
-switch ($data->region) {
-case "All":
-	$query = <<<"EOF_QUERY_ALL"
-		SELECT p.name, p.region, p.origin, p.price, p.description, p.available, i.fileName
-		       FROM packages p LEFT OUTER JOIN images i
-		       USING (imageName)
-		       WHERE p.available > 0;
-EOF_QUERY_ALL;
-	break;
+try {
 
-default:
-	$query = <<<"EOF_QUERY_SPECIFIC"
-		SELECT p.name, p.region, p.origin, p.price, p.description, p.available, i.fileName
-		       FROM packages p LEFT OUTER JOIN images i
-		       USING (imageName)
-		       WHERE (p.region = "{$data->region}") AND (p.available > 0);
-EOF_QUERY_SPECIFIC;
-	break;
-}
-        
-/* do the query */
-if (($result = $mysqli->query($query)) === FALSE) {
-	$response["error"] = 'Query Error - ' . $mysqli->error;
-	goto database_quit;
-}
+	/* form the query */
+	switch ($data->region) {
+	case "All":
+		$sth = $dbh->prepare(
+			"SELECT p.name, p.region, p.origin, p.price, p.description, p.available, i.fileName
+				FROM packages p LEFT OUTER JOIN images i
+				USING (imageName)
+				WHERE p.available > 0"
+		);
+		$sth->execute();
+		break;
 
-/* fetch the results and put into response */
-$response["data"] = array();
-while ($row = $result->fetch_assoc()) {
-	// append the row
-	$response["data"][] = $row;
-
-	// check how many lines we have
-	if (count($response["data"]) > MAX_RESPONSE_LINES) {
-		$response["data"] = NULL;
-		$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
-		goto database_quit;
+	default:
+		$sth = $dbh->prepare(
+			"SELECT p.name, p.region, p.origin, p.price, p.description, p.available, i.fileName
+				FROM packages p LEFT OUTER JOIN images i
+				USING (imageName)
+				WHERE (p.region = :region) AND (p.available > 0)"
+		);
+		$sth->execute(array(":region" => $data->region));
+		break;
 	}
+        
+	/* fetch the results and put into response */
+	while ($row = $sth->fetch(PDO::FETCH_ASSOC)) {
+		// append the row
+		$response["data"][] = $row;
+
+		// check how many lines we have
+		if (count($response["data"]) > MAX_RESPONSE_LINES) {
+			$response["data"] = NULL;
+			$response["error"] = "response too large (over " . MAX_RESPONSE_LINES . " lines)";
+			goto database_quit;
+		}
+	}
+
+} catch (PDOException $e) {
+	$response["error"] = 'Query Error - ' . $e->getMessage();
+	goto database_quit;
 }
 
 /* close the database */
 database_quit:
-$mysqli->close();
+$dbh = null;
 
 quit:
 /* return the response */
