@@ -59,7 +59,7 @@ try {
 }
 
 /* get customerId */
-if (!($customerId = get_customerId_PDO($dbh, $token))) {
+if (!($customerId = get_customerId($dbh, $token))) {
 	goto auth_error_database;
 }
 

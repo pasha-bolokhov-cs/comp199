@@ -69,7 +69,7 @@ function generate_jwt($name, $email) {
  *				A NULL result should be reported as authentication error
  *
  */
-function get_customerId_PDO($dbh, $token) {
+function get_customerId($dbh, $token) {
 
 	/* query the 'customerId' field */
 	try {
@@ -90,35 +90,5 @@ function get_customerId_PDO($dbh, $token) {
 	}
 }
 
-
-/**
- * This function finds the 'customerId' based on the token (i.e. email address)
- *
- * @params	$mysqli		mysqli object
- *		$token		Customer's token
- *
- * @returns			A 'customerId' or NULL on failure
- *				A NULL result should be reported as authentication error
- *
- */
-function get_customerId($mysqli, $token) {
-
-	/* query the 'customerId' field */
-	$query = <<<"EOF_QUERY"
-		SELECT customerId FROM customers WHERE LCASE(email) = LCASE('{$token["email"]}');
-EOF_QUERY;
-
-	/* do the query */
-	if (($result = $mysqli->query($query)) === FALSE)
-		return NULL;
-
-	if (!($row = $result->fetch_assoc()))
-		return NULL;
-
-	if (!array_key_exists("customerId", $row))
-		return NULL;
-
-	return $row["customerId"];
-}
 
 ?>
