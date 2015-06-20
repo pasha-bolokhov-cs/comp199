@@ -13,6 +13,10 @@
 
 		* lock the tables whenever necessary
 
+		* use "$state.includes" instead of patterns
+
+		* make state transitions relative
+
 
 	*  packages page
 
