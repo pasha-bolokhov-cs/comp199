@@ -3,7 +3,7 @@
  * Controls the 'Sign In' modal
  */
 app.controller('SignInController', function($scope, $rootScope, $modalInstance, $http,
-					    jwtHelper, $state, $localStorage) {
+					    $state) {
 
 	/*
 	 * Permanent initialization
@@ -61,13 +61,12 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 			}
 
 			/* Success - check the token */
-			if (!data["jwt"]) {
+			if (!$rootScope.storage.jwt || !$rootScope.storage.token) {
 				$modalInstance.dismiss("no token");
 				$rootScope.error = "Error during sign-in: no token";
 				return;
 			}
-			$token = jwtHelper.decodeToken(data["jwt"]);
-			if (!$token["email"]) {
+			if (!$rootScope.storage.token["email"]) {
 				$modalInstance.dismiss("incomplete token");
 				$rootScope.error = "Error during sign-in: incomplete token";
 				return;
@@ -75,10 +74,6 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 
 			/* Token acceptable - close the modal */
 			$modalInstance.close();
-
-			/* Save the token */
-			$localStorage.token = $token;
-			$localStorage.jwt = data["jwt"];
 		})
 		.error(function(data, status) {
 			console.log(data);

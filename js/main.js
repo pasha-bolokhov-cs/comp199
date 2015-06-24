@@ -4,6 +4,24 @@
 var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessages', 
 					  'ngSanitize', 'angular-jwt', 'ngStorage']);
 
+/**
+ *	'responseInterceptor' catches JWT tokens in any HTTP response
+ */
+app.factory('responseInterceptor', function($rootScope, jwtHelper) {
+	checkResponse = function(response) {
+		if (response && response.data && typeof response.data === 'object' &&
+		    response.data.jwt) {
+			// save the received token
+			$rootScope.storage.jwt = response.data.jwt;
+			$rootScope.storage.token = jwtHelper.decodeToken(response.data.jwt);
+		}
+		return response;
+	};
+	return {
+		response: checkResponse	// success
+					// do not assume to receive a JWT in case of an error
+	};
+});
 
 app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
 	/*
@@ -180,6 +198,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		return null;
 	}];
 	$httpProvider.interceptors.push('jwtInterceptor');
+	$httpProvider.interceptors.push('responseInterceptor');		// catch tokens in the response
 });
 
 
@@ -250,9 +269,7 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 					reject(data["error"]);
 					return;
 				}
-				// total success - update the token
-				$rootScope.storage.jwt = data["jwt"];
-				$rootScope.storage.token = jwtHelper.decodeToken(data["jwt"]);
+				// total success
 				resolve();
 				return;
 			})

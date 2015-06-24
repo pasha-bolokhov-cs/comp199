@@ -94,22 +94,25 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 				default:
 					$scope.error = "Error: " + data["error"];
 				}
-			} else {
-				// Close the window
-				$modalInstance.close();
-
-				/* Fetch the token */				
-				if (!data["jwt"]) 
-					return;
-				$token = jwtHelper.decodeToken(data["jwt"]);
-
-				/* Save the token */
-				$localStorage.token = $token;
-				$localStorage.jwt = data["jwt"];
-
-				// Change to the 'signed in' state
-				$rootScope.doSignIn();
+				return;
 			}
+			// Check the token
+			if (!$rootScope.storage.jwt || !$rootScope.storage.token) {
+				$modalInstance.dismiss("no token");
+				$rootScope.error = "Error during sign-up: no token";
+				return;
+			}
+			if (!$rootScope.storage.token["email"]) {
+				$modalInstance.dismiss("incomplete token");
+				$rootScope.error = "Error during sign-up: incomplete token";
+				return;
+			}
+
+			// Close the window
+			$modalInstance.close();
+
+			// Change to the 'signed in' state
+			$rootScope.doSignIn();
 		})
 		.error(function(data, status) {
 			console.log(data);
