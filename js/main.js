@@ -9,11 +9,22 @@ var app = angular.module('albatrossApp', ['ui.router', 'ui.bootstrap', 'ngMessag
  */
 app.factory('responseInterceptor', function($rootScope, jwtHelper) {
 	checkResponse = function(response) {
-		if (response && response.data && typeof response.data === 'object' &&
-		    response.data.jwt) {
-			// save the received token
-			$rootScope.storage.jwt = response.data.jwt;
-			$rootScope.storage.token = jwtHelper.decodeToken(response.data.jwt);
+		if (response && response.data && typeof response.data === 'object') {
+			/* check for the presence of a token */
+			if (response.data.jwt) {
+				// save the received token
+				$rootScope.storage.jwt = response.data.jwt;
+				$rootScope.storage.token = jwtHelper.decodeToken(response.data.jwt);
+			}
+
+			/* delete the token in case of authentication error */
+			if (response.data.error && response.data.error === "authentication" &&
+			    $rootScope.storage) {
+				if ($rootScope.storage.token)
+					delete $rootScope.storage.token;
+				if ($rootScope.storage.jwt)
+					delete $rootScope.storage.jwt;
+			}
 		}
 		return response;
 	};
