@@ -40,16 +40,16 @@
         <div class="col-xs-12">
           <div ng-messages="signInForm.email.$error"
                ng-show="signInForm.email.$dirty && signInForm.email.$invalid">
-            <div class="error" ng-message="pattern"><br><alert type="danger">Incorrect email address</alert></div>
-            <div class="error" ng-message="required"><br><alert type="danger">Email address is required</alert></div>
+            <div class="error" ng-message="pattern"><br><alert type="danger">{{ errorMessages["email-wrong"] }}</alert></div>
+            <div class="error" ng-message="required"><br><alert type="danger">{{ errorMessages["email-required"] }}</alert></div>
           </div>
           <div ng-messages="signInForm.password.$error"
                ng-show="signInForm.password.$dirty && signInForm.password.$invalid">
-            <div class="error" ng-message="required"><br><alert type="danger">Password is required</alert></div>
+            <div class="error" ng-message="required"><br><alert type="danger">{{ errorMessages["password-required"] }}</alert></div>
           </div>
 
           <!-- other error -->
-          <div ng-show="error">
+          <div ng-show="error && signInForm.$pristine">
             <br><alert type="danger" close="error = false">{{ error }}</alert>
           </div>
         </div>

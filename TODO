@@ -17,6 +17,8 @@
 
 		* make state transitions relative
 
+		* make "stringPattern" global
+
 
 	*  packages page
 
@@ -42,8 +44,6 @@
 	*  modal for sign in
 
 		* make the modal transparent?
-
-		* Php validation errors don't clear out when user starts typing
 
 
 	* Profile page

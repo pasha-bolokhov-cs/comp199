@@ -9,6 +9,12 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 	 * Permanent initialization
 	 */
 	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i;
+	$scope.errorMessages = {
+		"email-required": "Email is required",
+		"email-wrong": "Incorrect email address",
+		"password-required": "Password is required",
+		"login": "Invalid email or password"
+	};
 
 	/*
 	 * Resettable data initialization
@@ -33,30 +39,19 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 		$http.post("php/signin.php", $scope.customer)
 		.success(function(data) {
 			// process the response
-			if (data["error"]) {
-				switch (data["error"]) {
+			if (data && data.error) {
+				switch (data.error) {
 				case "email-required":
-					$scope.signInForm.email.$setValidity("required", false);
-					$scope.signInForm.email.$setDirty();
-					break;
 				case "email-wrong":
-					$scope.signInForm.email.$setValidity("pattern", false);
-					$scope.signInForm.email.$setDirty();
-					break;
-
 				case "password-required":
-					$scope.signInForm.password.$setValidity("required", false);
-					$scope.signInForm.password.$setDirty();
-					break;
-
 				case "login":
-					$scope.error = "Invalid email or password";
+					$scope.error = $scope.errorMessages[data.error];
 					break;
 
 				default:
-					$scope.error = "Error: " + data["error"];
+					$scope.error = "Error: " + data.error;
 				}
-
+				$scope.signInForm.$setPristine();
 				return;
 			}
 
@@ -78,6 +73,7 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 		.error(function(data, status) {
 			console.log(data);
 			$scope.error = "Error accessing the server: " + status + ".";
+			$scope.signInForm.$setPristine();
 		})
 		.finally(function() { 
 			// Indicate that we have an answer
