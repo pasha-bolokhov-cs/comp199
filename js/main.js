@@ -44,6 +44,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			abstract: true,
 			url: "/guest",
 			views: {
+				"brand": {	// The brand name
+					templateUrl: "partials/guest/brand.html"
+				},
 				"navigation-left-view": {
 					templateUrl: "partials/guest/navigation-left.html"
 				},
@@ -57,6 +60,9 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			abstract: true,
 			url: "/user",
 			views: {
+				"brand": {	// The brand name
+					templateUrl: "partials/user/brand.html"
+				},
 				"navigation-left-view": {
 					templateUrl: "partials/user/navigation-left.html"
 				},
@@ -73,7 +79,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 			url: "/home",
 			views: {
 				"@": {		// Targets the unnamed view in the root state
-					templateUrl: "partials/guest/home.html",
+					templateUrl: "partials/home.html",
 					controller: "HomeController"
 				}
 			}
@@ -113,6 +119,16 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 		/*
 		 * User states
 		 */
+		// Home
+		.state("user.home", {
+			url: "/home",
+			views: {
+				"@": {		// Targets the unnamed view in the root state
+					templateUrl: "partials/home.html",
+					controller: "HomeController"
+				}
+			}
+		})
 		.state("user.packagesRoot", { // This parent state just calls the controller
 			url: "/packages",
 			abstract: true
@@ -235,7 +251,7 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 		if ($state.get(newState))
 			$state.go(newState);
 		else
-			$state.go("user.packagesRoot.packages");
+			$state.go("user.home");
 	};
 
 	/* Arrange the page for the sign-out */
