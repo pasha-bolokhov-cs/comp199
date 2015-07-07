@@ -232,7 +232,7 @@ app.config(function($stateProvider, $urlRouterProvider, $httpProvider, jwtInterc
 /**
  * Controls the app
  */
-app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal, $state, 
+app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal, $state, $stateParams,
 					   jwtHelper, $localStorage /* also: $location */) {
 
 	/*
@@ -252,9 +252,9 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 
 		/* check if it exists and load a default state if not */
 		if ($state.get(newState))
-			$state.go(newState);
+			$state.go(newState, $stateParams);
 		else
-			$state.go("user.home");
+			$state.go("user.home", $stateParams);
 	};
 
 	/* Arrange the page for the sign-out */
@@ -272,9 +272,9 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 
 		/* check if it exists and load a default state if not */
 		if ($state.get(newState))
-			$state.go(newState);
+			$state.go(newState, $stateParams);
 		else
-			$state.go("guest.home");
+			$state.go("guest.home", $stateParams);
 	};
 
 	/* Make a reference to $localStorage */
