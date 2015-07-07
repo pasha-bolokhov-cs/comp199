@@ -6,7 +6,6 @@ app.controller('SignUpController', function($scope, $rootScope, $modalInstance, 
 	/*
 	 * Permanent initialization
 	 */
-	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i;
 
 	/*
 	 * Resettable data initialization

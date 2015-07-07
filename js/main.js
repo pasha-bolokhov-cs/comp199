@@ -238,6 +238,9 @@ app.controller('MainController', function ($scope, $rootScope, $q, $http, $modal
 	/*
 	 * Permanent initialization
 	 */
+	/* Pattern used for quick client-side string validation */
+	$rootScope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i;
+
 	/* Arrange the page for the sign-in */
 	$rootScope.doSignIn = function() {
 		/* no action if already in user-space */

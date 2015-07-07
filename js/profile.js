@@ -2,10 +2,10 @@
  * Controls the view section of the 'Profile' page
  */
 app.controller('ProfileController', function($scope, $rootScope, $state, $http, $localStorage) {
+
 	/*
 	 * Permanent initialization
 	 */
-	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i;
 
 	/*
 	 * Resettable data initialization

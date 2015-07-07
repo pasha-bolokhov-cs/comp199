@@ -8,7 +8,6 @@ app.controller('SignInController', function($scope, $rootScope, $modalInstance, 
 	/*
 	 * Permanent initialization
 	 */
-	$scope.stringPattern = /^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i;
 	$scope.errorMessages = {
 		"email-required": "Email is required",
 		"email-wrong": "Incorrect email address",

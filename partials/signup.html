@@ -22,7 +22,7 @@
           <!-- Name -->
           <label for="regName" class="col-xs-12 col-md-6 control-label">
             Name
-            <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="stringPattern" class="form-control" required>
+            <input type="text" id="regName" name="name" ng-model="customer.name" ng-pattern="$root.stringPattern" class="form-control" required>
           </label>
 
           <!-- Birth -->
@@ -41,7 +41,7 @@
           <!-- Nationality -->
           <label for="regNationality" class="col-xs-12 col-md-4 control-label" required>
             Nationality
-            <input type="text" id="regNationality" name="nationality" ng-model="customer.nationality" ng-pattern="stringPattern" class="form-control">
+            <input type="text" id="regNationality" name="nationality" ng-model="customer.nationality" ng-pattern="$root.stringPattern" class="form-control">
           </label>
 
           <!-- Passport No -->
@@ -72,7 +72,7 @@
           <!-- Email -->
           <label for="regEmail" class="col-xs-12 col-md-6 control-label">
             Email Address
-            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="stringPattern" class="form-control">
+            <input type="type" id="regEmail" name="email" ng-model="customer.email" ng-pattern="$root.stringPattern" class="form-control">
           </label>
         </fieldset>
         <br>

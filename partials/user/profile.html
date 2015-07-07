@@ -21,7 +21,7 @@
           <!-- Name -->
           <label for="regName" class="col-xs-12 col-md-6 control-label">
             Name
-            <input type="text" id="regName" name="name" ng-model="profile.name" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)" required>
+            <input type="text" id="regName" name="name" ng-model="profile.name" ng-pattern="$root.stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)" required>
           </label>
 
           <!-- Birth -->
@@ -40,7 +40,7 @@
           <!-- Nationality -->
           <label for="regNationality" class="col-xs-12 col-md-4 control-label" required>
             Nationality
-            <input type="text" id="regNationality" name="nationality" ng-model="profile.nationality" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
+            <input type="text" id="regNationality" name="nationality" ng-model="profile.nationality" ng-pattern="$root.stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
           </label>
 
           <!-- Passport No -->
@@ -71,7 +71,7 @@
           <!-- Email -->
           <label for="regEmail" class="col-xs-12 col-md-6 control-label">
             Email Address
-            <input type="type" id="regEmail" name="email" ng-model="profile.email" ng-pattern="stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
+            <input type="type" id="regEmail" name="email" ng-model="profile.email" ng-pattern="$root.stringPattern" class="form-control" ng-readonly="!('user.profile.modify' | includedByState)">
           </label>
         </fieldset>
         <br>
