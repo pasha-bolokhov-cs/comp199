@@ -32,7 +32,7 @@ app.controller('PackagesViewController', function($scope, $rootScope, $http, $st
 			$state.go('user.trips', { package: $stateParams.package });
 		}
 		/* offer a login modal if not in user space */
-		if (!$state.current.name.match(/^user\./)) {
+		if (!$state.includes("user")) {
 			var modal = $modal.open({
 				animation: true,			// whether to use animation
 				templateUrl: 'partials/signin.html',	// what to show in the modal
