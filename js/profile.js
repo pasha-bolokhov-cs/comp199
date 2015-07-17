@@ -215,6 +215,28 @@ app.controller('ProfileModifyController', function($scope, $rootScope, $state, $
 
 
 /**
+ * Controls the form of the password change section of the 'Profile' page
+ */
+app.controller('ProfilePasswordFormController', function($scope) {
+	/*
+	 * Permanent initialization
+	 */
+	// Make the form accessible to the "button" section
+	$scope.chg.formScope = $scope;
+
+	/*
+	 * Resettable data initialization
+	 */
+	$scope.reset = function() {
+		$scope.currPassword = "";
+		$scope.newPassword = "";
+		$scope.rePassword = "";
+	}
+	$scope.reset();
+});
+
+
+/**
  * Controls the button section of the password change section of the 'Profile' page
  */
 app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $state, $http) {
@@ -226,12 +248,6 @@ app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $
 	/*
 	 * Resettable data initialization
 	 */
-	$scope.reset = function() {
-		$scope.chg.currPassword = "";
-		$scope.chg.newPassword = "";
-		$scope.chg.rePassword = "";
-	}
-	$scope.reset();
 
 
 	/*
@@ -242,15 +258,15 @@ app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $
 		$rootScope.waiting = true;
 
 		$scope.request = {};        		
-		$scope.request.currPassword = $scope.chg.currPassword;
-		$scope.request.newPassword = $scope.chg.newPassword;
-		$scope.request.rePassword = $scope.chg.rePassword;
+		$scope.request.currPassword = $scope.chg.formScope.currPassword;
+		$scope.request.newPassword = $scope.chg.formScope.newPassword;
+		$scope.request.rePassword = $scope.chg.formScope.rePassword;
 		// Send the request to the PHP script
 		$http.post("php/secure/change-password.php", $scope.request)
 		.success(function(data) {
 			
 			// process the response
-			if (data["error"]) {
+			if (data && data["error"]) {
 				switch (data["error"]) {
 				case "authentication":
 				case "login":		/* No user record - logout */
@@ -258,18 +274,19 @@ app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $
 					return;
 
 				case "password-wrong":
-					$scope.chg.error = "Incorrect password";
+					$scope.chg.formScope.error = "Incorrect password";
 					break;
 
 				// GG implement validation errors - all fields
 				case "password-required":
-					$scope.passwordForm.currPassword.$setValidity("required", false);
-					$scope.passwordForm.currPassword.$setDirty();
+					$scope.chg.formScope.passwordForm.currPassword.$setValidity("required", false);
+					$scope.chg.formScope.passwordForm.currPassword.$setDirty();
 					break;
 
 				default:
 					$rootScope.error = "Error: " + data["error"];				
 				}
+				$scope.chg.formScope.passwordForm.$setPristine();
 				return;
 			}
 
@@ -288,7 +305,7 @@ app.controller('ProfilePasswordSubmitController', function($scope, $rootScope, $
 
 	/* 'Cancel' button */
 	$scope.cancel = function() {
-		$scope.reset();
+		$scope.chg.formScope.reset();
 		// return to "view" state 
 		$state.go("user.profile.view");
 	};	
