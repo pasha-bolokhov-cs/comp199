@@ -3,7 +3,7 @@
  * This script updates personal information in the database
  *
  */
-require_once '../validate.php';
+require_once '../common.php';
 require_once 'auth.php';
 
 $response = array();

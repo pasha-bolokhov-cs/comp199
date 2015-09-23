@@ -3,7 +3,7 @@
  * This script confirm the request to update personal information on database
  *
  */
-require_once '../validate.php';
+require_once '../common.php';
 require_once 'auth.php';
 
 $response = array();

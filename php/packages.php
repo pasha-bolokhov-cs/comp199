@@ -4,7 +4,7 @@
  * sends their information to the website
  *
  */
-require_once 'validate.php';
+require_once 'common.php';
 
 /* get the query from JSON data */
 $jsonData = file_get_contents("php://input");

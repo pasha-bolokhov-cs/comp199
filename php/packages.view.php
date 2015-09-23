@@ -3,7 +3,7 @@
  * This file fetches the details of a package
  *
  */
-require_once 'validate.php';
+require_once 'common.php';
 
 $jsonData = file_get_contents("php://input");
 $data = json_decode($jsonData);

@@ -4,7 +4,7 @@
  * sends it to the website
  *
  */
-require_once 'validate.php';
+require_once 'common.php';
 
 /* connect to the database */
 require_once '../../../comp199-www/mysqli_auth.php';

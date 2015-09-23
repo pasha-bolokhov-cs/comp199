@@ -3,7 +3,7 @@
  * This script adds a new customer to the database
  *
  */
-require_once 'validate.php';
+require_once 'common.php';
 require_once 'secure/auth.php';
 
 /* get the query from JSON data */

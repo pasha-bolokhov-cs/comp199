@@ -20,7 +20,7 @@ use PayPal\Rest\ApiContext;
 use PayPal\Auth\OAuthTokenCredential;
 
 require_once 'auth.php';
-require_once '../validate.php';
+require_once '../common.php';
 
 $response = array();
 if (!($token = authenticate()))

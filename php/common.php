@@ -4,10 +4,13 @@
  *
  */
 
+/* Cancel very long responses */
+define("MAX_RESPONSE_LINES", 1000);
+
 /**
  * ### getBaseUrl function
- * // utility function that returns base url for
- * // determining return/cancel urls
+ *     utility function that returns base url for
+ *     determining return/cancel urls
  *
  * @return string
  */
@@ -20,5 +23,32 @@ function getBaseUrl()
   $host = $_SERVER['HTTP_HOST'];
   $request = $_SERVER['PHP_SELF'];
   return dirname($protocol . '://' . $host . $request);
+}
+
+
+/**
+ * The function that does the database connection.
+ * Assumes that all necessary DB_ constants are defined
+ *
+ * @return PDO object
+ */
+function db_connect()
+{
+	return new PDO(DB_DSN, DB_USER, DB_PASS);
+}
+
+
+/*
+ * This function validates a string for having only alphabetic characters, numbers or 
+ * some characters which are allowed in e-mail address
+ *
+ * This function should be used for validation of most of the strings - names, emails
+ *
+ * Passwords should not be validated
+ *
+ */
+function validate($string)
+{
+	return preg_match('/^([a-z]|[0-9]|[\+\-\@.]|\s)*$/i', $string);
 }
 ?>
