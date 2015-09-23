@@ -17,11 +17,13 @@ source create-tables.sql;
  * Pre-fill the tables
  */
 source activities.sql;
-source flights.sql;
-source hotels.sql;
 source regions.sql;
 source locations.sql;
+source flights.sql;
+source images.sql;
+source hotels.sql;
 source transport.sql;
 source packages.sql;
+
 
 

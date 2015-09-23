@@ -13,4 +13,4 @@ INSERT INTO hotels (hotelId, rank, imageName, description)
  * Add lodge for Amazon tour
  */
 INSERT INTO hotels (hotelId, rank, imageName, description)
-       VALUES ('Local Lodge', 3, 'amazon_lodge', 'Located near Amazon Rever, clean room and smoke-free, WiFi in public areas is free, no restaurant but possible to serve meals'); 
+       VALUES ('Local Lodge', 3, 'amazon_lodge', 'Located near Amazon Rever, clean room and smoke-free, WiFi in public areas is free, no restaurant but possible to serve meals');
