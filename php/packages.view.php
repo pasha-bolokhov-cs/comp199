@@ -20,9 +20,9 @@ if (!validate($data->package)) {
 }
 
 /* connect to the database */
-require_once '../../../comp199-www/mysqli_auth.php';
+require_once '../../../comp199-www/db_auth.php';
 try {
-	$dbh = new PDO('mysql:host=' . MYSQL_HOST . ';dbname=' . MYSQL_DB, MYSQL_USER, MYSQL_PASS);
+	$dbh = db_connect();
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 } catch (PDOException $e) {
 	$response["error"] = 'Connect Error: ' . $e->getMessage();
