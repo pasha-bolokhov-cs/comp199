@@ -4,8 +4,13 @@
  *
  */
 
+/* Path to the authentication information directory - stored in constant AUTH_CONFIG_PATH */
+require_once __DIR__ . "/auth-path.php";
+
+
 /* Cancel very long responses */
 define("MAX_RESPONSE_LINES", 1000);
+
 
 /**
  * ### getBaseUrl function
