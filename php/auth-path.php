@@ -11,6 +11,6 @@
  * Warning! Do NOT commit this file with private information put in place!
  * If you need to edit and commit changes to this file, first anonymize any private values!
  */
-define("AUTH_CONFIG_PATH", 'XYZXYZ-INSERT-YOUR-PATH-TO-DATABASE-AUTHENTICATION-INFORMATION-HERE-XYZXYZ');
+define("AUTH_CONFIG_PATH", __DIR__ . 'XYZXYZ-INSERT-YOUR-PATH-TO-DATABASE-AUTHENTICATION-INFORMATION-HERE-XYZXYZ');
 
 ?>
