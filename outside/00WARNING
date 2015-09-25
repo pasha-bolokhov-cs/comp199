@@ -1,0 +1,28 @@
+
+
+Important!
+----------
+
+Files in this directory are meant to carry sensitive information!
+
+The ".php.in" files are meant to be copied into '.php' and filled in
+with the actual authentication information.
+
+Alternatively, you can decrypt the ".gpg" files with
+    $ gpg file.php.gpg
+They contain sensitive information, which, however, may need to be adjusted
+to your needs.
+
+Either way - if you choose to fill in the real values, or if you choose
+to decrypt the encrypted ".gpg" files -- MAKE SURE that you move
+the resulting files out of the publicly served area (such as "public_html")!
+
+No sensitive information should be sitting in the public area at all times!!
+
+Presumably, the resulting Php files will be sitting outside of the Git repository,
+so the repository will not be affected by the fact that you have extracted
+or filled in real authentication information
+
+No sensitive information should be sitting in the Git repository!!
+(unless encrypted)
+

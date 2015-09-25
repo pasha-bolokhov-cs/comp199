@@ -1,0 +1,3 @@
+<?php
+define('JWT_KEY', 'XYZ_PUT_A_RANDOM_KEY_HERE_XYZ');
+?>
