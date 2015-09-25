@@ -11,7 +11,7 @@ if (!($token = authenticate()))
 	goto auth_error;
 
 /* connect to the database */
-require_once '../../../../comp199-www/db_auth.php';
+require_once AUTH_CONFIG_PATH . '/db_auth.php';
 try {
 	$dbh = db_connect();
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

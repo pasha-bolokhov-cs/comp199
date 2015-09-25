@@ -8,7 +8,7 @@
 
 require __DIR__ . '/../common.php';
 require __DIR__ . '/../../vendor/autoload.php';
-require __DIR__ . '/../../../../comp199-www/paypal-credentials.php';
+require AUTH_CONFIG_PATH . '/paypal-credentials.php';
 use PayPal\Api\Address;
 use PayPal\Api\Amount;
 use PayPal\Api\Payer;
@@ -49,7 +49,7 @@ if (!validate($data->package)) {
 }
 
 /* connect to the database */
-require_once '../../../../comp199-www/db_auth.php';
+require_once AUTH_CONFIG_PATH . '/db_auth.php';
 try {
 	$dbh = db_connect();
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);

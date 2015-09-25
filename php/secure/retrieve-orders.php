@@ -30,7 +30,7 @@ if (property_exists($data, "package") && !validate($data->package)) {
 }
 
 /* connect to the database */
-require_once '../../../../comp199-www/db_auth.php';
+require_once AUTH_CONFIG_PATH . '/db_auth.php';
 try {
 	$dbh = db_connect();
 	$dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -121,7 +121,7 @@ try {
 
 	/* put Merchant Id into the response */
 	if (count($response["data"])) {
-		require_once '../../../../comp199-www/paypal-credentials.php';
+		require_once AUTH_CONFIG_PATH . '/paypal-credentials.php';
 		$response["merchant_id"] = PayPal_MerchantID;
 	}
 

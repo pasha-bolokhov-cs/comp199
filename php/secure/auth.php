@@ -1,6 +1,7 @@
 <?php
+require_once __DIR__ . '/../common.php';
 require_once __DIR__ . '/JWT.php';
-require_once __DIR__ . '/../../../../comp199-www/jwt-auth.php';
+require_once AUTH_CONFIG_PATH . '/jwt-auth.php';
 
 
 /**
