@@ -9,6 +9,13 @@
  */
 
 /*
+ * Create the database
+ */
+DROP DATABASE IF EXISTS albatross;
+CREATE DATABASE albatross DEFAULT CHARACTER SET utf8;
+USE albatross;
+
+/*
  * Create the necessary tables
  */
 source create-tables.sql;

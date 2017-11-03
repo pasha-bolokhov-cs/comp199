@@ -9,9 +9,6 @@
 #     * the script assumes the existence of "travel" script (see AGENT below)
 #	which launches "mysql"; AGENT should be available on the PATH
 #
-#     * this AGENT command should put you directly into the database
-#	(e.g. "albatross") which must exist
-#
 #     * the script must only be run from the root of the web application
 #
 
