@@ -16,7 +16,7 @@ app.controller('HomeController', function($scope, $state) {
 		  slogan: "Get all the air of the world", button: "Start breathing" },
 		{ image: "images/starfish-2.jpg", text: "Stars are Calling you?",
 		  slogan: "The sky is not too far to reach", button: "Dive now" },
-		{ image: "images/albatross.jpg", text:"Albatross Travel ®",
+		{ image: "images/albatross.jpg", text:"Albatross Travel \xA9",
 		  slogan: "A Different Measure of Distance", button: "Hop on Our Back" },
 	];
 
